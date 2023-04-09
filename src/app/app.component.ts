@@ -8,6 +8,4 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule]
 })
-export class AppComponent {
-  constructor() {}
-}
+export class AppComponent {}
