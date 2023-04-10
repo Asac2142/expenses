@@ -1,12 +1,19 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>Expenses</ion-title>
+    <ion-buttons slot="end" class="ion-padding-end">
+      <ion-icon name="bar-chart" slot="icon-only"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ng-container *ngIf="{expenses: expenses$ | async, loading: loading$ | async} as data">
-    <h1>loading: {{ data.loading }}</h1>
-    <h1>expenses: {{ data.expenses }}</h1>
+  <ng-container *ngIf="expenses$ | async as expenses">
+    <app-transaction-list [transactions]="expenses"></app-transaction-list>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button color="primary" (click)="onAddTransaction()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </ng-container>
 </ion-content>
