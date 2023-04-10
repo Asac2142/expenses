@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
 
 import { Expense } from '../models/expense.model';
 import { v4 as uuidv4 } from 'uuid';
