@@ -3,7 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { Expense } from '../models/expense.model';
+import { Transaction } from '../models/transaction.model';
 import { RootState } from '../store';
 import * as ExpenseSelectors from '../store/expense/expense.selectors';
 import { CommonModule } from '@angular/common';
@@ -18,7 +18,7 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 })
 export class HomePage implements OnInit {
   private store: Store<RootState> = inject(Store<RootState>);
-  expenses$!: Observable<(Expense | undefined)[]>;
+  expenses$!: Observable<(Transaction | undefined)[]>;
   loading$!: Observable<boolean>;
 
   ngOnInit(): void {

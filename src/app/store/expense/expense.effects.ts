@@ -3,7 +3,7 @@ import { catchError, of, switchMap } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { ExpenseService } from 'src/app/services/expense.service';
-import * as ExpenseActions from './expense.actions';
+import * as TransactionActions from './expense.actions';
 
 @Injectable()
 export class ExpenseEffects {
@@ -11,11 +11,11 @@ export class ExpenseEffects {
 
   createExpense$ = createEffect(() =>
     this.action$.pipe(
-      ofType(ExpenseActions.addTransaction),
+      ofType(TransactionActions.addTransaction),
       switchMap(({ transaction }) =>
-        this.expenseService.createExpense(transaction).pipe(
-          switchMap(expense => of(ExpenseActions.addTransactionSuccess({ transaction: expense }))),
-          catchError(() => of(ExpenseActions.addTransactionFailed()))
+        this.expenseService.createTransaction(transaction).pipe(
+          switchMap(response => of(TransactionActions.addTransactionSuccess({ transaction: response }))),
+          catchError(() => of(TransactionActions.addTransactionFailed()))
         )
       )
     )

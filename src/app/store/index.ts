@@ -2,7 +2,7 @@ import { ActionReducerMap } from '@ngrx/store';
 import * as fromExpenses from './expense/expense.reducer';
 
 export interface RootState {
-  expenses: fromExpenses.MyExpenseState;
+  expenses: fromExpenses.TransactionState;
 }
 
 export const reducers: ActionReducerMap<RootState> = {

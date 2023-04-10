@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { Expense } from 'src/app/models/expense.model';
+import { Transaction } from 'src/app/models/transaction.model';
 
 @Component({
   selector: 'app-transaction-list',
@@ -12,7 +12,7 @@ import { Expense } from 'src/app/models/expense.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionListComponent implements OnChanges {
-  @Input() transactions!: (Expense | undefined)[];
+  @Input() transactions!: (Transaction | undefined)[];
 
   ngOnChanges(): void {}
 }

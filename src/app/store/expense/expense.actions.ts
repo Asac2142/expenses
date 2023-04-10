@@ -1,6 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { Expense } from 'src/app/models/expense.model';
+import { Transaction } from '../../models/transaction.model';
 
-export const addTransaction = createAction('[EXPENSE] Add Transaction', props<{ transaction: Partial<Expense> }>());
-export const addTransactionSuccess = createAction('[EXPENSE] Add Transaction Success', props<{ transaction: Expense }>());
-export const addTransactionFailed = createAction('[EXPENSE] Add Transaction Failed');
+export const addTransaction = createAction('[TRANSACTION] Add Transaction', props<{ transaction: Partial<Transaction> }>());
+export const addTransactionSuccess = createAction(
+  '[TRANSACTION] Add Transaction Success',
+  props<{ transaction: Transaction }>()
+);
+export const addTransactionFailed = createAction('[TRANSACTION] Add Transaction Failed');

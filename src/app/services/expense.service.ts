@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Observable, from } from 'rxjs';
 
-import { Expense } from '../models/expense.model';
+import { Transaction } from '../models/transaction.model';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
@@ -10,32 +10,32 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class ExpenseService {
   private _storage!: Storage;
-  private readonly _expenseKey = 'expenses';
+  private readonly _transactionKey = 'transactions';
 
   constructor(private storage: Storage) {
     this.initStorage();
   }
 
-  createExpense(expense: Partial<Expense>): Observable<Expense> {
+  createTransaction(transaction: Partial<Transaction>): Observable<Transaction> {
     const id = uuidv4();
 
     return from(
-      this.getExpensesFromStorage().then(expenses => {
-        expense.id = id;
-        expenses.push(expense as Expense);
-        this.setExpense(expenses);
-        return expense as Expense;
+      this.getTransactionsFromStorage().then(transactions => {
+        transaction.id = id;
+        transactions.push(transaction as Transaction);
+        this.setTransaction(transactions);
+        return transaction as Transaction;
       })
     );
   }
 
-  private async setExpense(expenses: Expense[]): Promise<void> {
-    this._storage.set(this._expenseKey, expenses);
+  private async setTransaction(transactions: Transaction[]): Promise<void> {
+    this._storage.set(this._transactionKey, transactions);
   }
 
-  private async getExpensesFromStorage(): Promise<Expense[]> {
-    const expenses = (await this._storage.get(this._expenseKey)) as Expense[];
-    return expenses;
+  private async getTransactionsFromStorage(): Promise<Transaction[]> {
+    const transactions = (await this._storage.get(this._transactionKey)) as Transaction[];
+    return transactions;
   }
 
   private async initStorage(): Promise<void> {
