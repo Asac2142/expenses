@@ -4,4 +4,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true"> </ion-content>
+<ion-content>
+  <ng-container *ngIf="{expenses: expenses$ | async, loading: loading$ | async} as data">
+    <h1>loading: {{ data.loading }}</h1>
+    <h1>expenses: {{ data.expenses }}</h1>
+  </ng-container>
+</ion-content>
