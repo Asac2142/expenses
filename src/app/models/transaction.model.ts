@@ -1,6 +1,6 @@
 import { FormControl } from "@angular/forms";
 
-export type Category = 'Shopping' | 'Medicine' | 'Pets' | 'Food' | 'Enterntaintment';
+// export type Category = 'Shopping' | 'Medicine' | 'Pets' | 'Food' | 'Enterntaintment';
 export type TransactionType = 'expense' | 'income';
 
 export interface Transaction {
@@ -18,4 +18,10 @@ export interface TransactionForm {
   description: FormControl<string | null>;
   date: FormControl<string | null>;
   amount: FormControl<number | null>;
+}
+
+export interface Category {
+  type: TransactionType;
+  iconName: string;
+  label: string;
 }

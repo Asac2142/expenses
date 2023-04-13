@@ -1,3 +1,67 @@
-<p>
-  create-transaction works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onCancel()">
+        <ion-icon slot="start" name="close-circle"></ion-icon>
+        <span class="ion-text-capitalize">Cancel</span>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onSubmit()">
+        <span class="ion-text-capitalize">Save</span>
+        <ion-icon slot="end" name="checkmark-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="transactionForm">
+    <ion-item lines="none">
+      <ion-segment value="wallet">
+        <ion-segment-button value="trending-down" (click)="transactionForm.controls.type.patchValue('expense')">
+          <ion-label>Expense</ion-label>
+          <ion-icon name="trending-down"></ion-icon>
+        </ion-segment-button>
+
+        <ion-segment-button value="wallet" (click)="transactionForm.controls.type.patchValue('income')">
+          <ion-label>Income</ion-label>
+          <ion-icon name="wallet"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-item>
+
+    <ion-item class="ion-margin-vertical" lines="none">
+      <ion-input
+        label="Amount"
+        labelPlacement="floating"
+        placeholder="$ 5.00"
+        errorText="This field is mandatory or invalid"
+        formControlName="amount"
+        type="number">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-vertical" lines="none">
+      <ion-input
+        label="Description"
+        labelPlacement="floating"
+        placeholder="Enter a short description"
+        errorText="This field is mandatory or invalid"
+        formControlName="description">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-vertical" lines="none">
+      <ion-grid>
+        <ion-row class="ion-justify-content-center">
+          <ion-datetime presentation="date" [multiple]="false" [value]="dateValue" (ionChange)="onDateChange($event)">
+            <span slot="title">Transaction Date</span>
+          </ion-datetime>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </form>
+
+  <pre>{{ transactionForm.value | json }}</pre>
+</ion-content>

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -8,6 +8,7 @@ import { RootState } from '../store';
 import * as ExpenseSelectors from '../store/expense/expense.selectors';
 import { CommonModule } from '@angular/common';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
+import { CreateTransactionComponent } from './create-transaction/create-transaction.component';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 })
 export class HomePage implements OnInit {
   private store: Store<RootState> = inject(Store<RootState>);
+  private modalCtrl = inject(ModalController);
   expenses$!: Observable<(Transaction | undefined)[]>;
   loading$!: Observable<boolean>;
 
@@ -26,7 +28,8 @@ export class HomePage implements OnInit {
     this.loading$ = this.store.select(ExpenseSelectors.selectLoading);
   }
 
-  onAddTransaction(): void {
-    console.log('Adding transaction...');
+  async onAddTransaction(): Promise<void> {
+    const modal = await this.modalCtrl.create({ component: CreateTransactionComponent });
+    modal.present();
   }
 }
