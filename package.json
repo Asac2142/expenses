@@ -31,6 +31,7 @@
     "@ngrx/entity": "^15.4.0",
     "@ngrx/store": "^15.4.0",
     "@ngrx/store-devtools": "^15.4.0",
+    "date-fns": "^2.29.3",
     "ionicons": "^7.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
