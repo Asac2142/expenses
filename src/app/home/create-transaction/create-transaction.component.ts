@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Category, Transaction, TransactionForm, TransactionType } from '../../models/transaction.model';
 import { formatDate } from 'src/app/utils/category.utils.data';
+import { CategoryModalComponent } from '../category-modal/category-modal.component';
 
 @Component({
   selector: 'app-create-transaction',
@@ -32,6 +33,11 @@ export class CreateTransactionComponent implements OnInit {
   onDateChange(event: Event): void {
     const date = (event as CustomEvent).detail.value as string;
     this.transactionForm.controls.date.patchValue(date);
+  }
+
+  async onClick(): Promise<void> {
+    const modalComponent = await this.modal.create({ component: CategoryModalComponent });
+    await modalComponent.present();
   }
 
   get dateValue() {

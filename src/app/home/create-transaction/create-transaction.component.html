@@ -61,6 +61,10 @@
         </ion-row>
       </ion-grid>
     </ion-item>
+
+    <ion-item class="ion-margin-vertical" lines="none">
+      <ion-button color="primary" (click)="onClick()">Category</ion-button>
+    </ion-item>
   </form>
 
   <pre>{{ transactionForm.value | json }}</pre>
