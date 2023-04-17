@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { catchError, of, switchMap } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { ExpenseService } from 'src/app/services/expense.service';
-import * as TransactionActions from './expense.actions';
+import { TransactionService } from 'src/app/services/transaction.service';
+import * as TransactionActions from './transaction.actions';
 
 @Injectable()
-export class ExpenseEffects {
-  constructor(private action$: Actions, private expenseService: ExpenseService) {}
+export class TransactionEffects {
+  constructor(private action$: Actions, private transactionService: TransactionService) {}
 
   createExpense$ = createEffect(() =>
     this.action$.pipe(
       ofType(TransactionActions.addTransaction),
       switchMap(({ transaction }) =>
-        this.expenseService.createTransaction(transaction).pipe(
+        this.transactionService.createTransaction(transaction).pipe(
           switchMap(response => of(TransactionActions.addTransactionSuccess({ transaction: response }))),
           catchError(() => of(TransactionActions.addTransactionFailed()))
         )

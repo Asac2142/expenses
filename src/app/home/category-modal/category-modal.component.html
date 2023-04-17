@@ -11,20 +11,22 @@
 </ion-header>
 
 <ion-content>
-  <ion-list [inset]="true">
-    <ion-item *ngFor="let category of categories; let i = index; trackBy: categoryIndex" (click)="onSelected(category)">
-      <ion-label>{{ category.label }}</ion-label>
-      <ng-container *ngIf="category.iconName; else svg">
-        <ion-icon [name]="category.iconName" [color]="category.color" size="large"></ion-icon>
-      </ng-container>
-      <ng-template #svg>
-        <ion-icon [src]="category.svgContent"[color]="category.color" size="large"></ion-icon>
-      </ng-template>
-    </ion-item>
+  <ng-container *ngIf="categories$ | async as categories">
+    <ion-list [inset]="true">
+      <ion-item *ngFor="let category of categories; let i = index; trackBy: categoryIndex" (click)="onSelected(category)">
+        <ion-label>{{ category.label }}</ion-label>
+        <ng-container *ngIf="category.iconName; else svg">
+          <ion-icon [name]="category.iconName" [color]="category.color" size="large"></ion-icon>
+        </ng-container>
+        <ng-template #svg>
+          <ion-icon [src]="category.svgContent" [color]="category.color" size="large"></ion-icon>
+        </ng-template>
+      </ion-item>
 
-    <ion-item (click)="onAddCategory()">
-      <ion-label>Add other</ion-label>
-      <ion-icon name="add" color="primary" size="large"></ion-icon>
-    </ion-item>
-  </ion-list>
+      <ion-item (click)="onAddCategory()">
+        <ion-label>Add other</ion-label>
+        <ion-icon name="add" color="primary" size="large"></ion-icon>
+      </ion-item>
+    </ion-list>
+  </ng-container>
 </ion-content>

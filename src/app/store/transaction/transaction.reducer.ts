@@ -1,15 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
-import { ExpenseState, initialExpenseState, adapter } from './expense.entity';
-import * as ExpenseActions from './expense.actions';
+import { ExpenseState, initialExpenseState, adapter } from './transaction.entity';
+import * as ExpenseActions from './transaction.actions';
+import { Category } from 'src/app/models/transaction.model';
+import { categoryData } from 'src/app/utils/category.utils.data';
 
 export interface TransactionState {
   expense: ExpenseState;
   loading: boolean;
+  categories: Category[];
 }
 
 export const initialState: TransactionState = {
   expense: initialExpenseState,
-  loading: false
+  loading: false,
+  categories: categoryData
 };
 
 export const reducer = createReducer(

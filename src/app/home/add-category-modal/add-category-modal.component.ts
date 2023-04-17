@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Icon, TransactionType } from 'src/app/models/transaction.model';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,8 @@ import * as Icons from 'ionicons/icons';
   templateUrl: './add-category-modal.component.html',
   styleUrls: ['./add-category-modal.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule]
+  imports: [CommonModule, IonicModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddCategoryModalComponent implements OnInit {
   private _modal = inject(ModalController);

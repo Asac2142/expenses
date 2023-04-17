@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { Transaction } from '../models/transaction.model';
 import { RootState } from '../store';
-import * as ExpenseSelectors from '../store/expense/expense.selectors';
+import * as ExpenseSelectors from '../store/transaction/transaction.selectors';
 import { CommonModule } from '@angular/common';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
 import { CreateTransactionComponent } from './create-transaction/create-transaction.component';
