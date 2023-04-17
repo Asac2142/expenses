@@ -18,15 +18,15 @@
 <ion-content>
   <form [formGroup]="transactionForm">
     <ion-item lines="none">
-      <ion-segment value="wallet">
+      <ion-segment value="trending-up">
         <ion-segment-button value="trending-down" (click)="transactionForm.controls.type.patchValue('expense')">
           <ion-label>Expense</ion-label>
           <ion-icon name="trending-down"></ion-icon>
         </ion-segment-button>
 
-        <ion-segment-button value="wallet" (click)="transactionForm.controls.type.patchValue('income')">
+        <ion-segment-button value="trending-up" (click)="transactionForm.controls.type.patchValue('income')">
           <ion-label>Income</ion-label>
-          <ion-icon name="wallet"></ion-icon>
+          <ion-icon name="trending-up"></ion-icon>
         </ion-segment-button>
       </ion-segment>
     </ion-item>

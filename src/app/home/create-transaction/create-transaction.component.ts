@@ -16,18 +16,18 @@ import { CategoryModalComponent } from '../category-modal/category-modal.compone
 export class CreateTransactionComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;
   transactionForm!: FormGroup<TransactionForm>;
-  private modal: ModalController = inject(ModalController);
+  private _modal: ModalController = inject(ModalController);
 
   ngOnInit(): void {
     this.initForm();
   }
 
   onSubmit(): void {
-    this.modal.dismiss(this.transactionForm.value);
+    this._modal.dismiss(this.transactionForm.value);
   }
 
   onCancel(): void {
-    this.modal.dismiss(undefined);
+    this._modal.dismiss(undefined);
   }
 
   onDateChange(event: Event): void {
@@ -36,7 +36,11 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   async onClick(): Promise<void> {
-    const modalComponent = await this.modal.create({ component: CategoryModalComponent });
+    const transactionType: TransactionType = this.transactionForm.controls.type.value || 'expense';
+    const modalComponent = await this._modal.create({
+      component: CategoryModalComponent,
+      componentProps: { transactionType }
+    });
     await modalComponent.present();
   }
 

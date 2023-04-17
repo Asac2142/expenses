@@ -1,16 +1,30 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="onCancel()">Cancel</ion-button>
+      <ion-button (click)="onCancel()" class="ion-text-capitalize">
+        <ion-icon name="close-circle" slot="start"></ion-icon>
+        Cancel
+      </ion-button>
     </ion-buttons>
-    <ion-title>Welcome</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="onSave()" [strong]="true">Confirm</ion-button>
-    </ion-buttons>
+    <ion-title slot="end" class="ion-text-capitalize">select type</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-  </ion-item>
+  <ion-list [inset]="true">
+    <ion-item *ngFor="let category of categories; let i = index; trackBy: categoryIndex" (click)="onSelected(category)">
+      <ion-label>{{ category.label }}</ion-label>
+      <ng-container *ngIf="category.iconName; else svg">
+        <ion-icon [name]="category.iconName" [color]="category.color" size="large"></ion-icon>
+      </ng-container>
+      <ng-template #svg>
+        <ion-icon [src]="category.svgContent"[color]="category.color" size="large"></ion-icon>
+      </ng-template>
+    </ion-item>
+
+    <ion-item (click)="onAddCategory()">
+      <ion-label>Add other</ion-label>
+      <ion-icon name="add" color="primary" size="large"></ion-icon>
+    </ion-item>
+  </ion-list>
 </ion-content>
