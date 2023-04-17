@@ -1,7 +1,7 @@
 import { FormControl } from "@angular/forms";
 
-// export type Category = 'Shopping' | 'Medicine' | 'Pets' | 'Food' | 'Enterntaintment';
 export type TransactionType = 'expense' | 'income';
+export type CategoryColor = 'success' | 'danger';
 
 export interface Transaction {
   id: string;
@@ -24,4 +24,11 @@ export interface Category {
   type: TransactionType;
   iconName: string;
   label: string;
+  color: CategoryColor;
+  svgContent?: string;
+}
+
+export interface Icon {
+  name: string;
+  svg: string;
 }

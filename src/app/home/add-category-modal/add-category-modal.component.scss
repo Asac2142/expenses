@@ -1,0 +1,14 @@
+:host {
+  .icon-container {
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  ion-icon:hover {
+    cursor: pointer;
+  }
+}
