@@ -8,8 +8,8 @@
 </ion-header>
 
 <ion-content>
-  <ng-container *ngIf="expenses$ | async as expenses">
-    <app-transaction-list [transactions]="expenses"></app-transaction-list>
+  <ng-container *ngIf="transactions$ | async as transactions">
+    <app-transaction-list [transactions]="transactions"></app-transaction-list>
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
       <ion-fab-button color="primary" (click)="onAddTransaction()">
         <ion-icon name="add"></ion-icon>

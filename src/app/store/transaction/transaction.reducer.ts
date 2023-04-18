@@ -1,31 +1,45 @@
 import { createReducer, on } from '@ngrx/store';
-import { ExpenseState, initialExpenseState, adapter } from './transaction.entity';
-import * as ExpenseActions from './transaction.actions';
+import { TransactionStateEntity, initialTransactionState, adapter } from './transaction.entity';
+import * as TransactionActions from './transaction.actions';
 import { Category } from 'src/app/models/transaction.model';
 import { categoryData } from 'src/app/utils/category.utils.data';
 
 export interface TransactionState {
-  expense: ExpenseState;
+  transaction: TransactionStateEntity;
   loading: boolean;
   categories: Category[];
 }
 
 export const initialState: TransactionState = {
-  expense: initialExpenseState,
+  transaction: initialTransactionState,
   loading: false,
   categories: categoryData
 };
 
 export const reducer = createReducer(
   initialState,
-  on(ExpenseActions.addTransaction, (state): TransactionState => ({ ...state, loading: true })),
-  on(ExpenseActions.addTransactionFailed, (state): TransactionState => ({ ...state, loading: false })),
+  on(TransactionActions.addTransaction, (state): TransactionState => ({ ...state, loading: true })),
+  on(TransactionActions.addTransactionFailed, (state): TransactionState => ({ ...state, loading: false })),
   on(
-    ExpenseActions.addTransactionSuccess,
+    TransactionActions.addTransactionSuccess,
     (state, { transaction }): TransactionState => ({
       ...state,
       loading: false,
-      expense: adapter.addOne(transaction, state.expense)
+      transaction: adapter.addOne(transaction, state.transaction)
     })
-  )
+  ),
+  on(TransactionActions.addCategory, (state): TransactionState => ({ ...state })),
+  on(
+    TransactionActions.addCategorySuccess,
+    (state, { newCategory }): TransactionState => ({ ...state, categories: newCategory })
+  ),
+  on(TransactionActions.setCategories, (state): TransactionState => ({ ...state })),
+  on(
+    TransactionActions.setCategoriesSuccess,
+    (state, { categories }): TransactionState => ({
+      ...state,
+      categories: [...categories]
+    })
+  ),
+  on(TransactionActions.setNoCategoriesFound, (state): TransactionState => ({ ...state }))
 );

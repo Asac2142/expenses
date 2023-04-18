@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Category, TransactionType } from 'src/app/models/transaction.model';
 import { AddCategoryModalComponent } from '../add-category-modal/add-category-modal.component';
@@ -23,6 +23,14 @@ export class CategoryModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.categories$ = this.store.select(TransactionSelectors.selectCategories(this.transactionType));
+  }
+
+  ionViewDidEnter(): void {
+    console.log('ionViewDidEnter')
+  }
+
+  ionViewWillLeave(): void {
+    console.log('ionViewWillLeave')
   }
 
   onSelected(category: Category): void {

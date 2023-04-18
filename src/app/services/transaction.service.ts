@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { Observable, from } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 
-import { Transaction } from '../models/transaction.model';
+import { Category, Transaction } from '../models/transaction.model';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class TransactionService {
   private _storage!: Storage;
   private readonly _transactionKey = 'transactions';
+  private readonly _categoriesKey = 'categories';
 
   constructor(private storage: Storage) {
     this.initStorage();
@@ -27,6 +28,25 @@ export class TransactionService {
         return transaction as Transaction;
       })
     );
+  }
+
+  getCategoriesFromStorage(): Observable<Category[] | undefined> {
+    return from(this.getCategories());
+  }
+
+  addCategory(newCategory: Category, categories: Category[]): Observable<Category[]> {
+    const copy = [...categories];
+    copy.push(newCategory);
+    this.setCategory(copy);
+    return of([...copy]);
+  }
+
+  private async setCategory(categories: Category[]): Promise<void> {
+    await this._storage.set(this._categoriesKey, categories);
+  }
+
+  private async getCategories(): Promise<Category[] | undefined> {
+    return await this._storage.get(this._categoriesKey);
   }
 
   private async setTransaction(transactions: Transaction[]): Promise<void> {

@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { Icon, TransactionType } from 'src/app/models/transaction.model';
+import { Category, Icon, TransactionType } from 'src/app/models/transaction.model';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import * as Icons from 'ionicons/icons';
+import * as TransactionActions from '../../store/transaction/transaction.actions';
 
 @Component({
   selector: 'app-add-category-modal',
@@ -15,6 +17,7 @@ import * as Icons from 'ionicons/icons';
 })
 export class AddCategoryModalComponent implements OnInit {
   private _modal = inject(ModalController);
+  private store = inject(Store);
   private typeSelected: TransactionType = 'expense';
   private iconSelected!: Icon;
   newCategory!: string;
@@ -22,23 +25,13 @@ export class AddCategoryModalComponent implements OnInit {
   iconIndexSelected = -1;
 
   ngOnInit() {
-    const keys = Object.keys(Icons);
-    const icons: Icon[] = [];
-    const data = Icons as any;
-
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const iconSvgContent = data[key] as string;
-      icons.push({ name: key, svg: iconSvgContent });
-    }
-
-    this.icons = [...icons];
+    this.setAllIcons();
   }
 
   onSave(): void {
-    console.log('typeSelected: ', this.typeSelected);
-    console.log('Icon selected: ', this.iconSelected);
-    console.log('category: ', this.newCategory);
+    const newCategory = this.getCategory();
+    this.store.dispatch(TransactionActions.addCategory({ newCategory }));
+    this._modal.dismiss();
   }
 
   onCancel(): void {
@@ -61,5 +54,30 @@ export class AddCategoryModalComponent implements OnInit {
   onIconSelected(icon: Icon, index: number): void {
     this.iconIndexSelected = index;
     this.iconSelected = icon;
+  }
+
+  private getCategory(): Category {
+    return {
+      color: this.typeSelected === 'expense' ? 'danger' : 'success',
+      svgContent: this.iconSelected.svg,
+      iconName: '',
+      label: this.newCategory,
+      type: this.typeSelected
+    };
+  }
+
+  private setAllIcons(): void {
+    const keys = Object.keys(Icons);
+    const icons: Icon[] = [];
+    const data = Icons as any;
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const iconSvgContent = data[key] as string;
+
+      if (!key.toLowerCase().includes('sharp')) icons.push({ name: key, svg: iconSvgContent });
+    }
+
+    this.icons = [...icons];
   }
 }
