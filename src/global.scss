@@ -10,17 +10,34 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+@import '@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
 @import '@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
+
+// * it shows the backdrop of datetime button within another modal
+ion-modal.ion-datetime-button-overlay::part(backdrop) {
+  opacity: 0.3 !important;
+  z-index: 11 !important;
+}
+
+ion-modal.ion-datetime-button-overlay::part(content) {
+  z-index: 12 !important;
+}
+// * ---------------
+
+// * setting background color for ion datetime button
+ion-datetime-button::part(native) {
+  background-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
