@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { Category, Icon, TransactionType } from 'src/app/models/transaction.model';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
+
+import { Category, Icon, TransactionType } from 'src/app/models/transaction.model';
 import * as Icons from 'ionicons/icons';
 import * as TransactionActions from '../../store/transaction/transaction.actions';
 

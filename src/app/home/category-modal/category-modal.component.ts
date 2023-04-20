@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { Category, TransactionType } from 'src/app/models/transaction.model';
-import { AddCategoryModalComponent } from '../add-category-modal/add-category-modal.component';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+
+import { Category, TransactionType } from 'src/app/models/transaction.model';
+import { AddCategoryModalComponent } from '../add-category-modal/add-category-modal.component';
 import * as TransactionSelectors from '../../store/transaction/transaction.selectors';
 
 @Component({
@@ -25,16 +26,7 @@ export class CategoryModalComponent implements OnInit {
     this.categories$ = this.store.select(TransactionSelectors.selectCategories(this.transactionType));
   }
 
-  ionViewDidEnter(): void {
-    console.log('ionViewDidEnter')
-  }
-
-  ionViewWillLeave(): void {
-    console.log('ionViewWillLeave')
-  }
-
   onSelected(category: Category): void {
-    console.log('Category: ', category);
     this._modal.dismiss(category);
   }
 
@@ -47,10 +39,7 @@ export class CategoryModalComponent implements OnInit {
   }
 
   async onAddCategory(): Promise<void> {
-    // TODO - open another modal for adding a custom category
-    console.log('add category');
     const categoryAddModal = await this._modal.create({ component: AddCategoryModalComponent });
     categoryAddModal.present();
-
   }
 }
