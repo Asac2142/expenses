@@ -6,13 +6,14 @@ import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { Category, Transaction, TransactionForm, TransactionType } from '../../models/transaction.model';
 import { formatDate } from 'src/app/utils/category.utils.data';
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
+import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-create-transaction',
   templateUrl: './create-transaction.component.html',
   styleUrls: ['./create-transaction.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule]
+  imports: [CommonModule, IonicModule, ReactiveFormsModule, HeaderComponent]
 })
 export class CreateTransactionComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;

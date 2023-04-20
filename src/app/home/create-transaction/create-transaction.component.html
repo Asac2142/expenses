@@ -1,35 +1,10 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-button (click)="onCancel()">
-        <ion-icon slot="start" name="close-circle"></ion-icon>
-        <span class="ion-text-capitalize">Cancel</span>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="onSubmit()">
-        <span class="ion-text-capitalize">Save</span>
-        <ion-icon slot="end" name="checkmark-circle"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-  <ion-toolbar color="primary">
-    <ion-segment value="trending-up">
-      <ion-segment-button
-        value="trending-down"
-        (click)="transactionForm.controls.type.patchValue('expense'); setTypeSelected('expense')">
-        <ion-label>Expense</ion-label>
-        <ion-icon name="trending-down" color="danger"></ion-icon>
-      </ion-segment-button>
-
-      <ion-segment-button
-        value="trending-up"
-        (click)="transactionForm.controls.type.patchValue('income'); setTypeSelected('income')">
-        <ion-label>Income</ion-label>
-        <ion-icon name="trending-up" color="success"></ion-icon>
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
+  <app-header
+    (cancel)="onCancel()"
+    (save)="onSubmit()"
+    (incomeSelected)="transactionForm.controls.type.patchValue($event); setTypeSelected($event)"
+    (expenseSelected)="transactionForm.controls.type.patchValue($event); setTypeSelected($event)">
+  </app-header>
 </ion-header>
 
 <ion-content>
@@ -93,7 +68,6 @@
         <ion-label slot="end">{{ categorySelected.label }}</ion-label>
         <ion-icon size="large" [src]="categorySelected.svgContent" [color]="categorySelected.color" slot="end"></ion-icon>
       </ng-container>
-
     </ion-item>
   </form>
 </ion-content>
