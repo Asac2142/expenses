@@ -24,6 +24,7 @@ export class AddCategoryModalComponent implements OnInit {
   newCategory!: string;
   icons: Icon[] = [];
   iconIndexSelected = -1;
+  colorPicked: 'danger' | 'success' = 'danger';
 
   ngOnInit() {
     this.setAllIcons();
@@ -46,6 +47,7 @@ export class AddCategoryModalComponent implements OnInit {
   onTypeChange(event: Event): void {
     const typeSelected = (event as CustomEvent).detail.value as TransactionType;
     this.typeSelected = typeSelected;
+    this.colorPicked = typeSelected === 'expense' ? 'danger' : 'success';
   }
 
   iconId(index: number): number {
