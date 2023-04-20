@@ -21,8 +21,9 @@ export class AddCategoryModalComponent implements OnInit {
   private store = inject(Store);
   private typeSelected: TransactionType = 'expense';
   private iconSelected!: Icon;
+  private icons: Icon[] = [];
+  iconsData: Icon[] = [];
   newCategory!: string;
-  icons: Icon[] = [];
   iconIndexSelected = -1;
   colorPicked: 'danger' | 'success' = 'danger';
 
@@ -59,6 +60,12 @@ export class AddCategoryModalComponent implements OnInit {
     this.iconSelected = icon;
   }
 
+  onSearchIcon(event: Event): void {
+    const valueEntered = (event.target as HTMLInputElement).value.toLowerCase();
+    this.iconsData = this.icons.filter(i => i.name.toLowerCase().indexOf(valueEntered) > -1);
+    this.iconIndexSelected = -1;
+  }
+
   private getCategory(): Category {
     return {
       color: this.typeSelected === 'expense' ? 'danger' : 'success',
@@ -82,5 +89,6 @@ export class AddCategoryModalComponent implements OnInit {
     }
 
     this.icons = [...icons];
+    this.iconsData = [...this.icons];
   }
 }

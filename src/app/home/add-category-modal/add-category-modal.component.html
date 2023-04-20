@@ -44,9 +44,14 @@
     <ion-label class="ion-text-center">Pick an icon</ion-label>
   </ion-item>
 
+  <ion-item lines="none">
+    <ion-searchbar show-cancel-button="never" placeholder="Search icon by name" (ionInput)="onSearchIcon($event)">
+    </ion-searchbar>
+  </ion-item>
+
   <section class="icon-container">
     <ion-icon
-      *ngFor="let icon of icons; let i = index; trackBy: iconId"
+      *ngFor="let icon of iconsData; let i = index; trackBy: iconId"
       class="ion-padding-horizontal"
       size="large"
       [color]="iconIndexSelected === i ? colorPicked : 'medium'"
