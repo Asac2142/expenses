@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule, ModalController, ToastController } from '@ionic/angular';
+
 import { Category, Transaction, TransactionForm, TransactionType } from '../../models/transaction.model';
 import { formatDate } from 'src/app/utils/category.utils.data';
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
@@ -16,14 +17,27 @@ import { CategoryModalComponent } from '../category-modal/category-modal.compone
 export class CreateTransactionComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;
   transactionForm!: FormGroup<TransactionForm>;
+  categorySelected!: Category | undefined;
+  selectedType: TransactionType = 'income';
   private _modal: ModalController = inject(ModalController);
+  private _toast: ToastController = inject(ToastController);
 
   ngOnInit(): void {
     this.initForm();
   }
 
-  onSubmit(): void {
-    this._modal.dismiss(this.transactionForm.value);
+  async onSubmit(): Promise<void> {
+    if (this.transactionForm.invalid) {
+      this.transactionForm.markAllAsTouched();
+      const toast = await this._toast.create({
+        message: 'Some fields are required or invalid',
+        duration: 1500,
+        position: 'bottom',
+        icon: 'eye',
+        color: 'danger'
+      });
+      toast.present();
+    } else this._modal.dismiss(this.transactionForm.value);
   }
 
   onCancel(): void {
@@ -35,13 +49,34 @@ export class CreateTransactionComponent implements OnInit {
     this.transactionForm.controls.date.patchValue(date);
   }
 
-  async onClick(): Promise<void> {
+  validateCategory(): boolean {
+    const controls = this.transactionForm.controls;
+    return controls.category?.invalid && controls.category.touched && !this.categorySelected;
+  }
+
+  setTypeSelected(type: TransactionType): void {
+    if (type !== this.selectedType) {
+      this.categorySelected = undefined;
+      this.transactionForm.controls.category.patchValue(null);
+    }
+    this.selectedType = type;
+  }
+
+  async onSelectCategory(): Promise<void> {
+    this.transactionForm.controls.category.markAsTouched();
     const transactionType: TransactionType = this.transactionForm.controls.type.value || 'expense';
     const modalComponent = await this._modal.create({
       component: CategoryModalComponent,
       componentProps: { transactionType }
     });
-    await modalComponent.present();
+
+    modalComponent.present();
+    const result = await modalComponent.onWillDismiss();
+
+    if (result.data) {
+      this.categorySelected = result.data as Category;
+      this.transactionForm.controls.category.patchValue(this.categorySelected);
+    }
   }
 
   get dateValue() {

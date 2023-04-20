@@ -13,24 +13,27 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-segment value="trending-up">
+      <ion-segment-button
+        value="trending-down"
+        (click)="transactionForm.controls.type.patchValue('expense'); setTypeSelected('expense')">
+        <ion-label>Expense</ion-label>
+        <ion-icon name="trending-down" color="danger"></ion-icon>
+      </ion-segment-button>
+
+      <ion-segment-button
+        value="trending-up"
+        (click)="transactionForm.controls.type.patchValue('income'); setTypeSelected('income')">
+        <ion-label>Income</ion-label>
+        <ion-icon name="trending-up" color="success"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form [formGroup]="transactionForm">
-    <ion-item lines="none">
-      <ion-segment value="trending-up">
-        <ion-segment-button value="trending-down" (click)="transactionForm.controls.type.patchValue('expense')">
-          <ion-label>Expense</ion-label>
-          <ion-icon name="trending-down"></ion-icon>
-        </ion-segment-button>
-
-        <ion-segment-button value="trending-up" (click)="transactionForm.controls.type.patchValue('income')">
-          <ion-label>Income</ion-label>
-          <ion-icon name="trending-up"></ion-icon>
-        </ion-segment-button>
-      </ion-segment>
-    </ion-item>
-
     <ion-item class="ion-margin-vertical" lines="none">
       <ion-input
         label="Amount"
@@ -53,19 +56,44 @@
     </ion-item>
 
     <ion-item class="ion-margin-vertical" lines="none">
+      <ion-label>Date</ion-label>
       <ion-grid>
-        <ion-row class="ion-justify-content-center">
-          <ion-datetime presentation="date" [multiple]="false" [value]="dateValue" (ionChange)="onDateChange($event)">
-            <span slot="title">Transaction Date</span>
-          </ion-datetime>
+        <ion-row class="ion-justify-content-end">
+          <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime
+                id="datetime"
+                presentation="date"
+                color="primary"
+                [value]="dateValue"
+                [showDefaultButtons]="true"
+                (ionChange)="onDateChange($event)">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
         </ion-row>
       </ion-grid>
     </ion-item>
 
-    <ion-item class="ion-margin-vertical" lines="none">
-      <ion-button color="primary" (click)="onClick()">Category</ion-button>
+    <ion-item class="ion-margin-vertical ion-justify-content-between" lines="none">
+      <ion-label role="button" class="ion-text-capitalize" (click)="onSelectCategory()">
+        {{ categorySelected ? 'Category Selected' : 'Select Category' }}
+      </ion-label>
+
+      <ion-note color="danger" *ngIf="validateCategory()">Category is required</ion-note>
+
+      <ng-container *ngIf="categorySelected && categorySelected.iconName">
+        <ion-label slot="end">{{ categorySelected.label }}</ion-label>
+        <ion-icon size="large" [name]="categorySelected.iconName" [color]="categorySelected.color" slot="end"></ion-icon>
+      </ng-container>
+
+      <ng-container *ngIf="categorySelected && categorySelected?.svgContent">
+        <ion-label slot="end">{{ categorySelected.label }}</ion-label>
+        <ion-icon size="large" [src]="categorySelected.svgContent" [color]="categorySelected.color" slot="end"></ion-icon>
+      </ng-container>
+
     </ion-item>
   </form>
-
-  <pre>{{ transactionForm.value | json }}</pre>
 </ion-content>
