@@ -1,4 +1,4 @@
-import { TransactionType } from 'src/app/models/transaction.model';
+import { TransactionType } from 'src/app/common/models/transaction.model';
 import * as ExpenseRoot from '../index';
 import { createSelector } from '@ngrx/store';
 

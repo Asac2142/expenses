@@ -3,10 +3,10 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 
-import { Category, Transaction, TransactionForm, TransactionType } from '../../models/transaction.model';
-import { formatDate } from 'src/app/utils/category.utils.data';
+import { Category, Transaction, TransactionForm, TransactionType } from '../../common/models/transaction.model';
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
 import { HeaderComponent } from './header/header.component';
+import { formatDate } from 'src/app/common/utils/category.utils.data';
 
 @Component({
   selector: 'app-create-transaction',

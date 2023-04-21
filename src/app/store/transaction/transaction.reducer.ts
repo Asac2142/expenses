@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { TransactionStateEntity, initialTransactionState, adapter } from './transaction.entity';
+import { Category } from 'src/app/common/models/transaction.model';
 import * as TransactionActions from './transaction.actions';
-import { Category } from 'src/app/models/transaction.model';
-import { categoryData } from 'src/app/utils/category.utils.data';
+import { categoryData } from 'src/app/common/utils/category.utils.data';
 
 export interface TransactionState {
   transaction: TransactionStateEntity;

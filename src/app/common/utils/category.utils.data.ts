@@ -1,5 +1,5 @@
-import { Category } from '../models/transaction.model';
 import { format } from 'date-fns';
+import { Category } from '../models/transaction.model';
 
 export const categoryData: Category[] = [
   { color: 'danger', iconName: 'medkit', label: 'Medicine', type: 'expense' },

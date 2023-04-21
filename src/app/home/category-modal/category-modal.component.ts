@@ -4,7 +4,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { Category, TransactionType } from 'src/app/models/transaction.model';
+import { Category, TransactionType } from 'src/app/common/models/transaction.model';
 import { AddCategoryModalComponent } from '../add-category-modal/add-category-modal.component';
 import * as TransactionSelectors from '../../store/transaction/transaction.selectors';
 

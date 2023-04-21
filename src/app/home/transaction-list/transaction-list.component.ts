@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { Transaction } from 'src/app/models/transaction.model';
+import { Transaction } from 'src/app/common/models/transaction.model';
 
 @Component({
   selector: 'app-transaction-list',

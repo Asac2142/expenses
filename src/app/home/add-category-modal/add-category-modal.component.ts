@@ -4,7 +4,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
-import { Category, Icon, TransactionType } from 'src/app/models/transaction.model';
+import { Category, Icon, TransactionType } from 'src/app/common/models/transaction.model';
 import * as Icons from 'ionicons/icons';
 import * as TransactionActions from '../../store/transaction/transaction.actions';
 

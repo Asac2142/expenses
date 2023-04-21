@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Observable, from, of } from 'rxjs';
 
-import { Category, Transaction } from '../models/transaction.model';
+import { Category, Transaction } from '../common/models/transaction.model';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
