@@ -8,6 +8,14 @@
     </ion-buttons>
     <ion-title slot="end" class="ion-text-capitalize">select category</ion-title>
   </ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-searchbar
+      color="light"
+      show-cancel-button="never"
+      placeholder="Search by name"
+      (ionInput)="onSearchCategory($event)">
+    </ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
