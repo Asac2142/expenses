@@ -7,13 +7,14 @@ import { Category, Transaction, TransactionForm, TransactionType } from '../../c
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
 import { HeaderComponent } from './header/header.component';
 import { formatDate } from 'src/app/common/utils/category.utils.data';
+import { NumberFormatDirective } from 'src/app/common/directives/number-format.directive';
 
 @Component({
   selector: 'app-create-transaction',
   templateUrl: './create-transaction.component.html',
   styleUrls: ['./create-transaction.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule, HeaderComponent]
+  imports: [CommonModule, IonicModule, ReactiveFormsModule, HeaderComponent, NumberFormatDirective]
 })
 export class CreateTransactionComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;
