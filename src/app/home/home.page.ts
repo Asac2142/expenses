@@ -32,6 +32,12 @@ export class HomePage implements OnInit {
   async onAddTransaction(): Promise<void> {
     const modal = await this.modalCtrl.create({ component: CreateTransactionComponent });
     modal.present();
+    const result = await modal.onDidDismiss()
+
+    if (result?.data) {
+      const transaction: Partial<Transaction> = result.data;
+      this.store.dispatch(TransactionActions.addTransaction({ transaction }));
+    }
   }
 
   private loadData(): void {
@@ -40,6 +46,7 @@ export class HomePage implements OnInit {
   }
 
   private dispatchCategories(): void {
+    this.store.dispatch(TransactionActions.setTransactions());
     this.store.dispatch(TransactionActions.setCategories());
   }
 }

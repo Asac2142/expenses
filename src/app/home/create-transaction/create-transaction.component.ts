@@ -39,7 +39,7 @@ export class CreateTransactionComponent implements OnInit {
         color: 'danger'
       });
       toast.present();
-    } else this._modal.dismiss(this.transactionForm.value);
+    } else this._modal.dismiss(this.mapToTransaction());
   }
 
   onCancel(): void {
@@ -83,6 +83,17 @@ export class CreateTransactionComponent implements OnInit {
 
   get dateValue() {
     return this.transactionForm.controls.date.value;
+  }
+
+  private mapToTransaction(): Partial<Transaction> {
+    const controls = this.transactionForm.controls;
+    return {
+      amount: controls.amount.value!,
+      category: controls.category.value!,
+      dateRegistered: new Date(controls.date.value!),
+      description: controls.description.value!,
+      type: controls.type.value!
+    }
   }
 
   private initForm(): void {

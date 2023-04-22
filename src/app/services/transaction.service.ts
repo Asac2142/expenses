@@ -19,19 +19,23 @@ export class TransactionService {
 
   createTransaction(transaction: Partial<Transaction>): Observable<Transaction> {
     const id = uuidv4();
+    const transactionAdded: Transaction = { ...transaction, id } as Transaction;
 
     return from(
-      this.getTransactionsFromStorage().then(transactions => {
-        transaction.id = id;
-        transactions.push(transaction as Transaction);
+      this.getTransactions().then(transactions => {
+        transactions.push(transactionAdded as Transaction);
         this.setTransaction(transactions);
-        return transaction as Transaction;
+        return transactionAdded;
       })
     );
   }
 
   getCategoriesFromStorage(): Observable<Category[] | undefined> {
     return from(this.getCategories());
+  }
+
+  getTransactionsFromStorage(): Observable<Transaction[]> {
+    return from(this.getTransactions());
   }
 
   addCategory(newCategory: Category, categories: Category[]): Observable<Category[]> {
@@ -53,9 +57,9 @@ export class TransactionService {
     this._storage.set(this._transactionKey, transactions);
   }
 
-  private async getTransactionsFromStorage(): Promise<Transaction[]> {
+  private async getTransactions(): Promise<Transaction[]> {
     const transactions = (await this._storage.get(this._transactionKey)) as Transaction[];
-    return transactions;
+    return transactions?.length ? transactions : [];
   }
 
   private async initStorage(): Promise<void> {
