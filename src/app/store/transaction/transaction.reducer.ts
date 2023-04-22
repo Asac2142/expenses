@@ -18,6 +18,15 @@ export const initialState: TransactionState = {
 
 export const reducer = createReducer(
   initialState,
+  on(TransactionActions.setTransactions, (state): TransactionState => ({ ...state })),
+  on(
+    TransactionActions.setTransactionsSuccess,
+    (state, { transactions }): TransactionState => ({
+      ...state,
+      transaction: adapter.addMany(transactions, state.transaction)
+    })
+  ),
+  on(TransactionActions.setTransactionsFail, (state): TransactionState => ({ ...state })),
   on(TransactionActions.addTransaction, (state): TransactionState => ({ ...state, loading: true })),
   on(TransactionActions.addTransactionFailed, (state): TransactionState => ({ ...state, loading: false })),
   on(

@@ -12,13 +12,29 @@ import * as TransactionSelectors from './transaction.selectors';
 export class TransactionEffects {
   constructor(private action$: Actions, private transactionService: TransactionService, private store: Store<RootState>) {}
 
-  createExpense$ = createEffect(() =>
+  createTransaction$ = createEffect(() =>
     this.action$.pipe(
       ofType(TransactionActions.addTransaction),
       switchMap(({ transaction }) =>
         this.transactionService.createTransaction(transaction).pipe(
           switchMap(response => of(TransactionActions.addTransactionSuccess({ transaction: response }))),
           catchError(() => of(TransactionActions.addTransactionFailed()))
+        )
+      )
+    )
+  );
+
+  setTransactions$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(TransactionActions.setTransactions),
+      switchMap(() =>
+        this.transactionService.getTransactionsFromStorage().pipe(
+          map(transactions => {
+            return transactions?.length
+              ? TransactionActions.setTransactionsSuccess({ transactions })
+              : TransactionActions.setTransactionsFail();
+          }),
+          catchError(() => of(TransactionActions.setTransactionsFail()))
         )
       )
     )
