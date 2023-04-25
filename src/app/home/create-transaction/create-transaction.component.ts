@@ -87,7 +87,7 @@ export class CreateTransactionComponent implements OnInit {
 
   private mapToTransaction(): Partial<Transaction> {
     const controls = this.transactionForm.controls;
-    const dateWithForwardSlashes = controls.date.value!.replaceAll('-', '/');
+    const dateWithForwardSlashes = controls.date.value!.replace(/-/g, '/');
 
     return {
       amount: controls.amount.value!,
@@ -100,7 +100,7 @@ export class CreateTransactionComponent implements OnInit {
 
   private initForm(): void {
     const dateFormatted = this.transaction?.dateRegistered
-      ? this.transaction.dateRegistered.replaceAll('/', '-')
+      ? this.transaction.dateRegistered.replace(/\//g, '-')
       : formatIonDate(new Date().toLocaleDateString());
 
     this.transactionForm = new FormGroup<TransactionForm>({
