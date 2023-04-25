@@ -7,7 +7,7 @@ export interface Transaction {
   id: string;
   amount: number;
   type: TransactionType;
-  dateRegistered: Date;
+  dateRegistered: string;
   description: string;
   category: Category;
 }

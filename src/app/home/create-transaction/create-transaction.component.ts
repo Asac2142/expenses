@@ -6,7 +6,7 @@ import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { Category, Transaction, TransactionForm, TransactionType } from '../../common/models/transaction.model';
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
 import { HeaderComponent } from './header/header.component';
-import { formatDate } from 'src/app/common/utils/category.utils.data';
+import { formatIonDate } from 'src/app/common/utils/category.utils.data';
 import { NumberFormatDirective } from 'src/app/common/directives/number-format.directive';
 
 @Component({
@@ -87,19 +87,21 @@ export class CreateTransactionComponent implements OnInit {
 
   private mapToTransaction(): Partial<Transaction> {
     const controls = this.transactionForm.controls;
+    const dateWithForwardSlashes = controls.date.value!.replaceAll('-', '/');
+
     return {
       amount: controls.amount.value!,
       category: controls.category.value!,
-      dateRegistered: new Date(controls.date.value!),
+      dateRegistered: dateWithForwardSlashes,
       description: controls.description.value!,
       type: controls.type.value!
-    }
+    };
   }
 
   private initForm(): void {
-    const dateFormatted = formatDate(
-      this.transaction?.dateRegistered.toLocaleDateString() || new Date().toLocaleDateString()
-    );
+    const dateFormatted = this.transaction?.dateRegistered
+      ? this.transaction.dateRegistered.replaceAll('/', '-')
+      : formatIonDate(new Date().toLocaleDateString());
 
     this.transactionForm = new FormGroup<TransactionForm>({
       amount: new FormControl<number | null>(this.transaction?.amount || null, Validators.required),

@@ -8,12 +8,14 @@ export interface TransactionState {
   transaction: TransactionStateEntity;
   loading: boolean;
   categories: Category[];
+  selectedDate: Date;
 }
 
 export const initialState: TransactionState = {
   transaction: initialTransactionState,
   loading: false,
-  categories: categoryData
+  categories: categoryData,
+  selectedDate: new Date()
 };
 
 export const reducer = createReducer(

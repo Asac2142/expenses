@@ -1,16 +1,32 @@
-<ng-container *ngIf="transactions?.length; else noTransactions">
+<ng-container *ngIf="transactions?.size; else noTransactions">
   <ion-list [inset]="true" lines="inset">
-    <ion-item *ngFor="let transaction of transactions">
-      <ion-label>{{ transaction?.category }}</ion-label>
-      <ion-label>{{ transaction?.description }}</ion-label>
-    </ion-item>
+    <ng-container *ngFor="let date of transactionDates; let i = index; trackBy: dateId">
+      <ion-list-header style="font-weight: bold">{{ date }}</ion-list-header>
+      <ion-item *ngFor="let transaction of transactions.get(date); let i = index; trackBy: transactionIndex">
+        <ion-icon
+          slot="start"
+          [name]="transaction.type === 'expense' ? 'trending-down' : 'trending-up'"
+          [color]="transaction.category.color">
+        </ion-icon>
+        <ion-label>{{ transaction.description }}</ion-label>
+        <ion-label slot="end" [color]="transaction.category.color">${{ transaction.amount }}</ion-label>
+
+        <ng-container *ngIf="transaction.category.iconName">
+          <ion-icon slot="end" [name]="transaction.category.iconName" [color]="transaction.category.color"></ion-icon>
+        </ng-container>
+
+        <ng-container *ngIf="transaction.category.svgContent">
+          <ion-icon slot="end" [src]="transaction.category.svgContent" [color]="transaction.category.color"></ion-icon>
+        </ng-container>
+      </ion-item>
+    </ng-container>
   </ion-list>
 </ng-container>
 
 <ng-template #noTransactions>
   <section class="no-transactions">
     <ion-item lines="none">
-      <ion-label>No transactions registered for this month</ion-label>
+      <ion-label>No transactions found for this month</ion-label>
       <ion-icon name="alert-circle-outline" slot="end"></ion-icon>
     </ion-item>
   </section>

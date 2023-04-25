@@ -21,7 +21,7 @@ import * as TransactionActions from '../store/transaction/transaction.actions';
 export class HomePage implements OnInit {
   private store: Store<RootState> = inject(Store<RootState>);
   private modalCtrl = inject(ModalController);
-  transactions$!: Observable<(Transaction | undefined)[]>;
+  transactions$!: Observable<Map<string, Transaction[]>>;
   loading$!: Observable<boolean>;
 
   ngOnInit(): void {
