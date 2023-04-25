@@ -1,7 +1,7 @@
 <ng-container *ngIf="transactions?.size; else noTransactions">
   <ion-list [inset]="true" lines="inset">
     <ng-container *ngFor="let date of transactionDates; let i = index; trackBy: dateId">
-      <ion-list-header style="font-weight: bold">{{ date }}</ion-list-header>
+      <ion-list-header class="list-header">{{ date }}</ion-list-header>
       <ion-item *ngFor="let transaction of transactions.get(date); let i = index; trackBy: transactionIndex">
         <ion-icon
           slot="start"
