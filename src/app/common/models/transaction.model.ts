@@ -1,4 +1,4 @@
-import { FormControl } from "@angular/forms";
+import { FormControl } from '@angular/forms';
 
 export type TransactionType = 'expense' | 'income';
 export type CategoryColor = 'success' | 'danger';
@@ -31,4 +31,10 @@ export interface Category {
 export interface Icon {
   name: string;
   svg: string;
+}
+
+export interface Balance {
+  expense: number;
+  income: number;
+  total: number;
 }

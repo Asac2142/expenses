@@ -4,7 +4,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { Transaction } from '../common/models/transaction.model';
+import { Balance, Transaction } from '../common/models/transaction.model';
 import { RootState } from '../store';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
 import { CreateTransactionComponent } from './create-transaction/create-transaction.component';
@@ -23,6 +23,7 @@ export class HomePage implements OnInit {
   private modalCtrl = inject(ModalController);
   transactions$!: Observable<Map<string, Transaction[]>>;
   loading$!: Observable<boolean>;
+  balance$!: Observable<Balance>;
 
   ngOnInit(): void {
     this.dispatchCategories();
@@ -32,7 +33,7 @@ export class HomePage implements OnInit {
   async onAddTransaction(): Promise<void> {
     const modal = await this.modalCtrl.create({ component: CreateTransactionComponent });
     modal.present();
-    const result = await modal.onDidDismiss()
+    const result = await modal.onDidDismiss();
 
     if (result?.data) {
       const transaction: Partial<Transaction> = result.data;
@@ -43,6 +44,7 @@ export class HomePage implements OnInit {
   private loadData(): void {
     this.transactions$ = this.store.select(TransactionSelectors.selectAllTransactions);
     this.loading$ = this.store.select(TransactionSelectors.selectLoading);
+    this.balance$ = this.store.select(TransactionSelectors.selectBalanceByDate);
   }
 
   private dispatchCategories(): void {

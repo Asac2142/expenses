@@ -1,9 +1,10 @@
 import { createSelector } from '@ngrx/store';
 import { noop } from 'rxjs';
 
-import { Transaction, TransactionType } from 'src/app/common/models/transaction.model';
+import { Balance, Transaction, TransactionType } from 'src/app/common/models/transaction.model';
 import { addDaysToDate, formatDate, getEndOfMonth, getStartOfMonth } from 'src/app/common/utils/category.utils.data';
 import * as ExpenseRoot from '../index';
+import { TransactionStateEntity } from './transaction.entity';
 
 export const transactionSliceState = (state: ExpenseRoot.RootState) => state.transactions;
 
@@ -13,8 +14,7 @@ export const selectAllTransactions = createSelector(
   transactionSliceState,
   selectCurrentDateSelected,
   (state, currentDate) => {
-    const transactions: Transaction[] = [];
-    Object.entries(state.transaction.entities).forEach(v => (v[1]?.category ? transactions.push(v[1]) : noop));
+    const transactions = getValidTransactions(state.transaction);
     return groupTransactionsByDate(transactions, currentDate);
   }
 );
@@ -26,6 +26,17 @@ export const selectCategories = (type: TransactionType) =>
 
 export const selectAllCategories = createSelector(transactionSliceState, state => state.categories);
 
+export const selectBalanceByDate = createSelector(transactionSliceState, selectCurrentDateSelected, (state, currentDate) => {
+  const transactions = getValidTransactions(state.transaction);
+  return getBalanceDetailByDate(transactions, currentDate);
+});
+
+function getValidTransactions(transactionEntity: TransactionStateEntity): Transaction[] {
+  const transactions: Transaction[] = [];
+  Object.entries(transactionEntity.entities).forEach(v => (v[1]?.category ? transactions.push(v[1]) : noop));
+  return transactions;
+}
+
 function groupTransactionsByDate(transactions: Transaction[], currentDate: Date): Map<string, Transaction[]> {
   const groupByDate: Map<string, Transaction[]> = new Map();
   const startMonth = getStartOfMonth(currentDate);
@@ -36,7 +47,9 @@ function groupTransactionsByDate(transactions: Transaction[], currentDate: Date)
     for (let i = 0; i < lastDayOfMonth; i++) {
       const addedDay = addDaysToDate(startMonth, i);
       const formatted_YYYYMMDD = formatDate(addedDay);
-      const existTransactions = transactions.filter(t => formatDate(new Date(Date.parse(t.dateRegistered))) === formatted_YYYYMMDD);
+      const existTransactions = transactions.filter(
+        t => formatDate(new Date(Date.parse(t.dateRegistered))) === formatted_YYYYMMDD
+      );
 
       if (existTransactions?.length) {
         const shortDate = new Date(Date.parse(formatted_YYYYMMDD)).toDateString();
@@ -46,4 +59,44 @@ function groupTransactionsByDate(transactions: Transaction[], currentDate: Date)
   }
 
   return groupByDate;
+}
+
+function getBalanceDetailByDate(transactions: Transaction[], currentDate: Date): Balance {
+  const startMonth = getStartOfMonth(currentDate);
+  const endMonth = getEndOfMonth(currentDate);
+  const lastDayOfMonth = endMonth.getDate();
+  const expenseTotal: number[] = [];
+  const incomeTotal: number[] = [];
+  const result: Balance = { expense: 0, income: 0, total: 0 };
+
+  if (transactions?.length) {
+    for (let i = 0; i < lastDayOfMonth; i++) {
+      const addedDay = addDaysToDate(startMonth, i);
+      const formatted_YYYYMMDD = formatDate(addedDay);
+      const existTransactions = transactions.filter(
+        t => formatDate(new Date(Date.parse(t.dateRegistered))) === formatted_YYYYMMDD
+      );
+
+      // TODO - refactor logic
+      if (existTransactions.length) {
+        const onlyExpenses = existTransactions.filter(t => t.type === 'expense');
+        const expenseValue = onlyExpenses.reduce((previous, current) => (previous += current.amount), 0);
+        expenseTotal.push(expenseValue);
+
+        const onlyIncomes = existTransactions.filter(t => t.type === 'income');
+        const incomeValue = onlyIncomes.reduce((previous, current) => (previous += current.amount), 0);
+        incomeTotal.push(incomeValue);
+      }
+    }
+
+    const expense = expenseTotal.reduce((previous, current) => (previous += current), 0);
+    const income = incomeTotal.reduce((previous, current) => (previous += current), 0);
+    const total = Number((income - expense).toFixed(2));
+
+    result.expense = Number(expense.toFixed(2));
+    result.income = Number(income.toFixed(2));
+    result.total = total;
+  }
+
+  return result;
 }
