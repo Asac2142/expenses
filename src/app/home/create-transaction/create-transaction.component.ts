@@ -90,7 +90,7 @@ export class CreateTransactionComponent implements OnInit {
     const dateWithForwardSlashes = controls.date.value!.replace(/-/g, '/');
 
     return {
-      amount: controls.amount.value!,
+      amount: +controls.amount.value?.toFixed(2)!,
       category: controls.category.value!,
       dateRegistered: dateWithForwardSlashes,
       description: controls.description.value!,
