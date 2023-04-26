@@ -14,7 +14,7 @@ export const categoryData: Category[] = [
   { color: 'danger', iconName: 'home', label: 'Home', type: 'expense' },
   { color: 'danger', iconName: 'lock-closed', label: 'Insurance', type: 'expense' },
   { color: 'danger', iconName: 'paw', label: 'Pet', type: 'expense' },
-  { color: 'danger', iconName: 'journal', label: 'Shopping', type: 'expense' },
+  { color: 'danger', iconName: 'bag-remove', label: 'Shopping', type: 'expense' },
   { color: 'danger', iconName: 'people', label: 'Social', type: 'expense' },
   { color: 'danger', iconName: 'tennisball', label: 'Sport', type: 'expense' },
   { color: 'danger', iconName: 'journal', label: 'Taxes', type: 'expense' },
