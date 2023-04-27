@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { Balance, Transaction } from '../common/models/transaction.model';
 import { RootState } from '../store';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
-import { CreateTransactionComponent } from './create-transaction/create-transaction.component';
+import { TransactionComponent } from './transaction/transaction.component';
 import { addMonthToDate, subMonthToDate } from '../common/utils/category.utils.data';
 import * as TransactionSelectors from '../store/transaction/transaction.selectors';
 import * as TransactionActions from '../store/transaction/transaction.actions';
@@ -52,7 +52,7 @@ export class HomePage implements OnInit {
   }
 
   async onAddTransaction(): Promise<void> {
-    const modal = await this.modalCtrl.create({ component: CreateTransactionComponent });
+    const modal = await this.modalCtrl.create({ component: TransactionComponent });
     modal.present();
     const result = await modal.onDidDismiss();
 

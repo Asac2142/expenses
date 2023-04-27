@@ -10,13 +10,13 @@ import { formatIonDate } from 'src/app/common/utils/category.utils.data';
 import { NumberFormatDirective } from 'src/app/common/directives/number-format.directive';
 
 @Component({
-  selector: 'app-create-transaction',
-  templateUrl: './create-transaction.component.html',
-  styleUrls: ['./create-transaction.component.scss'],
+  selector: 'app-transaction',
+  templateUrl: './transaction.component.html',
+  styleUrls: ['./transaction.component.scss'],
   standalone: true,
   imports: [CommonModule, IonicModule, ReactiveFormsModule, HeaderComponent, NumberFormatDirective]
 })
-export class CreateTransactionComponent implements OnInit {
+export class TransactionComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;
   transactionForm!: FormGroup<TransactionForm>;
   categorySelected!: Category | undefined;
