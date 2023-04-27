@@ -1,18 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonDatetime, IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { Balance, Transaction } from '../common/models/transaction.model';
-import { RootState } from '../store';
+import { RootState } from '@store/index';
 import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
 import { TransactionModalComponent } from './modals/transaction-modal/transaction-modal.component';
 import { addMonthToDate, subMonthToDate } from '../common/utils/category.utils.data';
-import * as TransactionSelectors from '../store/transaction/transaction.selectors';
-import * as TransactionActions from '../store/transaction/transaction.actions';
 import { DateNavigationComponent } from './components/date-navigation/date-navigation.component';
 import { BalanceDetailComponent } from './components/balance-detail/balance-detail.component';
+
+import * as TransactionSelectors from '@store/transaction/transaction.selectors';
+import * as TransactionActions from '@store/transaction/transaction.actions';
 
 @Component({
   selector: 'app-home',
