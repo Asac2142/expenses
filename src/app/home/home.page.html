@@ -1,38 +1,51 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>Transactions</ion-title>
-    <ion-buttons slot="end" class="ion-padding-end">
-      <ion-icon name="bar-chart" slot="icon-only"></ion-icon>
-    </ion-buttons>
-  </ion-toolbar>
-
-  <ng-container *ngIf="balance$ | async as balance">
+<ng-container
+  *ngIf="{ transactions: transactions$ | async, balance: balance$ | async, currentDate: currentDate$ | async} as localData">
+  <ion-header [translucent]="true">
     <ion-toolbar color="primary">
-      <section class="balance-info">
-        <div class="balance-info__info">
-          <span class="success">Income</span>
-          <span>{{ balance.income | currency }}</span>
-        </div>
-        <div class="balance-info__info">
-          <span class="danger">Expenses</span>
-          <span>{{ balance.expense | currency }}</span>
-        </div>
-        <div class="balance-info__info">
-          <span class="total">Total</span>
-          <span>{{ balance.total | currency }}</span>
-        </div>
-      </section>
+      <ion-title>Transactions</ion-title>
+      <ion-buttons slot="end" class="ion-padding-end">
+        <ion-icon name="bar-chart" slot="icon-only"></ion-icon>
+      </ion-buttons>
     </ion-toolbar>
-  </ng-container>
-</ion-header>
 
-<ion-content>
-  <ng-container *ngIf="transactions$ | async as transactions">
-    <app-transaction-list [transactions]="transactions"></app-transaction-list>
+    <ion-toolbar color="primary">
+      <ion-icon role="button" class="ion-margin-start" slot="start" name="chevron-back" (click)="back(localData.currentDate)"></ion-icon>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      <ion-icon role="button" class="ion-margin-end" slot="end" name="chevron-forward" (click)="forward(localData.currentDate)"></ion-icon>
+
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime #datepicker presentation="month-year" id="datetime" [showDefaultButtons]="true"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-toolbar>
+
+    <ng-container *ngIf="balance$ | async as balance">
+      <ion-toolbar *ngIf="localData.transactions?.size" color="primary">
+        <section class="balance-info">
+          <div class="balance-info__info">
+            <span class="success">Income</span>
+            <span>{{ balance.income | currency }}</span>
+          </div>
+          <div class="balance-info__info">
+            <span class="danger">Expenses</span>
+            <span>{{ balance.expense | currency }}</span>
+          </div>
+          <div class="balance-info__info">
+            <span class="total">Total</span>
+            <span>{{ balance.total | currency }}</span>
+          </div>
+        </section>
+      </ion-toolbar>
+    </ng-container>
+  </ion-header>
+
+  <ion-content>
+    <app-transaction-list [transactions]="localData.transactions!"></app-transaction-list>
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
       <ion-fab-button color="primary" (click)="onAddTransaction()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-  </ng-container>
-</ion-content>
+  </ion-content>
+</ng-container>

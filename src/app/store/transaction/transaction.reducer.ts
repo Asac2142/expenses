@@ -52,5 +52,6 @@ export const reducer = createReducer(
       categories: [...categories]
     })
   ),
-  on(TransactionActions.setNoCategoriesFound, (state): TransactionState => ({ ...state }))
+  on(TransactionActions.setNoCategoriesFound, (state): TransactionState => ({ ...state })),
+  on(TransactionActions.setCurrentDate, (state, { date }): TransactionState => ({ ...state, selectedDate: date }))
 );

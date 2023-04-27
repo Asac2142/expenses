@@ -25,3 +25,5 @@ export const setCategoriesSuccess = createAction(
   props<{ categories: Category[] }>()
 );
 export const setNoCategoriesFound = createAction('[TRANSACTION] No Categories Found');
+
+export const setCurrentDate = createAction('[TRANSACTION] Set Current Date', props<{ date: Date }>());

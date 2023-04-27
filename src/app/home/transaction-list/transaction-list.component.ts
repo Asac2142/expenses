@@ -16,7 +16,6 @@ export class TransactionListComponent implements OnChanges {
   transactionDates: string[] = [];
 
   ngOnChanges(): void {
-    console.log('Transactions: ', this.transactions);
     this.transactionDates = [...this.transactions.keys()];
   }
 

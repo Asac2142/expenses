@@ -1,4 +1,5 @@
-import { format, startOfMonth, endOfMonth, addDays } from 'date-fns';
+import { format, startOfMonth, endOfMonth, addDays, addMonths } from 'date-fns';
+import subMonths from 'date-fns/subMonths';
 import { Category } from '../models/transaction.model';
 
 export const categoryData: Category[] = [
@@ -28,10 +29,10 @@ export const categoryData: Category[] = [
   { color: 'success', iconName: 'wallet', label: 'Utility', type: 'income' }
 ];
 
-export function formatIonDate(date: string, formatDesired: string = 'yyyy-MM-dd') {
+export function formatIonDate(date: string, formatDesired: string = 'yyyy-MM-dd'): string {
   return format(new Date(date.replace(/-/g, '/')), formatDesired);
 }
-export function formatDate(date: Date, formatDesired: string = 'yyyy/MM/dd') {
+export function formatDate(date: Date, formatDesired: string = 'yyyy/MM/dd'): string {
   return format(date, formatDesired);
 }
 
@@ -45,4 +46,12 @@ export function getEndOfMonth(date: Date): Date {
 
 export function addDaysToDate(date: Date, amountDays: number): Date {
   return addDays(date, amountDays);
+}
+
+export function addMonthToDate(date: Date, monthAmount: number): Date {
+  return addMonths(date, monthAmount);
+}
+
+export function subMonthToDate(date: Date, monthAmount: number): Date {
+  return subMonths(date, monthAmount);
 }
