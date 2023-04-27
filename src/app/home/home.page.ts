@@ -11,16 +11,17 @@ import { TransactionModalComponent } from './modals/transaction-modal/transactio
 import { addMonthToDate, subMonthToDate } from '../common/utils/category.utils.data';
 import * as TransactionSelectors from '../store/transaction/transaction.selectors';
 import * as TransactionActions from '../store/transaction/transaction.actions';
+import { DateNavigationComponent } from './components/date-navigation/date-navigation.component';
+import { BalanceDetailComponent } from './components/balance-detail/balance-detail.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, TransactionListComponent]
+  imports: [IonicModule, CommonModule, TransactionListComponent, DateNavigationComponent, BalanceDetailComponent]
 })
 export class HomePage implements OnInit {
-  @ViewChild('datepicker', { read: ElementRef }) datePicker!: ElementRef;
   private store: Store<RootState> = inject(Store<RootState>);
   private modalCtrl = inject(ModalController);
   transactions$!: Observable<Map<string, Transaction[]>>;
@@ -34,19 +35,19 @@ export class HomePage implements OnInit {
     this.loadData();
   }
 
-  back(currentDate: Date | null): void {
+  back(currentDate: Date | null, dateTimePicker: ElementRef): void {
     if (currentDate) {
       const monthBack = subMonthToDate(currentDate, 1);
-      const datePicker = this.datePicker.nativeElement as IonDatetime;
+      const datePicker = dateTimePicker.nativeElement as IonDatetime;
       datePicker.value = monthBack.toISOString();
       this.store.dispatch(TransactionActions.setCurrentDate({ date: monthBack }));
     }
   }
 
-  forward(currentDate: Date | null): void {
+  forward(currentDate: Date | null, dateTimePicker: ElementRef): void {
     if (currentDate) {
       const monthForward = addMonthToDate(currentDate, 1);
-      const datePicker = this.datePicker.nativeElement as IonDatetime;
+      const datePicker = dateTimePicker.nativeElement as IonDatetime;
       datePicker.value = monthForward.toISOString();
       this.store.dispatch(TransactionActions.setCurrentDate({ date: monthForward }));
     }

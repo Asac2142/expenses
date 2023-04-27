@@ -1,0 +1,16 @@
+<ion-toolbar *ngIf="transactions?.size" color="primary">
+  <section class="balance-info">
+    <div class="balance-info__info">
+      <span class="success">Income</span>
+      <span>{{ balance.income | currency }}</span>
+    </div>
+    <div class="balance-info__info">
+      <span class="danger">Expenses</span>
+      <span>{{ balance.expense | currency }}</span>
+    </div>
+    <div class="balance-info__info">
+      <span class="total">Total</span>
+      <span>{{ balance.total | currency }}</span>
+    </div>
+  </section>
+</ion-toolbar>

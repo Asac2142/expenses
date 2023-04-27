@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -9,9 +9,8 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [CommonModule, IonicModule]
 })
-export class DateNavigationComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
+export class DateNavigationComponent {
+  @Output() back = new EventEmitter<void>();
+  @Output() forward = new EventEmitter<void>();
+  @ViewChild('datepicker', { read: ElementRef }) datePicker!: ElementRef;
 }

@@ -12,48 +12,15 @@
       </ion-buttons>
     </ion-toolbar>
 
-    <ion-toolbar color="primary">
-      <ion-icon
-        role="button"
-        class="ion-margin-start"
-        slot="start"
-        name="chevron-back"
-        (click)="back(localData.currentDate)">
-      </ion-icon>
-      <ion-datetime-button datetime="monthyear"></ion-datetime-button>
-      <ion-icon
-        role="button"
-        class="ion-margin-end"
-        slot="end"
-        name="chevron-forward"
-        (click)="forward(localData.currentDate)">
-      </ion-icon>
+    <app-date-navigation
+      #picker
+      (back)="back(localData.currentDate, picker.datePicker)"
+      (forward)="forward(localData.currentDate, picker.datePicker)">
+    </app-date-navigation>
 
-      <ion-modal [keepContentsMounted]="true">
-        <ng-template>
-          <ion-datetime #datepicker presentation="month-year" id="monthyear" [showDefaultButtons]="true"></ion-datetime>
-        </ng-template>
-      </ion-modal>
-    </ion-toolbar>
+    <app-balance-detail [balance]="localData.balance!" [transactions]="localData.transactions!"></app-balance-detail>
 
-    <ion-toolbar *ngIf="localData.transactions?.size" color="primary">
-      <section class="balance-info">
-        <div class="balance-info__info">
-          <span class="success">Income</span>
-          <span>{{ localData.balance?.income | currency }}</span>
-        </div>
-        <div class="balance-info__info">
-          <span class="danger">Expenses</span>
-          <span>{{ localData.balance?.expense | currency }}</span>
-        </div>
-        <div class="balance-info__info">
-          <span class="total">Total</span>
-          <span>{{ localData.balance?.total | currency }}</span>
-        </div>
-      </section>
-    </ion-toolbar>
-
-    <ion-toolbar color="primary" class="ion-align-items-center" *ngIf="localData.transactions?.size && showSearch">
+    <ion-toolbar color="primary" *ngIf="localData.transactions?.size && showSearch">
       <ion-searchbar placeholder="Search for a transaction"></ion-searchbar>
       <ion-button color="primary" slot="start" fill="clear" (click)="showSearch = false">
         <ion-icon name="close-circle" color="danger"></ion-icon>
