@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import { Category, Icon, TransactionType } from 'src/app/common/models/transaction.model';
 import * as Icons from 'ionicons/icons';
-import * as TransactionActions from '../../store/transaction/transaction.actions';
+import * as TransactionActions from '@store/transaction/transaction.actions';
 
 @Component({
   selector: 'app-add-category-modal',

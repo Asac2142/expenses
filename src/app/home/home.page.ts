@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 
 import { Balance, Transaction } from '../common/models/transaction.model';
 import { RootState } from '../store';
-import { TransactionListComponent } from './transaction-list/transaction-list.component';
-import { TransactionComponent } from './transaction/transaction.component';
+import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
+import { TransactionModalComponent } from './modals/transaction-modal/transaction-modal.component';
 import { addMonthToDate, subMonthToDate } from '../common/utils/category.utils.data';
 import * as TransactionSelectors from '../store/transaction/transaction.selectors';
 import * as TransactionActions from '../store/transaction/transaction.actions';
@@ -27,6 +27,7 @@ export class HomePage implements OnInit {
   loading$!: Observable<boolean>;
   balance$!: Observable<Balance>;
   currentDate$!: Observable<Date>;
+  showSearch = false;
 
   ngOnInit(): void {
     this.dispatchCategories();
@@ -52,7 +53,7 @@ export class HomePage implements OnInit {
   }
 
   async onAddTransaction(): Promise<void> {
-    const modal = await this.modalCtrl.create({ component: TransactionComponent });
+    const modal = await this.modalCtrl.create({ component: TransactionModalComponent });
     modal.present();
     const result = await modal.onDidDismiss();
 

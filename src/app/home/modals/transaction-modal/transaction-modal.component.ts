@@ -3,20 +3,20 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 
-import { Category, Transaction, TransactionForm, TransactionType } from '../../common/models/transaction.model';
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
 import { HeaderComponent } from './header/header.component';
 import { formatIonDate } from 'src/app/common/utils/category.utils.data';
 import { NumberFormatDirective } from 'src/app/common/directives/number-format.directive';
+import { Transaction, TransactionForm, Category, TransactionType } from 'src/app/common/models/transaction.model';
 
 @Component({
   selector: 'app-transaction',
-  templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.scss'],
+  templateUrl: './transaction-modal.component.html',
+  styleUrls: ['./transaction-modal.component.scss'],
   standalone: true,
   imports: [CommonModule, IonicModule, ReactiveFormsModule, HeaderComponent, NumberFormatDirective]
 })
-export class TransactionComponent implements OnInit {
+export class TransactionModalComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;
   transactionForm!: FormGroup<TransactionForm>;
   categorySelected!: Category | undefined;

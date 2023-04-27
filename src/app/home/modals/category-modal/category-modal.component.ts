@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import { Category, TransactionType } from 'src/app/common/models/transaction.model';
 import { AddCategoryModalComponent } from '../add-category-modal/add-category-modal.component';
-import * as TransactionSelectors from '../../store/transaction/transaction.selectors';
+import * as TransactionSelectors from '@store/transaction/transaction.selectors';
 
 @Component({
   selector: 'app-category-modal',
