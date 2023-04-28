@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, IonicModule, ModalController, ToastController } from '@ionic/angular';
 
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
 import { HeaderComponent } from './header/header.component';
@@ -19,10 +19,11 @@ import { Transaction, TransactionForm, Category, TransactionType } from 'src/app
 export class TransactionModalComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;
   transactionForm!: FormGroup<TransactionForm>;
-  categorySelected!: Category | undefined;
+  categorySelected!: Category | null;
   selectedType: TransactionType = 'income';
   private _modal: ModalController = inject(ModalController);
   private _toast: ToastController = inject(ToastController);
+  private _alert: AlertController = inject(AlertController);
 
   ngOnInit(): void {
     this.initForm();
@@ -39,7 +40,7 @@ export class TransactionModalComponent implements OnInit {
         color: 'danger'
       });
       toast.present();
-    } else this._modal.dismiss(this.mapToTransaction());
+    } else this._modal.dismiss(this.mapToTransaction(), 'update');
   }
 
   onCancel(): void {
@@ -58,10 +59,23 @@ export class TransactionModalComponent implements OnInit {
 
   setTypeSelected(type: TransactionType): void {
     if (type !== this.selectedType) {
-      this.categorySelected = undefined;
+      this.categorySelected = null;
       this.transactionForm.controls.category.patchValue(null);
     }
     this.selectedType = type;
+  }
+
+  async onDelete(): Promise<void> {
+    const alert = await this._alert.create({
+      header: 'Delete Transaction',
+      message: 'You want to delete it?',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        { text: 'Delete', role: 'confirm', handler: () => this.deleteTransaction() }
+      ]
+    });
+
+    alert.present();
   }
 
   async onSelectCategory(): Promise<void> {
@@ -75,8 +89,8 @@ export class TransactionModalComponent implements OnInit {
     modalComponent.present();
     const result = await modalComponent.onWillDismiss();
 
-    if (result.data) {
-      this.categorySelected = result.data as Category;
+    if (result?.data) {
+      this.categorySelected = { ...result.data } as Category;
       this.transactionForm.controls.category.patchValue(this.categorySelected);
     }
   }
@@ -85,11 +99,16 @@ export class TransactionModalComponent implements OnInit {
     return this.transactionForm.controls.date.value;
   }
 
+  private deleteTransaction(): void {
+    this._modal.dismiss(this.transaction?.id, 'delete');
+  }
+
   private mapToTransaction(): Partial<Transaction> {
     const controls = this.transactionForm.controls;
     const dateWithForwardSlashes = controls.date.value!.replace(/-/g, '/');
 
     return {
+      id: this.transaction?.id || undefined,
       amount: +controls.amount.value?.toFixed(2)!,
       category: controls.category.value!,
       dateRegistered: dateWithForwardSlashes,
@@ -110,5 +129,7 @@ export class TransactionModalComponent implements OnInit {
       description: new FormControl<string>(this.transaction?.description || '', Validators.required),
       type: new FormControl<TransactionType>(this.transaction?.type || 'income', Validators.required)
     });
+
+    if (this.transactionForm.controls.category) this.categorySelected = this.transactionForm.controls.category.value;
   }
 }

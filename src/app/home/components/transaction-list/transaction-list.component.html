@@ -2,7 +2,10 @@
   <ion-list [inset]="true" lines="inset">
     <ng-container *ngFor="let date of transactionDates; let i = index; trackBy: dateId">
       <ion-list-header class="list-header">{{ date }}</ion-list-header>
-      <ion-item *ngFor="let transaction of transactions.get(date); let i = index; trackBy: transactionIndex">
+      <ion-item
+        role="button"
+        *ngFor="let transaction of transactions.get(date); let i = index; trackBy: transactionIndex"
+        (click)="transactionSelected.emit(transaction)">
         <ion-icon
           slot="start"
           [name]="transaction.type === 'expense' ? 'trending-down' : 'trending-up'"

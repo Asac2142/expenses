@@ -14,14 +14,14 @@
 
     <app-date-navigation
       #picker
-      (back)="back(localData.currentDate, picker.datePicker)"
-      (forward)="forward(localData.currentDate, picker.datePicker)">
+      (back)="back(localData.currentDate, picker.datePicker); showSearch = false"
+      (forward)="forward(localData.currentDate, picker.datePicker); showSearch = false">
     </app-date-navigation>
 
     <app-balance-detail [balance]="localData.balance!" [transactions]="localData.transactions!"></app-balance-detail>
 
-    <ion-toolbar color="primary" *ngIf="localData.transactions?.size && showSearch">
-      <ion-searchbar placeholder="Search for a transaction"></ion-searchbar>
+    <ion-toolbar color="primary" *ngIf="showSearch">
+      <ion-searchbar placeholder="Search for a transaction" (ionInput)="onFilterTransactions($event)"></ion-searchbar>
       <ion-button color="primary" slot="start" fill="clear" (click)="showSearch = false">
         <ion-icon name="close-circle" color="danger"></ion-icon>
       </ion-button>
@@ -29,7 +29,8 @@
   </ion-header>
 
   <ion-content>
-    <app-transaction-list [transactions]="localData.transactions!"></app-transaction-list>
+    <app-transaction-list [transactions]="localData.transactions!" (transactionSelected)="onSelectedTransaction($event)">
+    </app-transaction-list>
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
       <ion-fab-button color="primary" (click)="onAddTransaction()">
         <ion-icon name="add"></ion-icon>

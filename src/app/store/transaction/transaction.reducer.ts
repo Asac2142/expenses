@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { TransactionStateEntity, initialTransactionState, adapter } from './transaction.entity';
 import { Category } from 'src/app/common/models/transaction.model';
-import * as TransactionActions from './transaction.actions';
 import { categoryData } from 'src/app/common/utils/category.utils.data';
+import * as TransactionActions from './transaction.actions';
 
 export interface TransactionState {
   transaction: TransactionStateEntity;
@@ -53,5 +53,25 @@ export const reducer = createReducer(
     })
   ),
   on(TransactionActions.setNoCategoriesFound, (state): TransactionState => ({ ...state })),
-  on(TransactionActions.setCurrentDate, (state, { date }): TransactionState => ({ ...state, selectedDate: date }))
+  on(TransactionActions.setCurrentDate, (state, { date }): TransactionState => ({ ...state, selectedDate: date })),
+  on(TransactionActions.updateTransaction, (state): TransactionState => ({ ...state, loading: true })),
+  on(
+    TransactionActions.updateTransactionSuccess,
+    (state, { transaction }): TransactionState => ({
+      ...state,
+      transaction: adapter.upsertOne(transaction, state.transaction),
+      loading: false
+    })
+  ),
+  on(TransactionActions.updateTransactionFailed, (state): TransactionState => ({ ...state, loading: false })),
+  on(TransactionActions.deleteTransaction, (state): TransactionState => ({ ...state, loading: true })),
+  on(
+    TransactionActions.deleteTransactionSuccess,
+    (state, { transactionId }): TransactionState => ({
+      ...state,
+      transaction: adapter.removeOne(transactionId, state.transaction),
+      loading: false
+    })
+  ),
+  on(TransactionActions.deleteTransactionFailed, (state): TransactionState => ({ ...state, loading: false }))
 );

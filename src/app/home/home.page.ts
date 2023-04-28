@@ -54,6 +54,23 @@ export class HomePage implements OnInit {
     }
   }
 
+  onFilterTransactions(event: Event): void {
+    const value = (event.target as HTMLInputElement).value.toLowerCase() as string;
+    this.transactions$ = this.store.select(TransactionSelectors.searchTransactions(value));
+  }
+
+  async onSelectedTransaction(transactionSelected: Transaction): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: TransactionModalComponent,
+      componentProps: { transaction: transactionSelected }
+    });
+    modal.present();
+    const result = await modal.onDidDismiss();
+
+    if (result?.data && result?.role === 'update') this.update(result.data as Transaction);
+    if (result.data && result.role === 'delete') this.delete(result.data as string);
+  }
+
   async onAddTransaction(): Promise<void> {
     const modal = await this.modalCtrl.create({ component: TransactionModalComponent });
     modal.present();
@@ -63,6 +80,14 @@ export class HomePage implements OnInit {
       const transaction: Partial<Transaction> = result.data;
       this.store.dispatch(TransactionActions.addTransaction({ transaction }));
     }
+  }
+
+  private update(transaction: Transaction): void {
+    this.store.dispatch(TransactionActions.updateTransaction({ transaction }));
+  }
+
+  private delete(transactionId: string): void {
+    this.store.dispatch(TransactionActions.deleteTransaction({ transactionId }));
   }
 
   private loadData(): void {

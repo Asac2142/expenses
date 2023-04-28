@@ -30,6 +30,27 @@ export class TransactionService {
     );
   }
 
+  updateTransaction(transaction: Transaction): Observable<Transaction> {
+    return from(
+      this.getTransactions().then(transactions => {
+        const index = transactions.findIndex(t => t.id === transaction.id);
+        transactions[index] = { ...transaction };
+        this.setTransaction(transactions);
+        return transaction;
+      })
+    );
+  }
+
+  deleteTransaction(id: string): Observable<string> {
+    return from(
+      this.getTransactions().then(transactions => {
+        const removed = transactions.filter(t => t.id !== id);
+        this.setTransaction(removed);
+        return id;
+      })
+    );
+  }
+
   getCategoriesFromStorage(): Observable<Category[] | undefined> {
     return from(this.getCategories());
   }

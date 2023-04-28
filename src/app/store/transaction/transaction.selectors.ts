@@ -3,8 +3,8 @@ import { noop } from 'rxjs';
 
 import { Balance, Transaction, TransactionType } from 'src/app/common/models/transaction.model';
 import { addDaysToDate, formatDate, getEndOfMonth, getStartOfMonth } from 'src/app/common/utils/category.utils.data';
-import * as ExpenseRoot from '../index';
 import { TransactionStateEntity } from './transaction.entity';
+import * as ExpenseRoot from '../index';
 
 export const transactionSliceState = (state: ExpenseRoot.RootState) => state.transactions;
 
@@ -31,10 +31,25 @@ export const selectBalanceByDate = createSelector(transactionSliceState, selectC
   return getBalanceDetailByDate(transactions, currentDate);
 });
 
+export const searchTransactions = (text: string) =>
+  createSelector(selectAllTransactions, transactions => filterTransactions(text, transactions));
+
 function getValidTransactions(transactionEntity: TransactionStateEntity): Transaction[] {
   const transactions: Transaction[] = [];
   Object.entries(transactionEntity.entities).forEach(v => (v[1]?.category ? transactions.push(v[1]) : noop));
   return transactions;
+}
+
+function filterTransactions(text: string, transactions: Map<string, Transaction[]>): Map<string, Transaction[]> {
+  const result: Map<string, Transaction[]> = new Map();
+  if (!text?.length) return transactions;
+
+  transactions.forEach((data, key) => {
+    const filtered = data.filter(d => d.description.toLowerCase().includes(text));
+    if (filtered?.length) result.set(key, filtered);
+  });
+
+  return result;
 }
 
 function groupTransactionsByDate(transactions: Transaction[], currentDate: Date): Map<string, Transaction[]> {
@@ -77,7 +92,6 @@ function getBalanceDetailByDate(transactions: Transaction[], currentDate: Date):
         t => formatDate(new Date(Date.parse(t.dateRegistered))) === formatted_YYYYMMDD
       );
 
-      // TODO - refactor logic
       if (existTransactions.length) {
         const onlyExpenses = existTransactions.filter(t => t.type === 'expense');
         const expenseValue = onlyExpenses.reduce((previous, current) => (previous += current.amount), 0);

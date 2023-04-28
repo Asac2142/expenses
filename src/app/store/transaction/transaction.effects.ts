@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
@@ -19,6 +19,30 @@ export class TransactionEffects {
         this.transactionService.createTransaction(transaction).pipe(
           switchMap(response => of(TransactionActions.addTransactionSuccess({ transaction: response }))),
           catchError(() => of(TransactionActions.addTransactionFailed()))
+        )
+      )
+    )
+  );
+
+  updateTransaction$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(TransactionActions.updateTransaction),
+      switchMap(({ transaction }) =>
+        this.transactionService.updateTransaction(transaction).pipe(
+          switchMap(response => of(TransactionActions.updateTransactionSuccess({ transaction: response }))),
+          catchError(() => of(TransactionActions.updateTransactionFailed()))
+        )
+      )
+    )
+  );
+
+  deleteTransaction$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(TransactionActions.deleteTransaction),
+      concatMap(({ transactionId }) =>
+        this.transactionService.deleteTransaction(transactionId).pipe(
+          switchMap(id => of(TransactionActions.deleteTransactionSuccess({ transactionId: id }))),
+          catchError(() => of(TransactionActions.deleteTransactionFailed()))
         )
       )
     )

@@ -72,3 +72,10 @@
     </ion-item>
   </form>
 </ion-content>
+
+<ion-footer *ngIf="transaction">
+  <ion-button color="danger" expand="block" class="ion-text-capitalize" (click)="onDelete()">
+    <ion-icon name="trash" slot="start"></ion-icon>
+    Delete
+  </ion-button>
+</ion-footer>
