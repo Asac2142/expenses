@@ -53,20 +53,20 @@
       </ion-grid>
     </ion-item>
 
-    <ion-item class="ion-margin-vertical ion-justify-content-between" lines="none">
-      <ion-label role="button" class="ion-text-capitalize" (click)="onSelectCategory()">
+    <ion-item class="ion-margin-vertical ion-justify-content-between" lines="none" (click)="onSelectCategory()">
+      <ion-label role="button" class="ion-text-capitalize">
         {{ categorySelected ? 'Category Selected' : 'Select Category' }}
       </ion-label>
 
       <ion-note color="danger" *ngIf="validateCategory()">Category is required</ion-note>
 
       <ng-container *ngIf="categorySelected && categorySelected.iconName">
-        <ion-label slot="end" (click)="onSelectCategory()">{{ categorySelected.label }}</ion-label>
+        <ion-label slot="end">{{ categorySelected.label }}</ion-label>
         <ion-icon size="large" [name]="categorySelected.iconName" [color]="categorySelected.color" slot="end"></ion-icon>
       </ng-container>
 
       <ng-container *ngIf="categorySelected && categorySelected?.svgContent">
-        <ion-label slot="end" (click)="onSelectCategory()">{{ categorySelected.label }}</ion-label>
+        <ion-label slot="end">{{ categorySelected.label }}</ion-label>
         <ion-icon size="large" [src]="categorySelected.svgContent" [color]="categorySelected.color" slot="end"></ion-icon>
       </ng-container>
     </ion-item>
