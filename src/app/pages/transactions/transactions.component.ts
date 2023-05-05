@@ -2,17 +2,17 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { IonDatetime, IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { RootState } from '@store/index';
 import { Observable } from 'rxjs';
+
+import { RootState } from '@store/index';
 import { Transaction, Balance } from 'src/app/common/models/transaction.model';
 import { subMonthToDate, addMonthToDate } from 'src/app/common/utils/category.utils.data';
 import { BalanceDetailComponent } from './components/balance-detail/balance-detail.component';
-import { DateNavigationComponent } from './components/date-navigation/date-navigation.component';
+import { DateNavigationComponent } from '../../common/components/date-navigation/date-navigation.component';
 import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
 import { TransactionModalComponent } from './modals/transaction-modal/transaction-modal.component';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
 import * as TransactionActions from '@store/transaction/transaction.actions';
-
 
 @Component({
   selector: 'app-transactions',
@@ -21,8 +21,7 @@ import * as TransactionActions from '@store/transaction/transaction.actions';
   standalone: true,
   imports: [CommonModule, IonicModule, TransactionListComponent, DateNavigationComponent, BalanceDetailComponent]
 })
-export class TransactionsComponent  implements OnInit {
-
+export class TransactionsComponent implements OnInit {
   private store: Store<RootState> = inject(Store<RootState>);
   private modalCtrl = inject(ModalController);
   transactions$!: Observable<Map<string, Transaction[]>>;
@@ -32,6 +31,7 @@ export class TransactionsComponent  implements OnInit {
   showSearch = false;
 
   ngOnInit(): void {
+    console.log('TRANSACTIONS')
     this.dispatchCategories();
     this.loadData();
   }
@@ -101,5 +101,4 @@ export class TransactionsComponent  implements OnInit {
     this.store.dispatch(TransactionActions.setTransactions());
     this.store.dispatch(TransactionActions.setCategories());
   }
-
 }

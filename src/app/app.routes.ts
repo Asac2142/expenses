@@ -6,20 +6,8 @@ const transactionsComponent = () => import('./pages/transactions/transactions.co
 const analitycsComponent = () => import('./pages/analytics/analytics.component').then(c => c.AnalyticsComponent);
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: AppComponent,
-    children: [
-      { path: '', pathMatch: 'full', redirectTo: 'transactions' },
-      {
-        path: '',
-        loadComponent: homeComponent,
-        children: [
-          { path: 'transactions', loadComponent: transactionsComponent },
-          { path: 'analytics', loadComponent: analitycsComponent }
-        ]
-      }
-    ]
-  },
+  { path: '', component: AppComponent },
+  { path: 'transactions', loadComponent: transactionsComponent },
+  { path: 'analytics', loadComponent: analitycsComponent },
   { path: '**', redirectTo: '' }
 ];
