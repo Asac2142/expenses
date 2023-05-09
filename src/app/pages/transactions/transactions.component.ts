@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { IonDatetime, IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { RootState } from '@store/index';
 import { Transaction, Balance } from 'src/app/common/models/transaction.model';
@@ -36,20 +36,20 @@ export class TransactionsComponent implements OnInit {
     this.loadData();
   }
 
-  back(currentDate: Date | null, dateTimePicker: ElementRef): void {
+  back(currentDate: Date | null): void {
     if (currentDate) {
       const monthBack = subMonthToDate(currentDate, 1);
-      const datePicker = dateTimePicker.nativeElement as IonDatetime;
-      datePicker.value = monthBack.toISOString();
+      // const datePicker = dateTimePicker.nativeElement as IonDatetime;
+      // datePicker.value = monthBack.toISOString();
       this.store.dispatch(TransactionActions.setCurrentDate({ date: monthBack }));
     }
   }
 
-  forward(currentDate: Date | null, dateTimePicker: ElementRef): void {
+  forward(currentDate: Date | null): void {
     if (currentDate) {
       const monthForward = addMonthToDate(currentDate, 1);
-      const datePicker = dateTimePicker.nativeElement as IonDatetime;
-      datePicker.value = monthForward.toISOString();
+      // const datePicker = dateTimePicker.nativeElement as IonDatetime;
+      // datePicker.value = monthForward.toISOString();
       this.store.dispatch(TransactionActions.setCurrentDate({ date: monthForward }));
     }
   }
@@ -94,7 +94,7 @@ export class TransactionsComponent implements OnInit {
     this.transactions$ = this.store.select(TransactionSelectors.selectAllTransactions);
     this.loading$ = this.store.select(TransactionSelectors.selectLoading);
     this.balance$ = this.store.select(TransactionSelectors.selectBalanceByDate);
-    this.currentDate$ = this.store.select(TransactionSelectors.selectCurrentDateSelected);
+    this.currentDate$ = this.store.select(TransactionSelectors.selectCurrentDateSelected).pipe(tap(x => console.log('TRANSACTIONS: ', x)));
   }
 
   private dispatchCategories(): void {

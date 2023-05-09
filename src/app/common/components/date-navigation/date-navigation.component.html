@@ -5,7 +5,8 @@
 
   <ion-modal [keepContentsMounted]="true">
     <ng-template>
-      <ion-datetime #datepicker presentation="month-year" id="monthyear" [showDefaultButtons]="true"></ion-datetime>
+      <ion-datetime #datepicker presentation="month-year" id="monthyear" [showDefaultButtons]="true" [value]="date">
+      </ion-datetime>
     </ng-template>
   </ion-modal>
 </ion-toolbar>

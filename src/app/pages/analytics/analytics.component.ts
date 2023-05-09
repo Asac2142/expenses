@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
-import { IonDatetime, IonicModule } from '@ionic/angular';
+import { Component, inject } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 
 import { DateNavigationComponent } from '../../common/components/date-navigation/date-navigation.component';
@@ -17,21 +17,17 @@ import * as TransactionSelectors from '@store/transaction/transaction.selectors'
   standalone: true,
   imports: [CommonModule, IonicModule, DateNavigationComponent]
 })
-export class AnalyticsComponent implements OnInit {
+export class AnalyticsComponent {
   private _store = inject(Store<RootState>);
-  @ViewChild('datepicker', { read: ElementRef }) datePicker!: ElementRef;
-  currentDate$!: Observable<Date>;
+  currentDate$: Observable<Date> = this._store.select(TransactionSelectors.selectCurrentDateSelected).pipe(tap(x => console.log('current date: ', x)));
 
-  ngOnInit(): void {
-    console.log('ANALITYCICS')
-    this.currentDate$ = this._store.select(TransactionSelectors.selectCurrentDateSelected).pipe(tap((d) => console.log('Analytics component: ', d)));
-  }
+  // ngOnInit(): void {
+  //   this.currentDate$ = this._store.select(TransactionSelectors.selectCurrentDateSelected);
+  // }
 
   back(currentDate: Date | null): void {
     if (currentDate) {
       const monthBack = subMonthToDate(currentDate, 1);
-      const datePicker = this.datePicker.nativeElement as IonDatetime;
-      datePicker.value = monthBack.toISOString();
       this._store.dispatch(TransactionActions.setCurrentDate({ date: monthBack }));
     }
   }
@@ -39,8 +35,6 @@ export class AnalyticsComponent implements OnInit {
   forward(currentDate: Date | null): void {
     if (currentDate) {
       const monthForward = addMonthToDate(currentDate, 1);
-      const datePicker = this.datePicker.nativeElement as IonDatetime;
-      datePicker.value = monthForward.toISOString();
       this._store.dispatch(TransactionActions.setCurrentDate({ date: monthForward }));
     }
   }

@@ -1,25 +1,11 @@
-<ion-header *ngIf="currentDate$ | async as currentDate" [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>Analytics</ion-title>
-  </ion-toolbar>
+<ng-container *ngIf="currentDate$ | async as currentDate">
+  <ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+      <ion-title>Analytics</ion-title>
+    </ion-toolbar>
 
-  <!-- <app-date-navigation
-    #dateNavigation
-    (back)="back(currentDate, dateNavigation.datePicker)"
-    (forward)="forward(currentDate, dateNavigation.datePicker)">
-  </app-date-navigation> -->
-
-  <ion-toolbar color="primary">
-    <ion-icon role="button" class="ion-margin-start" slot="start" name="chevron-back" (click)="back(currentDate)"> </ion-icon>
-    <ion-datetime-button datetime="monthyear"></ion-datetime-button>
-    <ion-icon role="button" class="ion-margin-end" slot="end" name="chevron-forward" (click)="forward(currentDate)"> </ion-icon>
-
-    <ion-modal [keepContentsMounted]="true">
-      <ng-template>
-        <ion-datetime #datepicker presentation="month-year" id="monthyear" [showDefaultButtons]="true"></ion-datetime>
-      </ng-template>
-    </ion-modal>
-  </ion-toolbar>
-
-</ion-header>
-<ion-content> </ion-content>
+    <app-date-navigation [date]="currentDate.toISOString()" (back)="back(currentDate)" (forward)="forward(currentDate)">
+    </app-date-navigation>
+  </ion-header>
+  <ion-content> </ion-content>
+</ng-container>
