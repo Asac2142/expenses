@@ -12,7 +12,7 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { reducers } from './app/store/index';
-import { ExpenseEffects } from './app/store/expense/expense.effects';
+import { TransactionEffects } from './app/store/transaction/transaction.effects';
 
 if (environment.production) {
   enableProdMode();
@@ -25,7 +25,7 @@ bootstrapApplication(AppComponent, {
       IonicModule.forRoot({}),
       StoreModule.forRoot(reducers),
       StoreDevtoolsModule.instrument(),
-      EffectsModule.forRoot([ExpenseEffects]),
+      EffectsModule.forRoot([TransactionEffects]),
       IonicStorageModule.forRoot()
     ),
     provideRouter(routes)

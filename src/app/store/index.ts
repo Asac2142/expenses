@@ -1,12 +1,12 @@
 import { ActionReducerMap } from '@ngrx/store';
-import * as fromExpenses from './expense/expense.reducer';
+import * as fromExpenses from './transaction/transaction.reducer';
 
 export interface RootState {
-  expenses: fromExpenses.TransactionState;
+  transactions: fromExpenses.TransactionState;
 }
 
 export const reducers: ActionReducerMap<RootState> = {
-  expenses: fromExpenses.reducer
+  transactions: fromExpenses.reducer
 };
 
-export const getExpenseState = (state: RootState) => state.expenses;
+export const getExpenseState = (state: RootState) => state.transactions;

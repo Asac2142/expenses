@@ -18,8 +18,11 @@
     "importHelpers": true,
     "target": "es2022",
     "module": "es2020",
-    "lib": ["es2018", "dom"],
-    "useDefineForClassFields": false
+    "lib": ["es2018", "dom", "ES2021"],
+    "useDefineForClassFields": false,
+    "paths": {
+      "@store/*": ["./src/app/store/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

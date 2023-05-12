@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onCancel()" class="ion-text-capitalize">
+        <ion-icon name="close-circle" slot="start"></ion-icon>
+        Cancel
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onSave()" class="ion-text-capitalize" [disabled]="!areFieldsValid()">
+        <ion-icon name="save" slot="end"></ion-icon>
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item class="ion-margin-vertical" lines="none">
+    <ion-input
+      type="text"
+      label="Add Category"
+      placeholder="e.g: Birthday present"
+      labelPlacement="floating"
+      errorText="Field is required or invalid"
+      [(ngModel)]="newCategory"
+      [required]="true">
+    </ion-input>
+  </ion-item>
+
+  <ion-list lines="none" class="ion-margin-vertical">
+    <ion-radio-group value="expense" (ionChange)="onTypeChange($event)">
+      <ion-item>
+        <ion-radio value="expense" justify="space-between" color="danger"> Expense </ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-radio value="income" justify="space-between" color="success"> Income </ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-item lines="none">
+    <ion-label class="ion-text-center">Pick an icon</ion-label>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-searchbar show-cancel-button="never" placeholder="Search icon by name" (ionInput)="onSearchIcon($event)">
+    </ion-searchbar>
+  </ion-item>
+
+  <section class="icon-container">
+    <ion-icon
+      *ngFor="let icon of iconsData; let i = index; trackBy: iconId"
+      class="ion-padding-horizontal"
+      size="large"
+      [color]="iconIndexSelected === i ? colorPicked : 'medium'"
+      [src]="icon.svg"
+      (click)="onIconSelected(icon, i)">
+    </ion-icon>
+  </section>
+</ion-content>

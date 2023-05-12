@@ -1,0 +1,81 @@
+<ion-header>
+  <app-header
+    (cancel)="onCancel()"
+    (save)="onSubmit()"
+    (incomeSelected)="transactionForm.controls.type.patchValue($event); setTypeSelected($event)"
+    (expenseSelected)="transactionForm.controls.type.patchValue($event); setTypeSelected($event)">
+  </app-header>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="transactionForm">
+    <ion-item class="ion-margin-vertical" lines="none">
+      <ion-input
+        label="Amount"
+        labelPlacement="floating"
+        placeholder="$ 5.00"
+        errorText="This field is mandatory or invalid"
+        formControlName="amount"
+        type="number"
+        numberFormat>
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-vertical" lines="none">
+      <ion-input
+        label="Description"
+        labelPlacement="floating"
+        placeholder="Enter a short description"
+        errorText="This field is mandatory or invalid"
+        formControlName="description">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-vertical" lines="none">
+      <ion-label>Date</ion-label>
+      <ion-grid>
+        <ion-row class="ion-justify-content-end">
+          <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime
+                id="datetime"
+                presentation="date"
+                color="primary"
+                [value]="dateValue"
+                [showDefaultButtons]="true"
+                (ionChange)="onDateChange($event)">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <ion-item class="ion-margin-vertical ion-justify-content-between" lines="none" (click)="onSelectCategory()">
+      <ion-label role="button" class="ion-text-capitalize">
+        {{ categorySelected ? 'Category Selected' : 'Select Category' }}
+      </ion-label>
+
+      <ion-note color="danger" *ngIf="validateCategory()">Category is required</ion-note>
+
+      <ng-container *ngIf="categorySelected && categorySelected.iconName">
+        <ion-label slot="end">{{ categorySelected.label }}</ion-label>
+        <ion-icon size="large" [name]="categorySelected.iconName" [color]="categorySelected.color" slot="end"></ion-icon>
+      </ng-container>
+
+      <ng-container *ngIf="categorySelected && categorySelected?.svgContent">
+        <ion-label slot="end">{{ categorySelected.label }}</ion-label>
+        <ion-icon size="large" [src]="categorySelected.svgContent" [color]="categorySelected.color" slot="end"></ion-icon>
+      </ng-container>
+    </ion-item>
+  </form>
+</ion-content>
+
+<ion-footer *ngIf="transaction">
+  <ion-button color="danger" expand="block" class="ion-text-capitalize" (click)="onDelete()">
+    <ion-icon name="trash" slot="start"></ion-icon>
+    Delete
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,11 @@
+<ng-container *ngIf="currentDate$ | async as currentDate">
+  <ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+      <ion-title>Analytics</ion-title>
+    </ion-toolbar>
+
+    <app-date-navigation identifier="monthyear2" [date]="currentDate.toISOString()" (back)="back(currentDate)" (forward)="forward(currentDate)">
+    </app-date-navigation>
+  </ion-header>
+  <ion-content> </ion-content>
+</ng-container>

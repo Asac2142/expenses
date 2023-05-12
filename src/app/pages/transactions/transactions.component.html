@@ -1,0 +1,41 @@
+<ng-container
+  *ngIf="{ transactions: transactions$ | async, balance: balance$ | async, currentDate: currentDate$ | async } as localData">
+  <ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+      <ion-title>Transactions</ion-title>
+      <ion-buttons
+        *ngIf="localData.transactions?.size"
+        slot="end"
+        class="ion-padding-end"
+        (click)="showSearch = !showSearch">
+        <ion-icon name="search-circle" slot="end" size="large"></ion-icon>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <app-date-navigation
+      identifier="monthyear1"
+      [date]="localData.currentDate?.toISOString()"
+      (back)="back(localData.currentDate); showSearch = false"
+      (forward)="forward(localData.currentDate); showSearch = false">
+    </app-date-navigation>
+
+    <app-balance-detail [balance]="localData.balance!" [transactions]="localData.transactions!"></app-balance-detail>
+
+    <ion-toolbar color="primary" *ngIf="showSearch">
+      <ion-searchbar placeholder="Search for a transaction" (ionInput)="onFilterTransactions($event)"></ion-searchbar>
+      <ion-button color="primary" slot="start" fill="clear" (click)="showSearch = false">
+        <ion-icon name="close-circle" color="danger"></ion-icon>
+      </ion-button>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <app-transaction-list [transactions]="localData.transactions!" (transactionSelected)="onSelectedTransaction($event)">
+    </app-transaction-list>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button color="primary" (click)="onAddTransaction()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-content>
+</ng-container>

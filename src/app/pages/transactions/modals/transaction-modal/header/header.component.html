@@ -1,0 +1,27 @@
+<ion-toolbar color="primary">
+  <ion-buttons slot="start">
+    <ion-button (click)="cancel.emit()">
+      <ion-icon slot="start" name="close-circle"></ion-icon>
+      <span class="ion-text-capitalize">Cancel</span>
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons slot="end">
+    <ion-button (click)="save.emit()">
+      <span class="ion-text-capitalize">Save</span>
+      <ion-icon slot="end" name="checkmark-circle"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-toolbar color="primary">
+  <ion-segment value="trending-up">
+    <ion-segment-button value="trending-down" (click)="expenseSelected.emit('expense')">
+      <ion-label>Expense</ion-label>
+      <ion-icon name="trending-down" color="danger"></ion-icon>
+    </ion-segment-button>
+
+    <ion-segment-button value="trending-up" (click)="incomeSelected.emit('income')">
+      <ion-label>Income</ion-label>
+      <ion-icon name="trending-up" color="success"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
