@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -11,7 +11,7 @@ import { IonicModule } from '@ionic/angular';
 })
 export class DateNavigationComponent {
   @Input() date!: string | undefined;
+  @Input() identifier!: string;
   @Output() back = new EventEmitter<void>();
   @Output() forward = new EventEmitter<void>();
-  @ViewChild('datepicker', { read: ElementRef }) datePicker!: ElementRef;
 }

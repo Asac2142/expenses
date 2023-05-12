@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, inject } from '@angular/core';
-import { IonDatetime, IonicModule, ModalController } from '@ionic/angular';
+import { Component, OnInit, inject } from '@angular/core';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { RootState } from '@store/index';
 import { Transaction, Balance } from 'src/app/common/models/transaction.model';
 import { subMonthToDate, addMonthToDate } from 'src/app/common/utils/category.utils.data';
 import { BalanceDetailComponent } from './components/balance-detail/balance-detail.component';
-import { DateNavigationComponent } from '../../common/components/date-navigation/date-navigation.component';
+import { DateNavigationComponent } from '../../common/date-navigation/date-navigation.component';
 import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
 import { TransactionModalComponent } from './modals/transaction-modal/transaction-modal.component';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
@@ -31,7 +31,6 @@ export class TransactionsComponent implements OnInit {
   showSearch = false;
 
   ngOnInit(): void {
-    console.log('TRANSACTIONS')
     this.dispatchCategories();
     this.loadData();
   }
@@ -39,8 +38,6 @@ export class TransactionsComponent implements OnInit {
   back(currentDate: Date | null): void {
     if (currentDate) {
       const monthBack = subMonthToDate(currentDate, 1);
-      // const datePicker = dateTimePicker.nativeElement as IonDatetime;
-      // datePicker.value = monthBack.toISOString();
       this.store.dispatch(TransactionActions.setCurrentDate({ date: monthBack }));
     }
   }
@@ -48,8 +45,6 @@ export class TransactionsComponent implements OnInit {
   forward(currentDate: Date | null): void {
     if (currentDate) {
       const monthForward = addMonthToDate(currentDate, 1);
-      // const datePicker = dateTimePicker.nativeElement as IonDatetime;
-      // datePicker.value = monthForward.toISOString();
       this.store.dispatch(TransactionActions.setCurrentDate({ date: monthForward }));
     }
   }
@@ -94,7 +89,7 @@ export class TransactionsComponent implements OnInit {
     this.transactions$ = this.store.select(TransactionSelectors.selectAllTransactions);
     this.loading$ = this.store.select(TransactionSelectors.selectLoading);
     this.balance$ = this.store.select(TransactionSelectors.selectBalanceByDate);
-    this.currentDate$ = this.store.select(TransactionSelectors.selectCurrentDateSelected).pipe(tap(x => console.log('TRANSACTIONS: ', x)));
+    this.currentDate$ = this.store.select(TransactionSelectors.selectCurrentDateSelected);
   }
 
   private dispatchCategories(): void {

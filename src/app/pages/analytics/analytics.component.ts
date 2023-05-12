@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 
-import { DateNavigationComponent } from '../../common/components/date-navigation/date-navigation.component';
+import { DateNavigationComponent } from '../../common/date-navigation/date-navigation.component';
 import { addMonthToDate, subMonthToDate } from 'src/app/common/utils/category.utils.data';
 import { RootState } from '@store/index';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as TransactionActions from '@store/transaction/transaction.actions';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
 
@@ -17,13 +17,13 @@ import * as TransactionSelectors from '@store/transaction/transaction.selectors'
   standalone: true,
   imports: [CommonModule, IonicModule, DateNavigationComponent]
 })
-export class AnalyticsComponent {
+export class AnalyticsComponent implements OnInit {
   private _store = inject(Store<RootState>);
-  currentDate$: Observable<Date> = this._store.select(TransactionSelectors.selectCurrentDateSelected).pipe(tap(x => console.log('current date: ', x)));
+  currentDate$!: Observable<Date>;
 
-  // ngOnInit(): void {
-  //   this.currentDate$ = this._store.select(TransactionSelectors.selectCurrentDateSelected);
-  // }
+  ngOnInit(): void {
+    this.currentDate$ = this._store.select(TransactionSelectors.selectCurrentDateSelected);
+  }
 
   back(currentDate: Date | null): void {
     if (currentDate) {

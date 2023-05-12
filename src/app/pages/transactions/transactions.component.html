@@ -1,5 +1,5 @@
 <ng-container
-  *ngIf="{ transactions: transactions$ | async, balance: balance$ | async, currentDate: currentDate$ | async} as localData">
+  *ngIf="{ transactions: transactions$ | async, balance: balance$ | async, currentDate: currentDate$ | async } as localData">
   <ion-header [translucent]="true">
     <ion-toolbar color="primary">
       <ion-title>Transactions</ion-title>
@@ -13,6 +13,7 @@
     </ion-toolbar>
 
     <app-date-navigation
+      identifier="monthyear1"
       [date]="localData.currentDate?.toISOString()"
       (back)="back(localData.currentDate); showSearch = false"
       (forward)="forward(localData.currentDate); showSearch = false">
