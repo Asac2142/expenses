@@ -5,6 +5,8 @@ import { Balance, Transaction, TransactionType } from 'src/app/common/models/tra
 import { addDaysToDate, formatDate, getEndOfMonth, getStartOfMonth } from 'src/app/common/utils/category.utils.data';
 import { TransactionStateEntity } from './transaction.entity';
 import * as ExpenseRoot from '../index';
+import { PlotlyConfig } from 'src/app/common/models/chart.model';
+import { expenseColor, incomeColor } from 'src/app/common/utils/chart.colors';
 
 export const transactionSliceState = (state: ExpenseRoot.RootState) => state.transactions;
 
@@ -33,6 +35,10 @@ export const selectBalanceByDate = createSelector(transactionSliceState, selectC
 
 export const searchTransactions = (text: string) =>
   createSelector(selectAllTransactions, transactions => filterTransactions(text, transactions));
+
+export const selectPieChartConfig = createSelector(selectBalanceByDate, selectCurrentDateSelected, (balance, currentDate) =>
+  getPieChartConfig(balance, currentDate)
+);
 
 function getValidTransactions(transactionEntity: TransactionStateEntity): Transaction[] {
   const transactions: Transaction[] = [];
@@ -113,4 +119,32 @@ function getBalanceDetailByDate(transactions: Transaction[], currentDate: Date):
   }
 
   return result;
+}
+
+function getPieChartConfig(balance: Balance, currentDate: Date): PlotlyConfig {
+  const nicerDate = formatDate(currentDate, 'MMM - yyyy');
+  const config: PlotlyConfig = {
+    data: [
+      {
+        type: 'pie',
+        hole: 0.4,
+        values: [balance.income, balance.expense],
+        labels: ['Incomes', 'Expenses'],
+        marker: { colors: [incomeColor, expenseColor] },
+        automargin: true
+      }
+    ],
+    layout: {
+      title: `Transactions Overview ${nicerDate}`,
+      width: 390,
+      showlegend: true,
+      legend: { xanchor: 'center', x: 0.5, y: -0.2 },
+      hoverlabel: { bgcolor: '#fff' },
+    },
+    config: {
+      displayModeBar: false
+    }
+  };
+
+  return config;
 }
