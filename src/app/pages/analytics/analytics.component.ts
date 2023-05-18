@@ -11,7 +11,7 @@ import * as TransactionActions from '@store/transaction/transaction.actions';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
-import { PlotlyConfig } from 'src/app/common/models/chart.model';
+import { Data, PlotlyConfig } from 'src/app/common/models/chart.model';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -40,5 +40,9 @@ export class AnalyticsComponent implements OnInit {
   forward(currentDate: Date): void {
     const monthForward = addMonthToDate(currentDate, 1);
     this._store.dispatch(TransactionActions.setCurrentDate({ date: monthForward }));
+  }
+
+  existsData(plotData: Data[]): boolean {
+    return !!plotData[0].values;
   }
 }

@@ -1,6 +1,6 @@
 <ng-container
   *ngIf="{ transactions: transactions$ | async, balance: balance$ | async, currentDate: currentDate$ | async } as localData">
-  <ion-header [translucent]="true">
+  <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Transactions</ion-title>
       <ion-buttons

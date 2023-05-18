@@ -1,21 +1,34 @@
 <ng-container *ngIf="currentDate$ | async as currentDate">
-  <ion-header [translucent]="true">
+  <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Analytics</ion-title>
     </ion-toolbar>
 
-    <app-date-navigation identifier="monthyear2" [date]="currentDate.toISOString()" (back)="back(currentDate)" (forward)="forward(currentDate)">
+    <app-date-navigation
+      identifier="monthyear2"
+      [date]="currentDate.toISOString()"
+      (back)="back(currentDate)"
+      (forward)="forward(currentDate)">
     </app-date-navigation>
   </ion-header>
   <ion-content>
-    <ion-grid>
-      <ion-row class="ion-justify-content-center">
-        <ng-container *ngIf="pieChartConfig$ | async as config">
-          <section class="pie-chart">
+    <ng-container *ngIf="pieChartConfig$ | async as config">
+      <ion-grid>
+        <ion-row class="ion-justify-content-center">
+          <section class="pie-chart" *ngIf="existsData(config.data); else noData">
             <plotly-plot [data]="config.data" [layout]="config.layout" [config]="config.config"></plotly-plot>
           </section>
-        </ng-container>
-      </ion-row>
-    </ion-grid>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
   </ion-content>
 </ng-container>
+
+<ng-template #noData>
+  <section class="no-data">
+    <ion-item lines="none">
+      <ion-label>No data available for this month</ion-label>
+      <ion-icon name="alert-circle-outline" slot="end"></ion-icon>
+    </ion-item>
+  </section>
+</ng-template>

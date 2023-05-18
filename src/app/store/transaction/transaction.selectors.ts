@@ -4,11 +4,19 @@ import { noop } from 'rxjs';
 import { Balance, Transaction, TransactionType } from 'src/app/common/models/transaction.model';
 import { addDaysToDate, formatDate, getEndOfMonth, getStartOfMonth } from 'src/app/common/utils/category.utils.data';
 import { TransactionStateEntity } from './transaction.entity';
-import * as ExpenseRoot from '../index';
 import { PlotlyConfig } from 'src/app/common/models/chart.model';
-import { expenseColor, incomeColor } from 'src/app/common/utils/chart.colors';
+import {
+  darkFontColor,
+  defaultPlotBackgroundColor,
+  expenseColor,
+  hoverBackgroundColor,
+  incomeColor,
+  lightFontColor
+} from 'src/app/common/utils/chart.colors';
+import { selectThemeColorScheme } from '../settings/settings.selectors';
+import * as index from '../index';
 
-export const transactionSliceState = (state: ExpenseRoot.RootState) => state.transactions;
+export const transactionSliceState = (state: index.RootState) => state.transactions;
 
 export const selectCurrentDateSelected = createSelector(transactionSliceState, state => state.selectedDate);
 
@@ -30,14 +38,17 @@ export const selectAllCategories = createSelector(transactionSliceState, state =
 
 export const selectBalanceByDate = createSelector(transactionSliceState, selectCurrentDateSelected, (state, currentDate) => {
   const transactions = getValidTransactions(state.transaction);
-  return getBalanceDetailByDate(transactions, currentDate);
+  return getOverallBalanceByDate(transactions, currentDate);
 });
 
 export const searchTransactions = (text: string) =>
   createSelector(selectAllTransactions, transactions => filterTransactions(text, transactions));
 
-export const selectPieChartConfig = createSelector(selectBalanceByDate, selectCurrentDateSelected, (balance, currentDate) =>
-  getPieChartConfig(balance, currentDate)
+export const selectPieChartConfig = createSelector(
+  selectBalanceByDate,
+  selectCurrentDateSelected,
+  selectThemeColorScheme,
+  (balance, currentDate, scheme) => getPieChartConfig(balance, currentDate, scheme)
 );
 
 function getValidTransactions(transactionEntity: TransactionStateEntity): Transaction[] {
@@ -82,7 +93,7 @@ function groupTransactionsByDate(transactions: Transaction[], currentDate: Date)
   return groupByDate;
 }
 
-function getBalanceDetailByDate(transactions: Transaction[], currentDate: Date): Balance {
+function getOverallBalanceByDate(transactions: Transaction[], currentDate: Date): Balance {
   const startMonth = getStartOfMonth(currentDate);
   const endMonth = getEndOfMonth(currentDate);
   const lastDayOfMonth = endMonth.getDate();
@@ -121,17 +132,19 @@ function getBalanceDetailByDate(transactions: Transaction[], currentDate: Date):
   return result;
 }
 
-function getPieChartConfig(balance: Balance, currentDate: Date): PlotlyConfig {
+function getPieChartConfig(balance: Balance, currentDate: Date, scheme: 'dark' | 'light'): PlotlyConfig {
+  const { expense, income, total } = balance;
   const nicerDate = formatDate(currentDate, 'MMM - yyyy');
+  const values = total === 0 ? undefined : [income, expense];
+
   const config: PlotlyConfig = {
     data: [
       {
         type: 'pie',
         hole: 0.4,
-        values: [balance.income, balance.expense],
+        values,
         labels: ['Incomes', 'Expenses'],
-        marker: { colors: [incomeColor, expenseColor] },
-        automargin: true
+        marker: { colors: [incomeColor, expenseColor] }
       }
     ],
     layout: {
@@ -139,7 +152,9 @@ function getPieChartConfig(balance: Balance, currentDate: Date): PlotlyConfig {
       width: 390,
       showlegend: true,
       legend: { xanchor: 'center', x: 0.5, y: -0.2 },
-      hoverlabel: { bgcolor: '#fff' },
+      hoverlabel: { bgcolor: hoverBackgroundColor },
+      paper_bgcolor: defaultPlotBackgroundColor,
+      font: { color: scheme === 'dark' ? lightFontColor : darkFontColor }
     },
     config: {
       displayModeBar: false
@@ -148,3 +163,6 @@ function getPieChartConfig(balance: Balance, currentDate: Date): PlotlyConfig {
 
   return config;
 }
+
+// TODO - display in detail percenteges by category
+function getDetailBalanceByDate(groupedTransactions: Map<string, Transaction[]>, currentDate: Date) {}

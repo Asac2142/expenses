@@ -1,5 +1,5 @@
 export interface PlotlyConfig {
-  data: any[];
+  data: Data[];
   layout: Layout;
   config?: any;
 }
@@ -9,6 +9,7 @@ export interface Layout {
   height?: number;
   title?: string;
   showlegend?: boolean;
+  paper_bgcolor?: string; // * background color for the whole plot
   legend?: { x?: number; y?: number; xanchor?: string };
   hoverlabel?: { bgcolor?: string };
   margin?: {
@@ -18,4 +19,18 @@ export interface Layout {
     t: number;
     pad: number;
   };
+  font?: {
+    family?: string;
+    size?: number;
+    color?: string;
+  };
+}
+
+export interface Data {
+  type?: string; // * type of chart
+  hole?: number; // * if it is pie chart, the hole makes it a donut
+  values?: number[];
+  labels?: string[];
+  marker?: { colors: string[] }; // * colors for the each section of the plot
+  automargin?: boolean;
 }

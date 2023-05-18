@@ -31,7 +31,6 @@ export class TransactionsComponent implements OnInit {
   showSearch = false;
 
   ngOnInit(): void {
-    this.dispatchCategories();
     this.loadData();
   }
 
@@ -90,10 +89,5 @@ export class TransactionsComponent implements OnInit {
     this.loading$ = this.store.select(TransactionSelectors.selectLoading);
     this.balance$ = this.store.select(TransactionSelectors.selectBalanceByDate);
     this.currentDate$ = this.store.select(TransactionSelectors.selectCurrentDateSelected);
-  }
-
-  private dispatchCategories(): void {
-    this.store.dispatch(TransactionActions.setTransactions());
-    this.store.dispatch(TransactionActions.setCategories());
   }
 }
