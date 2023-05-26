@@ -24,7 +24,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": ["localforage"],
+            "allowedCommonJsDependencies": ["localforage", "plotly.js-dist-min"],
             "assets": [
               {
                 "glob": "**/*",

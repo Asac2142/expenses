@@ -1,6 +1,6 @@
 <ng-container
   *ngIf="{ transactions: transactions$ | async, balance: balance$ | async, currentDate: currentDate$ | async } as localData">
-  <ion-header [translucent]="true">
+  <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Transactions</ion-title>
       <ion-buttons
@@ -23,7 +23,7 @@
 
     <ion-toolbar color="primary" *ngIf="showSearch">
       <ion-searchbar placeholder="Search for a transaction" (ionInput)="onFilterTransactions($event)"></ion-searchbar>
-      <ion-button color="primary" slot="start" fill="clear" (click)="showSearch = false">
+      <ion-button color="primary" slot="start" fill="clear" (click)="showSearch = false; clearFilter()">
         <ion-icon name="close-circle" color="danger"></ion-icon>
       </ion-button>
     </ion-toolbar>

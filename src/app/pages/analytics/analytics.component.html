@@ -1,11 +1,52 @@
 <ng-container *ngIf="currentDate$ | async as currentDate">
-  <ion-header [translucent]="true">
+  <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Analytics</ion-title>
     </ion-toolbar>
 
-    <app-date-navigation identifier="monthyear2" [date]="currentDate.toISOString()" (back)="back(currentDate)" (forward)="forward(currentDate)">
+    <app-date-navigation
+      identifier="monthyear2"
+      [date]="currentDate.toISOString()"
+      (back)="back(currentDate)"
+      (forward)="forward(currentDate)">
     </app-date-navigation>
   </ion-header>
-  <ion-content> </ion-content>
+  <ion-content>
+    <ng-container *ngIf="overallChartConfig$ | async as config">
+      <ion-grid>
+        <ion-row class="ion-justify-content-center">
+          <section class="pie-chart" *ngIf="existsData(config.data); else noData">
+            <app-plot [config]="config"></app-plot>
+          </section>
+        </ion-row>
+
+        <ion-row class="ion-justify-content-center">
+          <ng-container *ngIf="incomeChartConfig$ | async as incomeConfig">
+            <app-plot [config]="incomeConfig" [templateContent]="incomeDetail"></app-plot>
+            <ng-template #incomeDetail>
+              <app-plot-custom-legend [colors]="incomeColors" [detail]="(incomeDetail$ | async)!"></app-plot-custom-legend>
+            </ng-template>
+          </ng-container>
+        </ion-row>
+
+        <ion-row class="ion-justify-content-center">
+          <ng-container *ngIf="expenseChartConfig$ | async as expenseConfig">
+            <app-plot [config]="expenseConfig" [templateContent]="expenseDetail"></app-plot>
+            <ng-template #expenseDetail>
+              <app-plot-custom-legend [colors]="expenseColors" [detail]="(expenseDetail$ | async)!"></app-plot-custom-legend>
+            </ng-template>
+          </ng-container>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+  </ion-content>
 </ng-container>
+
+<ng-template #noData>
+  <section class="no-data">
+    <ion-item lines="none">
+      <ion-label>No data available for this month</ion-label>
+      <ion-icon name="alert-circle-outline" slot="end"></ion-icon>
+    </ion-item>
+  </section>
+</ng-template>
