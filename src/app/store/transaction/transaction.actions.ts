@@ -29,7 +29,7 @@ export const setTransactionsFail = createAction('[TRANSACTION] No Transactions D
 
 export const setCategories = createAction('[TRANSACTION] Set Categories');
 export const setCategoriesSuccess = createAction(
-  '[TRANSACTION] Set Category Data From Storage',
+  '[TRANSACTION] Set Category Data From Storage Success',
   props<{ categories: Category[] }>()
 );
 export const setNoCategoriesFound = createAction('[TRANSACTION] No Categories Found');

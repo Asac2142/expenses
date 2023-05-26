@@ -4,6 +4,7 @@ import { Observable, from, of } from 'rxjs';
 
 import { Category, Transaction } from '../common/models/transaction.model';
 import { v4 as uuidv4 } from 'uuid';
+import { categoryData } from '../common/utils/category.utils.data';
 
 @Injectable({
   providedIn: 'root'
@@ -61,17 +62,23 @@ export class TransactionService {
 
   addCategory(newCategory: Category, categories: Category[]): Observable<Category[]> {
     const copy = [...categories];
-    copy.push(newCategory);
-    this.setCategory(copy);
+    copy.unshift(newCategory);
+    this.setCategories(copy);
     return of([...copy]);
   }
 
-  private async setCategory(categories: Category[]): Promise<void> {
+  private async setCategories(categories: Category[]): Promise<void> {
     await this._storage.set(this._categoriesKey, categories);
   }
 
-  private async getCategories(): Promise<Category[] | undefined> {
-    return await this._storage.get(this._categoriesKey);
+  private async getCategories(): Promise<Category[]> {
+    const existCategories = (await this._storage.get(this._categoriesKey)) as Category[] | undefined;
+
+    if (existCategories?.length) return existCategories;
+    else {
+      this.setCategories(categoryData);
+      return categoryData;
+    }
   }
 
   private async setTransaction(transactions: Transaction[]): Promise<void> {

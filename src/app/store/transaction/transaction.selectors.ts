@@ -1,14 +1,22 @@
 import { createSelector } from '@ngrx/store';
 import { noop } from 'rxjs';
 
-import { Balance, Transaction, TransactionType } from 'src/app/common/models/transaction.model';
-import { addDaysToDate, formatDate, getEndOfMonth, getStartOfMonth } from 'src/app/common/utils/category.utils.data';
+import { Balance, CategoryGroup, Transaction, TransactionType } from 'src/app/common/models/transaction.model';
+import {
+  addDaysToDate,
+  formatDate,
+  getEndOfMonth,
+  getStartOfMonth,
+  toFixed
+} from 'src/app/common/utils/category.utils.data';
 import { TransactionStateEntity } from './transaction.entity';
 import { PlotlyConfig } from 'src/app/common/models/chart.model';
 import {
+  colorsData,
   darkFontColor,
   defaultPlotBackgroundColor,
   expenseColor,
+  fillWithRandomColors,
   hoverBackgroundColor,
   incomeColor,
   lightFontColor
@@ -49,6 +57,39 @@ export const selectPieChartConfig = createSelector(
   selectCurrentDateSelected,
   selectThemeColorScheme,
   (balance, currentDate, scheme) => getPieChartConfig(balance, currentDate, scheme)
+);
+
+export const selectDetailBalance = (type: TransactionType) =>
+  createSelector(selectAllTransactions, transactions => {
+    const grouped = getDetailBalanceByDate(transactions);
+    const byType = new Map<string, CategoryGroup>();
+
+    grouped.forEach((group, key) => {
+      if (group.category.type === type) byType.set(key, group);
+    });
+
+    const sortedByTotal = new Map([...byType.entries()].sort((a, b) => b[1].total - a[1].total));
+    return sortedByTotal;
+  });
+
+export const selectIncomeDetailChart = createSelector(
+  selectAllTransactions,
+  selectThemeColorScheme,
+  selectCurrentDateSelected,
+  (transactionsData, scheme, date) => {
+    const grouped = getDetailBalanceByDate(transactionsData);
+    return getIncomesDetailChart(grouped, scheme, date);
+  }
+);
+
+export const selectExpenseDetailChart = createSelector(
+  selectAllTransactions,
+  selectThemeColorScheme,
+  selectCurrentDateSelected,
+  (transactionsData, scheme, date) => {
+    const grouped = getDetailBalanceByDate(transactionsData);
+    return getExpensesDetailChart(grouped, scheme, date);
+  }
 );
 
 function getValidTransactions(transactionEntity: TransactionStateEntity): Transaction[] {
@@ -164,5 +205,109 @@ function getPieChartConfig(balance: Balance, currentDate: Date, scheme: 'dark' |
   return config;
 }
 
-// TODO - display in detail percenteges by category
-function getDetailBalanceByDate(groupedTransactions: Map<string, Transaction[]>, currentDate: Date) {}
+function getDetailBalanceByDate(groupedTransactions: Map<string, Transaction[]>): Map<string, CategoryGroup> {
+  const groupCategories = new Map<string, CategoryGroup>();
+
+  groupedTransactions.forEach(transactions => {
+    const categoryIds = transactions.map(transaction => transaction.category.id);
+    const uniqueCategoryIds = [...new Set(categoryIds)];
+
+    for (const uniqueCategId of uniqueCategoryIds) {
+      const transactionsByCateId = transactions.filter(transaction => transaction.category.id === uniqueCategId);
+      const total = transactionsByCateId.reduce((prev, curr) => (prev += curr.amount), 0);
+      const category = transactionsByCateId[0].category;
+      const newCategoryGroup: CategoryGroup = { total: toFixed(total), transactions: transactionsByCateId, category };
+      const existGroupCategory = groupCategories.get(uniqueCategId);
+
+      if (existGroupCategory) {
+        const updatedTransactions = [...existGroupCategory.transactions, ...transactionsByCateId];
+        const updatedTotal = existGroupCategory.total + total;
+        const updatedCategoryGroup: CategoryGroup = {
+          total: toFixed(updatedTotal),
+          category: existGroupCategory.category,
+          transactions: updatedTransactions
+        };
+        groupCategories.set(uniqueCategId, updatedCategoryGroup);
+      } else groupCategories.set(uniqueCategId, newCategoryGroup);
+    }
+  });
+
+  return groupCategories;
+}
+
+function getIncomesDetailChart(
+  groupedTransactions: Map<string, CategoryGroup>,
+  scheme: 'dark' | 'light',
+  date: Date
+): PlotlyConfig {
+  const { labels, values } = filterByTransactionType('income', groupedTransactions);
+  const niceDate = formatDate(date, 'MMM - yyyy');
+  const title = `Income's Detail - ${niceDate}`;
+  return getChartConfig(values, labels, scheme, title);
+}
+
+function getExpensesDetailChart(
+  groupedTransactions: Map<string, CategoryGroup>,
+  scheme: 'dark' | 'light',
+  date: Date
+): PlotlyConfig {
+  const { values, labels } = filterByTransactionType('expense', groupedTransactions);
+  const niceDate = formatDate(date, 'MMM - yyyy');
+  const title = `Expense's Detail - ${niceDate}`;
+  return getChartConfig(values, labels, scheme, title);
+}
+
+function filterByTransactionType(type: TransactionType, groupedTransactions: Map<string, CategoryGroup>) {
+  const categoryByType: CategoryGroup[] = [];
+  const values: number[] = [];
+  const labels: string[] = [];
+  const sorted = new Map([...groupedTransactions.entries()].sort((a, b) => b[1].total - a[1].total));
+
+  sorted.forEach(groupedTransaction =>
+    groupedTransaction.category.type === type ? categoryByType.push(groupedTransaction) : noop
+  );
+
+  for (const expense of categoryByType) {
+    values.push(expense.total);
+    labels.push(expense.category.label);
+  }
+
+  return { values, labels };
+}
+
+function getChartConfig(values: number[], labels: string[], scheme: 'dark' | 'light', title: string): PlotlyConfig {
+  const colors = getColors(values.length);
+
+  return {
+    data: [
+      {
+        type: 'pie',
+        hole: 0.4,
+        values: [...values],
+        labels: [...labels],
+        marker: { colors: [...colors] }
+      }
+    ],
+    layout: {
+      title: title,
+      width: 390,
+      showlegend: false,
+      hoverlabel: { bgcolor: hoverBackgroundColor },
+      paper_bgcolor: defaultPlotBackgroundColor,
+      font: { color: scheme === 'dark' ? lightFontColor : darkFontColor }
+    },
+    config: {
+      displayModeBar: false
+    }
+  };
+}
+
+function getColors(end: number): string[] {
+  if (end > colorsData.length) {
+    const newColors = fillWithRandomColors(end - colorsData.length);
+    return [...colorsData, ...newColors];
+  }
+
+  const sliced = colorsData.slice(0, end);
+  return [...sliced];
+}

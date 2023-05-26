@@ -12,6 +12,12 @@ export interface Transaction {
   category: Category;
 }
 
+export interface CategoryGroup {
+  transactions: Transaction[];
+  total: number;
+  category: Category;
+}
+
 export interface TransactionForm {
   category: FormControl<Category | null>;
   type: FormControl<TransactionType | null>;
@@ -21,6 +27,7 @@ export interface TransactionForm {
 }
 
 export interface Category {
+  id: string;
   type: TransactionType;
   iconName: string;
   label: string;

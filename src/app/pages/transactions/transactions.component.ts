@@ -8,7 +8,7 @@ import { RootState } from '@store/index';
 import { Transaction, Balance } from 'src/app/common/models/transaction.model';
 import { subMonthToDate, addMonthToDate } from 'src/app/common/utils/category.utils.data';
 import { BalanceDetailComponent } from './components/balance-detail/balance-detail.component';
-import { DateNavigationComponent } from '../../common/date-navigation/date-navigation.component';
+import { DateNavigationComponent } from '../../common/components/date-navigation/date-navigation.component';
 import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
 import { TransactionModalComponent } from './modals/transaction-modal/transaction-modal.component';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
@@ -51,6 +51,10 @@ export class TransactionsComponent implements OnInit {
   onFilterTransactions(event: Event): void {
     const value = (event.target as HTMLInputElement).value.toLowerCase() as string;
     this.transactions$ = this.store.select(TransactionSelectors.searchTransactions(value));
+  }
+
+  clearFilter(): void {
+    this.transactions$ = this.store.select(TransactionSelectors.searchTransactions(''));
   }
 
   async onSelectedTransaction(transactionSelected: Transaction): Promise<void> {

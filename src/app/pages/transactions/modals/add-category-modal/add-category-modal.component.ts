@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import { Category, Icon, TransactionType } from 'src/app/common/models/transaction.model';
+import { v4 as uuidv4 } from 'uuid';
 import * as Icons from 'ionicons/icons';
 import * as TransactionActions from '@store/transaction/transaction.actions';
 
@@ -71,7 +72,8 @@ export class AddCategoryModalComponent implements OnInit {
       svgContent: this.iconSelected.svg,
       iconName: '',
       label: this.newCategory,
-      type: this.typeSelected
+      type: this.typeSelected,
+      id: uuidv4()
     };
   }
 

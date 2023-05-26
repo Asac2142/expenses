@@ -1,0 +1,18 @@
+.bar {
+  border: 1px solid #ccc;
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  &--background {
+    height: 1rem;
+    background-color: inherit;
+    width: 0%;
+    max-width: 100%;
+  }
+}
+
+:host {
+  width: 100%;
+}

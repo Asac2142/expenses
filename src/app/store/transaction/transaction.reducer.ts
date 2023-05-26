@@ -14,7 +14,7 @@ export interface TransactionState {
 export const initialState: TransactionState = {
   transaction: initialTransactionState,
   loading: false,
-  categories: categoryData,
+  categories: [],
   selectedDate: new Date()
 };
 
