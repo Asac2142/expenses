@@ -13,28 +13,48 @@
   </ion-header>
   <ion-content>
     <ng-container *ngIf="overallChartConfig$ | async as config">
+      <ion-select
+        *ngIf="existsData(config.data)"
+        label="Chart selection"
+        labelPlacement="floating"
+        interface="action-sheet"
+        fill="outline"
+        [value]="optionSelected"
+        [interfaceOptions]="customActionSheetOptions"
+        (ionChange)="onChange($event)">
+        <ion-select-option value="overview"> Overview Chart </ion-select-option>
+        <ion-select-option value="income"> Income Chart </ion-select-option>
+        <ion-select-option value="expense"> Expense Chart </ion-select-option>
+      </ion-select>
+
       <ion-grid>
-        <ion-row class="ion-justify-content-center">
+        <ion-row *ngIf="optionSelected === 'overview'" class="ion-justify-content-center">
           <section class="pie-chart" *ngIf="existsData(config.data); else noData">
             <app-plot [config]="config"></app-plot>
           </section>
         </ion-row>
 
-        <ion-row class="ion-justify-content-center">
+        <ion-row *ngIf="optionSelected === 'income'" class="ion-justify-content-center">
           <ng-container *ngIf="incomeChartConfig$ | async as incomeConfig">
-            <app-plot [config]="incomeConfig" [templateContent]="incomeDetail"></app-plot>
-            <ng-template #incomeDetail>
-              <app-plot-custom-legend [colors]="incomeColors" [detail]="(incomeDetail$ | async)!"></app-plot-custom-legend>
-            </ng-template>
+            <app-plot-detail
+              message="No incomes registered yet"
+              [plotConfig]="incomeConfig"
+              [colors]="incomeColors"
+              [transactionDetailMap]="(incomeDetail$ | async)!"
+              (detailSelected)="onDetailSelected($event)">
+            </app-plot-detail>
           </ng-container>
         </ion-row>
 
-        <ion-row class="ion-justify-content-center">
+        <ion-row *ngIf="optionSelected === 'expense'" class="ion-justify-content-center">
           <ng-container *ngIf="expenseChartConfig$ | async as expenseConfig">
-            <app-plot [config]="expenseConfig" [templateContent]="expenseDetail"></app-plot>
-            <ng-template #expenseDetail>
-              <app-plot-custom-legend [colors]="expenseColors" [detail]="(expenseDetail$ | async)!"></app-plot-custom-legend>
-            </ng-template>
+            <app-plot-detail
+              message="No expenses registered yet"
+              [plotConfig]="expenseConfig"
+              [colors]="expenseColors"
+              [transactionDetailMap]="(expenseDetail$ | async)!"
+              (detailSelected)="onDetailSelected($event)">
+            </app-plot-detail>
           </ng-container>
         </ion-row>
       </ion-grid>

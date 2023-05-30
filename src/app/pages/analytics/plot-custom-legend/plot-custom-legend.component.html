@@ -1,6 +1,6 @@
 <section class="transaction-container">
   <section class="transaction-container--detail" *ngFor="let category of categories; let i = index; trackBy: id">
-    <div class="progress">
+    <div class="progress" (click)="detailSelected.emit(category)">
       <section class="progress--content">
         <div class="category-name">
           <ng-container *ngIf="category.category.iconName">

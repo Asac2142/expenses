@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { StaticProgressBarComponent } from 'src/app/common/components/static-progress-bar/static-progress-bar.component';
 import { CategoryGroup } from 'src/app/common/models/transaction.model';
@@ -15,6 +15,7 @@ import { CategoryGroup } from 'src/app/common/models/transaction.model';
 export class PlotCustomLegendComponent implements OnChanges{
   @Input() detail!: Map<string, CategoryGroup>;
   @Input() colors!: string[];
+  @Output() detailSelected = new EventEmitter<CategoryGroup>();
   categories: CategoryGroup[] = [];
   private _total = 0;
 

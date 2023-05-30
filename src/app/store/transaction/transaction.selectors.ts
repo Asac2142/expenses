@@ -52,11 +52,8 @@ export const selectBalanceByDate = createSelector(transactionSliceState, selectC
 export const searchTransactions = (text: string) =>
   createSelector(selectAllTransactions, transactions => filterTransactions(text, transactions));
 
-export const selectPieChartConfig = createSelector(
-  selectBalanceByDate,
-  selectCurrentDateSelected,
-  selectThemeColorScheme,
-  (balance, currentDate, scheme) => getPieChartConfig(balance, currentDate, scheme)
+export const selectPieChartConfig = createSelector(selectBalanceByDate, selectThemeColorScheme, (balance, scheme) =>
+  getPieChartConfig(balance, scheme)
 );
 
 export const selectDetailBalance = (type: TransactionType) =>
@@ -75,20 +72,18 @@ export const selectDetailBalance = (type: TransactionType) =>
 export const selectIncomeDetailChart = createSelector(
   selectAllTransactions,
   selectThemeColorScheme,
-  selectCurrentDateSelected,
-  (transactionsData, scheme, date) => {
+  (transactionsData, scheme) => {
     const grouped = getDetailBalanceByDate(transactionsData);
-    return getIncomesDetailChart(grouped, scheme, date);
+    return getIncomesDetailChart(grouped, scheme);
   }
 );
 
 export const selectExpenseDetailChart = createSelector(
   selectAllTransactions,
   selectThemeColorScheme,
-  selectCurrentDateSelected,
-  (transactionsData, scheme, date) => {
+  (transactionsData, scheme) => {
     const grouped = getDetailBalanceByDate(transactionsData);
-    return getExpensesDetailChart(grouped, scheme, date);
+    return getExpensesDetailChart(grouped, scheme);
   }
 );
 
@@ -173,9 +168,8 @@ function getOverallBalanceByDate(transactions: Transaction[], currentDate: Date)
   return result;
 }
 
-function getPieChartConfig(balance: Balance, currentDate: Date, scheme: 'dark' | 'light'): PlotlyConfig {
+function getPieChartConfig(balance: Balance, scheme: 'dark' | 'light'): PlotlyConfig {
   const { expense, income, total } = balance;
-  const nicerDate = formatDate(currentDate, 'MMM - yyyy');
   const values = total === 0 ? undefined : [income, expense];
 
   const config: PlotlyConfig = {
@@ -189,7 +183,7 @@ function getPieChartConfig(balance: Balance, currentDate: Date, scheme: 'dark' |
       }
     ],
     layout: {
-      title: `Transactions Overview ${nicerDate}`,
+      title: 'Transactions Overview',
       width: 390,
       showlegend: true,
       legend: { xanchor: 'center', x: 0.5, y: -0.2 },
@@ -235,25 +229,15 @@ function getDetailBalanceByDate(groupedTransactions: Map<string, Transaction[]>)
   return groupCategories;
 }
 
-function getIncomesDetailChart(
-  groupedTransactions: Map<string, CategoryGroup>,
-  scheme: 'dark' | 'light',
-  date: Date
-): PlotlyConfig {
+function getIncomesDetailChart(groupedTransactions: Map<string, CategoryGroup>, scheme: 'dark' | 'light'): PlotlyConfig {
   const { labels, values } = filterByTransactionType('income', groupedTransactions);
-  const niceDate = formatDate(date, 'MMM - yyyy');
-  const title = `Income's Detail - ${niceDate}`;
+  const title = "Income's Detail";
   return getChartConfig(values, labels, scheme, title);
 }
 
-function getExpensesDetailChart(
-  groupedTransactions: Map<string, CategoryGroup>,
-  scheme: 'dark' | 'light',
-  date: Date
-): PlotlyConfig {
+function getExpensesDetailChart(groupedTransactions: Map<string, CategoryGroup>, scheme: 'dark' | 'light'): PlotlyConfig {
   const { values, labels } = filterByTransactionType('expense', groupedTransactions);
-  const niceDate = formatDate(date, 'MMM - yyyy');
-  const title = `Expense's Detail - ${niceDate}`;
+  const title = "Expense's Detail";
   return getChartConfig(values, labels, scheme, title);
 }
 

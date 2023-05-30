@@ -32,8 +32,9 @@
   <ion-content>
     <app-transaction-list [transactions]="localData.transactions!" (transactionSelected)="onSelectedTransaction($event)">
     </app-transaction-list>
+
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button color="primary" (click)="onAddTransaction()">
+      <ion-fab-button color="primary" size="small" (click)="onAddTransaction()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab>

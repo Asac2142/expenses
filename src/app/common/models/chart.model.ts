@@ -7,7 +7,7 @@ export interface PlotlyConfig {
 export interface Layout {
   width?: number;
   height?: number;
-  title?: string;
+  title?: string ;
   showlegend?: boolean;
   paper_bgcolor?: string; // * background color for the whole plot
   legend?: { x?: number; y?: number; xanchor?: string };
