@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
 
@@ -12,6 +12,7 @@ import { PlotComponent } from './plot/plot.component';
 import { CategoryGroup } from 'src/app/common/models/transaction.model';
 import { PlotCustomLegendComponent } from './plot-custom-legend/plot-custom-legend.component';
 import { PlotDetailComponent } from './plot-detail/plot-detail.component';
+import { DetailModalComponent } from './detail-modal/detail-modal.component';
 import * as TransactionActions from '@store/transaction/transaction.actions';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
 
@@ -31,6 +32,7 @@ import * as TransactionSelectors from '@store/transaction/transaction.selectors'
 })
 export class AnalyticsComponent implements OnInit {
   private _store = inject(Store<RootState>);
+  private _modal = inject(ModalController);
   currentDate$!: Observable<Date>;
   overallChartConfig$!: Observable<PlotlyConfig>;
   incomeChartConfig$!: Observable<PlotlyConfig>;
@@ -66,8 +68,9 @@ export class AnalyticsComponent implements OnInit {
     return !!plotData[0].values;
   }
 
-  onDetailSelected(categoryGroup: CategoryGroup): void {
-    console.log('selected: ', categoryGroup);
+  async onDetailSelected(categoryGroup: CategoryGroup): Promise<void> {
+    const modal = await this._modal.create({ component: DetailModalComponent, componentProps: { categoryGroup } });
+    modal.present();
   }
 
   private setCustomActions(): void {

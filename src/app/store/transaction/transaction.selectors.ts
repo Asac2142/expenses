@@ -171,6 +171,8 @@ function getOverallBalanceByDate(transactions: Transaction[], currentDate: Date)
 function getPieChartConfig(balance: Balance, scheme: 'dark' | 'light'): PlotlyConfig {
   const { expense, income, total } = balance;
   const values = total === 0 ? undefined : [income, expense];
+  const label1 = `Incomes - $ ${values ? values[0].toLocaleString() : '0'}`;
+  const label2 = `Expenses - $ ${values ? values[1].toLocaleString() : '0'}`;
 
   const config: PlotlyConfig = {
     data: [
@@ -178,7 +180,7 @@ function getPieChartConfig(balance: Balance, scheme: 'dark' | 'light'): PlotlyCo
         type: 'pie',
         hole: 0.4,
         values,
-        labels: ['Incomes', 'Expenses'],
+        labels: [label1, label2],
         marker: { colors: [incomeColor, expenseColor] }
       }
     ],

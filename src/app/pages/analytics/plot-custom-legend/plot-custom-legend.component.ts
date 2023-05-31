@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
+
 import { StaticProgressBarComponent } from 'src/app/common/components/static-progress-bar/static-progress-bar.component';
 import { CategoryGroup } from 'src/app/common/models/transaction.model';
 
