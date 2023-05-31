@@ -2,6 +2,10 @@
   *ngIf="{ transactions: transactions$ | async, balance: balance$ | async, currentDate: currentDate$ | async } as localData">
   <ion-header>
     <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+
       <ion-title>Transactions</ion-title>
       <ion-buttons
         *ngIf="localData.transactions?.size"

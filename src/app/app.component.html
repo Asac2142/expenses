@@ -1,14 +1,12 @@
 <ion-app>
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="transactions">
-        <ion-icon name="receipt"></ion-icon>
-        Transactions
-      </ion-tab-button>
-      <ion-tab-button tab="analytics">
-        <ion-icon name="stats-chart"></ion-icon>
-        Analytics
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menu Content</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>This is the menu content.</ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>
