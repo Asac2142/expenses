@@ -34,6 +34,7 @@
     "angular-plotly.js": "^5.1.0",
     "date-fns": "^2.29.3",
     "ionicons": "^7.0.0",
+    "ngx-mask": "^15.1.5",
     "plotly.js-dist-min": "^2.23.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

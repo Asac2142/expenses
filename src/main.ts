@@ -7,6 +7,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
+import { NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
@@ -21,6 +22,8 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    NgxMaskPipe,
+    provideEnvironmentNgxMask(),
     importProvidersFrom(
       IonicModule.forRoot({}),
       StoreModule.forRoot(reducers),
