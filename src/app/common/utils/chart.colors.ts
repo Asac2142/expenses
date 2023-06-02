@@ -6,13 +6,13 @@ export const hoverBackgroundColor = '#fff';
 export const defaultPlotBackgroundColor = 'rgba(0,0,0,0)';
 
 export const colorsData: string[] = [
-  'rgb(0, 128, 255)',
   'rgb(0, 128, 128)',
   'rgb(255, 128, 0)',
+  'rgb(186, 85, 211)',
   'rgb(165, 42, 42)',
   'rgb(255,210,37)',
-  'rgb(186, 85, 211)',
   'rgb(0, 128, 0)',
+  'rgb(0, 128, 255)',
   'rgb(128, 0, 255)',
   'rgb(154, 205, 50)',
   'rgb(210, 105, 30)',
