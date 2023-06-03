@@ -3,8 +3,8 @@ import { catchError, concatMap, map, of, switchMap, withLatestFrom } from 'rxjs'
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
-import { TransactionService } from 'src/app/services/transaction.service';
 import { RootState } from '..';
+import { TransactionService } from 'src/app/services/transactions/transaction.service';
 import * as TransactionActions from './transaction.actions';
 import * as TransactionSelectors from './transaction.selectors';
 

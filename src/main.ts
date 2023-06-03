@@ -12,8 +12,9 @@ import { NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { reducers } from './app/store/index';
-import { TransactionEffects } from './app/store/transaction/transaction.effects';
+import { reducers } from '@store/index';
+import { TransactionEffects } from '@store/transaction/transaction.effects';
+import { SettingEffects } from '@store/settings/settings.effects';
 
 if (environment.production) {
   enableProdMode();
@@ -28,7 +29,7 @@ bootstrapApplication(AppComponent, {
       IonicModule.forRoot({}),
       StoreModule.forRoot(reducers),
       StoreDevtoolsModule.instrument(),
-      EffectsModule.forRoot([TransactionEffects]),
+      EffectsModule.forRoot([TransactionEffects, SettingEffects]),
       IonicStorageModule.forRoot()
     ),
     provideRouter(routes)

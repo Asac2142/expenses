@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { RootState } from './store';
 import { MenuComponent } from './common/components/menu/menu.component';
 import * as TransactionActions from '@store/transaction/transaction.actions';
+import * as SettingsActions from '@store/settings/settings.actions';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.store.dispatch(TransactionActions.setTransactions());
       this.store.dispatch(TransactionActions.setCategories());
+      this.store.dispatch(SettingsActions.setDefaultTheme());
     });
   }
 }

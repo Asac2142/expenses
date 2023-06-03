@@ -10,7 +10,7 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-toggle color="primary" labelPlacement="end" [enableOnOffLabels]="true" (ionChange)="onToggle($event)">
+      <ion-toggle color="primary" labelPlacement="end" [checked]="isChecked" [enableOnOffLabels]="true" (ionChange)="onToggle($event)">
         Dark/Light Theme
       </ion-toggle>
     </ion-item>

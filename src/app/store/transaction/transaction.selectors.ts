@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { noop } from 'rxjs';
 
-import { Balance, CategoryGroup, Transaction, TransactionType } from 'src/app/common/models/transaction.model';
+import { Balance, CategoryGroup, SchemeColor, Transaction, TransactionType } from 'src/app/common/models/transaction.model';
 import {
   addDaysToDate,
   formatDate,
@@ -168,7 +168,7 @@ function getOverallBalanceByDate(transactions: Transaction[], currentDate: Date)
   return result;
 }
 
-function getPieChartConfig(balance: Balance, scheme: 'dark' | 'light'): PlotlyConfig {
+function getPieChartConfig(balance: Balance, scheme: SchemeColor): PlotlyConfig {
   const { expense, income, total } = balance;
   const values = total === 0 ? undefined : [income, expense];
   const label1 = `Incomes - $ ${values ? values[0].toLocaleString() : '0'}`;
@@ -231,13 +231,13 @@ function getDetailBalanceByDate(groupedTransactions: Map<string, Transaction[]>)
   return groupCategories;
 }
 
-function getIncomesDetailChart(groupedTransactions: Map<string, CategoryGroup>, scheme: 'dark' | 'light'): PlotlyConfig {
+function getIncomesDetailChart(groupedTransactions: Map<string, CategoryGroup>, scheme: SchemeColor): PlotlyConfig {
   const { labels, values } = filterByTransactionType('income', groupedTransactions);
   const title = "Income's Detail";
   return getChartConfig(values, labels, scheme, title);
 }
 
-function getExpensesDetailChart(groupedTransactions: Map<string, CategoryGroup>, scheme: 'dark' | 'light'): PlotlyConfig {
+function getExpensesDetailChart(groupedTransactions: Map<string, CategoryGroup>, scheme: SchemeColor): PlotlyConfig {
   const { values, labels } = filterByTransactionType('expense', groupedTransactions);
   const title = "Expense's Detail";
   return getChartConfig(values, labels, scheme, title);
@@ -261,7 +261,7 @@ function filterByTransactionType(type: TransactionType, groupedTransactions: Map
   return { values, labels };
 }
 
-function getChartConfig(values: number[], labels: string[], scheme: 'dark' | 'light', title: string): PlotlyConfig {
+function getChartConfig(values: number[], labels: string[], scheme: SchemeColor, title: string): PlotlyConfig {
   const colors = getColors(values.length);
 
   return {
