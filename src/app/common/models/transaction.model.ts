@@ -2,6 +2,7 @@ import { FormControl } from '@angular/forms';
 
 export type TransactionType = 'expense' | 'income';
 export type CategoryColor = 'success' | 'danger';
+export type SchemeColor = 'dark' | 'light';
 
 export interface Transaction {
   id: string;

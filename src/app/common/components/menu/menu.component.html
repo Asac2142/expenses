@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Transactify</ion-title>
+    <ion-avatar slot="start">
+      <ion-img [src]="logoSrc" alt="logo"></ion-img>
+    </ion-avatar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-toggle color="primary" labelPlacement="end" [checked]="isChecked" [enableOnOffLabels]="true" (ionChange)="onToggle($event)">
+        Dark/Light Theme
+      </ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon color="primary" name="trash" slot="start"></ion-icon>
+      <ion-label slot="end">Erase all data</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon color="primary" name="server" slot="start"></ion-icon>
+      <ion-label slot="end">Backup my data</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

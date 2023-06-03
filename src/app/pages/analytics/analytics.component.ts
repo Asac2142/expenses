@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
 
@@ -11,6 +11,8 @@ import { Data, PlotlyConfig } from 'src/app/common/models/chart.model';
 import { PlotComponent } from './plot/plot.component';
 import { CategoryGroup } from 'src/app/common/models/transaction.model';
 import { PlotCustomLegendComponent } from './plot-custom-legend/plot-custom-legend.component';
+import { PlotDetailComponent } from './plot-detail/plot-detail.component';
+import { DetailModalComponent } from './detail-modal/detail-modal.component';
 import * as TransactionActions from '@store/transaction/transaction.actions';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
 
@@ -19,10 +21,18 @@ import * as TransactionSelectors from '@store/transaction/transaction.selectors'
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, DateNavigationComponent, PlotCustomLegendComponent, PlotComponent]
+  imports: [
+    CommonModule,
+    IonicModule,
+    DateNavigationComponent,
+    PlotCustomLegendComponent,
+    PlotComponent,
+    PlotDetailComponent
+  ]
 })
 export class AnalyticsComponent implements OnInit {
   private _store = inject(Store<RootState>);
+  private _modal = inject(ModalController);
   currentDate$!: Observable<Date>;
   overallChartConfig$!: Observable<PlotlyConfig>;
   incomeChartConfig$!: Observable<PlotlyConfig>;
@@ -31,18 +41,17 @@ export class AnalyticsComponent implements OnInit {
   expenseDetail$!: Observable<Map<string, CategoryGroup>>;
   incomeColors!: string[];
   expenseColors!: string[];
+  customActionSheetOptions!: { header: string; subHeader: string };
+  optionSelected = 'overview';
 
   ngOnInit(): void {
-    this.currentDate$ = this._store.select(TransactionSelectors.selectCurrentDateSelected);
-    this.overallChartConfig$ = this._store.select(TransactionSelectors.selectPieChartConfig);
-    this.incomeChartConfig$ = this._store
-      .select(TransactionSelectors.selectIncomeDetailChart)
-      .pipe(tap(config => (this.incomeColors = config.data[0].marker?.colors || [])));
-    this.expenseChartConfig$ = this._store
-      .select(TransactionSelectors.selectExpenseDetailChart)
-      .pipe(tap(config => (this.expenseColors = config.data[0].marker?.colors || [])));
-    this.expenseDetail$ = this._store.select(TransactionSelectors.selectDetailBalance('expense'));
-    this.incomeDetail$ = this._store.select(TransactionSelectors.selectDetailBalance('income'));
+    this.loadData();
+    this.setCustomActions();
+  }
+
+  onChange(event: Event): void {
+    const valueSelected = (event as CustomEvent).detail.value as 'overview' | 'income' | 'expense';
+    this.optionSelected = valueSelected;
   }
 
   back(currentDate: Date): void {
@@ -57,5 +66,27 @@ export class AnalyticsComponent implements OnInit {
 
   existsData(plotData: Data[]): boolean {
     return !!plotData[0].values;
+  }
+
+  async onDetailSelected(categoryGroup: CategoryGroup): Promise<void> {
+    const modal = await this._modal.create({ component: DetailModalComponent, componentProps: { categoryGroup } });
+    modal.present();
+  }
+
+  private setCustomActions(): void {
+    this.customActionSheetOptions = { header: 'Chart Options', subHeader: 'Select a Chart to see it in detail' };
+  }
+
+  private loadData(): void {
+    this.currentDate$ = this._store.select(TransactionSelectors.selectCurrentDateSelected);
+    this.overallChartConfig$ = this._store.select(TransactionSelectors.selectPieChartConfig);
+    this.incomeChartConfig$ = this._store
+      .select(TransactionSelectors.selectIncomeDetailChart)
+      .pipe(tap(config => (this.incomeColors = config.data[0].marker?.colors || [])));
+    this.expenseChartConfig$ = this._store
+      .select(TransactionSelectors.selectExpenseDetailChart)
+      .pipe(tap(config => (this.expenseColors = config.data[0].marker?.colors || [])));
+    this.expenseDetail$ = this._store.select(TransactionSelectors.selectDetailBalance('expense'));
+    this.incomeDetail$ = this._store.select(TransactionSelectors.selectDetailBalance('income'));
   }
 }

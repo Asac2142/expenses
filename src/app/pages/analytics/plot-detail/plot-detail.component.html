@@ -1,0 +1,18 @@
+<ng-container *ngIf="plotConfig.data[0].values?.length; else noDataFound">
+  <app-plot [config]="plotConfig" [templateContent]="expenseDetail"></app-plot>
+  <ng-template #expenseDetail>
+    <app-plot-custom-legend
+      [colors]="colors"
+      [detail]="transactionDetailMap"
+      (detailSelected)="detailSelected.emit($event)"></app-plot-custom-legend>
+  </ng-template>
+</ng-container>
+
+<ng-template #noDataFound>
+  <section class="no-data">
+    <ion-item lines="none">
+      <ion-label>{{ message }}</ion-label>
+      <ion-icon name="alert-circle-outline" slot="end"></ion-icon>
+    </ion-item>
+  </section>
+</ng-template>

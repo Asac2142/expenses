@@ -3,27 +3,29 @@ import { IonicModule } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 
 import { RootState } from './store';
-import { setColorScheme } from '@store/settings/settings.actions';
+import { MenuComponent } from './common/components/menu/menu.component';
 import * as TransactionActions from '@store/transaction/transaction.actions';
+import * as SettingsActions from '@store/settings/settings.actions';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [IonicModule]
+  imports: [IonicModule, MenuComponent]
 })
 export class AppComponent implements OnInit {
-  constructor(private store: Store<RootState>) {
-    const getPreferredScheme = () => (window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light');
-    const colorScheme = getPreferredScheme() as 'dark' | 'light';
-    this.store.dispatch(setColorScheme({ scheme: colorScheme }));
-  }
+  constructor(private store: Store<RootState>) {}
 
   ngOnInit(): void {
+    this.dispatchInitialActions();
+  }
+
+  private dispatchInitialActions(): void {
     setTimeout(() => {
       this.store.dispatch(TransactionActions.setTransactions());
       this.store.dispatch(TransactionActions.setCategories());
+      this.store.dispatch(SettingsActions.setDefaultTheme());
     });
   }
 }

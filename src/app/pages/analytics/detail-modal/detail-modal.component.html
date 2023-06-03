@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onClose()">
+        <ion-icon name="close" slot="start" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Category Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <section class="title-header">
+          <span>Total amount:</span>
+          <ion-label [color]="categoryGroup.category.color">
+            {{ categoryGroup.category.type === 'expense' ? '-' : '' }} {{ categoryGroup.total | currency }}
+          </ion-label>
+        </section>
+      </ion-card-title>
+
+      <ion-card-subtitle
+        >Transactions found for category
+        <ion-label [color]="categoryGroup.category.color">{{ categoryGroup.category.label }}</ion-label>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <section class="detail-container" *ngFor="let transaction of categoryGroup.transactions; let i = index; trackBy: id" (click)="onSelected(transaction)">
+        <section class="detail-container--info">
+          <ng-container *ngIf="transaction.category?.svgContent">
+            <ion-icon [color]="transaction.category.color" [src]="transaction.category.svgContent" slot="start" size="large">
+            </ion-icon>
+          </ng-container>
+
+          <ng-container *ngIf="transaction.category?.iconName">
+            <ion-icon [color]="transaction.category.color" [name]="transaction.category.iconName" slot="start" size="large">
+            </ion-icon>
+          </ng-container>
+
+          <section class="description">
+            <ion-label>{{ transaction.description }}</ion-label>
+          </section>
+
+          <ion-label slot="end" [color]="categoryGroup.category.color">
+            {{ categoryGroup.category.type === 'expense' ? '-' : '' }} {{ transaction.amount | currency }}
+          </ion-label>
+        </section>
+
+        <ion-note>Date: {{ transaction.dateRegistered | date }}</ion-note>
+      </section>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

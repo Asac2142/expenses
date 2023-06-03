@@ -1,15 +1,17 @@
 .bar {
-  border: 1px solid #ccc;
+  border: 1px solid #ede4e4;
   height: auto;
   width: 100%;
   display: flex;
   align-items: center;
+  border-radius: 0.5rem;
 
   &--background {
     height: 1rem;
     background-color: inherit;
     width: 0%;
     max-width: 100%;
+    border-radius: 0.5rem;
   }
 }
 

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Observable, from, of } from 'rxjs';
 
-import { Category, Transaction } from '../common/models/transaction.model';
+import { Transaction, Category } from 'src/app/common/models/transaction.model';
+import { categoryData } from 'src/app/common/utils/category.utils.data';
 import { v4 as uuidv4 } from 'uuid';
-import { categoryData } from '../common/utils/category.utils.data';
 
 @Injectable({
   providedIn: 'root'
