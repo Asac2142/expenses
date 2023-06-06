@@ -8,6 +8,7 @@ import { RootState } from '@store/index';
 import { setColorScheme } from '@store/settings/settings.actions';
 import { selectThemeColorScheme } from '@store/settings/settings.selectors';
 import * as TransactionActions from '@store/transaction/transaction.actions';
+import { createFile } from '../../utils/category.utils.data';
 
 @Component({
   selector: 'app-menu',
@@ -46,6 +47,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   onBackup(): void {
     console.log('backup');
+    createFile();
   }
 
   onRestore(): void {

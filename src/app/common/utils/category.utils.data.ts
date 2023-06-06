@@ -2,6 +2,7 @@ import { format, startOfMonth, endOfMonth, addDays, addMonths } from 'date-fns';
 import subMonths from 'date-fns/subMonths';
 import { Category } from '../models/transaction.model';
 import { v4 as uuidv4 } from 'uuid';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 
 export const categoryData: Category[] = [
   { id: uuidv4(), color: 'danger', iconName: 'medkit', label: 'Medicine', type: 'expense' },
@@ -59,4 +60,13 @@ export function subMonthToDate(date: Date, monthAmount: number): Date {
 
 export function toFixed(amount: number, precision = 2): number {
   return Number(amount.toFixed(precision));
+}
+
+export async function createFile(): Promise<void> {
+  await Filesystem.writeFile({
+    path: 'data.txt',
+    data: 'This is a test',
+    directory: Directory.Documents,
+    encoding: Encoding.UTF8
+  })
 }
