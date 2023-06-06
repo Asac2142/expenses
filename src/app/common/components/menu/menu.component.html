@@ -15,14 +15,19 @@
       </ion-toggle>
     </ion-item>
 
-    <ion-item>
+    <ion-item (click)="onErase()">
       <ion-icon color="primary" name="trash" slot="start"></ion-icon>
-      <ion-label slot="end">Erase all data</ion-label>
+      <ion-label slot="end">Erase all Transactions</ion-label>
     </ion-item>
 
-    <ion-item>
+    <ion-item (click)="onBackup()">
       <ion-icon color="primary" name="server" slot="start"></ion-icon>
-      <ion-label slot="end">Backup my data</ion-label>
+      <ion-label slot="end">Backup my Transactions</ion-label>
+    </ion-item>
+
+    <ion-item (click)="onRestore()">
+      <ion-icon color="primary" name="reload" slot="start"></ion-icon>
+      <ion-label slot="end">Restore my Transactions</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

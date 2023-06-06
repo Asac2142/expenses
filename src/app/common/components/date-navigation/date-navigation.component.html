@@ -1,6 +1,6 @@
 <ion-toolbar color="primary">
   <ion-icon role="button" class="ion-margin-start" slot="start" name="chevron-back" (click)="back.emit()"> </ion-icon>
-  <ion-datetime-button [datetime]="identifier"></ion-datetime-button>
+  <ion-datetime-button [datetime]="identifier" [disabled]="true"></ion-datetime-button>
   <ion-icon role="button" class="ion-margin-end" slot="end" name="chevron-forward" (click)="forward.emit()"> </ion-icon>
 
   <ion-modal [keepContentsMounted]="true">

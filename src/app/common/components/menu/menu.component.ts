@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, Renderer2, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule, ToastController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Subscription, tap } from 'rxjs';
 
 import { RootState } from '@store/index';
 import { setColorScheme } from '@store/settings/settings.actions';
 import { selectThemeColorScheme } from '@store/settings/settings.selectors';
+import * as TransactionActions from '@store/transaction/transaction.actions';
 
 @Component({
   selector: 'app-menu',
@@ -19,6 +20,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   protected logoSrc = '../../../../assets/icon/favicon.png';
   private _renderer = inject(Renderer2);
   private _store = inject(Store<RootState>);
+  private _alertCtrl = inject(AlertController);
+  private _toast = inject(ToastController);
   private _sub = new Subscription();
   isChecked = false;
 
@@ -31,6 +34,24 @@ export class MenuComponent implements OnInit, OnDestroy {
     );
   }
 
+  async onErase(): Promise<void> {
+    const alert = await this._alertCtrl.create({
+      header: 'Erase all data registered in Transactify',
+      message: 'Are you sure you want to proceed?',
+      buttons: [{ text: 'Erase', handler: () => this.erase() }, { text: 'Cancel' }]
+    });
+
+    alert.present();
+  }
+
+  onBackup(): void {
+    console.log('backup');
+  }
+
+  onRestore(): void {
+    console.log('restore');
+  }
+
   onToggle(event: Event): void {
     const toggled = (event as CustomEvent).detail.checked as boolean;
     this.handleThemeClass(toggled);
@@ -39,6 +60,12 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._sub?.unsubscribe();
+  }
+
+  private async erase(): Promise<void> {
+    this._store.dispatch(TransactionActions.eraseAllData());
+    const toast = await this._toast.create({ message: 'All transactions have been deleted successfully', duration: 1500 });
+    toast.present();
   }
 
   private handleThemeClass(toggled: boolean): void {

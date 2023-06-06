@@ -35,3 +35,7 @@ export const setCategoriesSuccess = createAction(
 export const setNoCategoriesFound = createAction('[TRANSACTION] No Categories Found');
 
 export const setCurrentDate = createAction('[TRANSACTION] Set Current Date', props<{ date: Date }>());
+
+export const eraseAllData = createAction('[TRANSACTIONS] Erase All Data');
+export const eraseAllDataSuccess = createAction('[TRANSACTIONS] Erase All Data Success');
+export const eraseAllDataFail = createAction('[TRANSACTIONS] Erase All Data Failed');

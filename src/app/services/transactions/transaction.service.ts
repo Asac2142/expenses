@@ -18,6 +18,11 @@ export class TransactionService {
     this.initStorage();
   }
 
+  eraseAllData(): Observable<boolean> {
+    this.eraseEverything();
+    return of(true);
+  }
+
   createTransaction(transaction: Partial<Transaction>): Observable<Transaction> {
     const id = uuidv4();
     const transactionAdded: Transaction = { ...transaction, id } as Transaction;
@@ -65,6 +70,10 @@ export class TransactionService {
     copy.unshift(newCategory);
     this.setCategories(copy);
     return of([...copy]);
+  }
+
+  private async eraseEverything(): Promise<void> {
+    await this._storage.clear();
   }
 
   private async setCategories(categories: Category[]): Promise<void> {
