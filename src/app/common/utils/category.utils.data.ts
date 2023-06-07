@@ -65,7 +65,7 @@ export function toFixed(amount: number, precision = 2): number {
 
 export async function createFile(): Promise<void> {
   await Filesystem.writeFile({
-    path: 'Download/data.txt',
+    path: 'Downloads/data.txt',
     data: 'This is a test',
     directory: Directory.External,
     encoding: Encoding.UTF8
