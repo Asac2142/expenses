@@ -2,7 +2,7 @@ import { format, startOfMonth, endOfMonth, addDays, addMonths } from 'date-fns';
 import subMonths from 'date-fns/subMonths';
 import { Category } from '../models/transaction.model';
 import { v4 as uuidv4 } from 'uuid';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 export const categoryData: Category[] = [
   { id: uuidv4(), color: 'danger', iconName: 'medkit', label: 'Medicine', type: 'expense' },
@@ -66,7 +66,7 @@ export async function createFile(): Promise<void> {
   await Filesystem.writeFile({
     path: 'data.txt',
     data: 'This is a test',
-    directory: Directory.Documents,
+    directory: Directory.External,
     encoding: Encoding.UTF8
-  })
+  }).catch(error => console.log('Error when creating file: ', error));
 }

@@ -45,9 +45,10 @@ export class MenuComponent implements OnInit, OnDestroy {
     alert.present();
   }
 
-  onBackup(): void {
-    console.log('backup');
+  async onBackup(): Promise<void> {
     createFile();
+    const toast = await this._toast.create({ message: 'File was created successfully' });
+    toast.present();
   }
 
   onRestore(): void {
