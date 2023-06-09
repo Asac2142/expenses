@@ -1,4 +1,4 @@
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Filesystem, Directory, Encoding, ReadFileResult } from '@capacitor/filesystem';
 import { format, startOfMonth, endOfMonth, addDays, addMonths } from 'date-fns';
 import subMonths from 'date-fns/subMonths';
 import { v4 as uuidv4 } from 'uuid';
@@ -80,4 +80,14 @@ export async function createFile(): Promise<void> {
   } catch (error) {
     console.error('Could not create or write folder/file: ', error);
   }
+}
+
+export async function readFile(): Promise<ReadFileResult> {
+  const content = await Filesystem.readFile({
+    path: 'Downloads/data.txt',
+    directory: Directory.External,
+    encoding: Encoding.UTF8
+  });
+
+  return content;
 }

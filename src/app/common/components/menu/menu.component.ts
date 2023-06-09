@@ -8,7 +8,7 @@ import { RootState } from '@store/index';
 import { setColorScheme } from '@store/settings/settings.actions';
 import { selectThemeColorScheme } from '@store/settings/settings.selectors';
 import * as TransactionActions from '@store/transaction/transaction.actions';
-import { createFile } from '../../utils/category.utils.data';
+import { createFile, readFile } from '../../utils/category.utils.data';
 
 @Component({
   selector: 'app-menu',
@@ -47,12 +47,15 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   async onBackup(): Promise<void> {
     createFile();
-    const toast = await this._toast.create({ message: 'File was created successfully' });
+    const toast = await this._toast.create({ message: 'File was created successfully', duration: 1500 });
     toast.present();
   }
 
-  onRestore(): void {
+  async onRestore(): Promise<void> {
     console.log('restore');
+    const d = await readFile();
+    const t = await this._toast.create({ message: d.data });
+    t.present();
   }
 
   onToggle(event: Event): void {
