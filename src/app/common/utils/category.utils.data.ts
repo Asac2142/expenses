@@ -64,10 +64,14 @@ export function toFixed(amount: number, precision = 2): number {
 }
 
 export async function createFile(): Promise<void> {
-  await Filesystem.writeFile({
-    path: 'Downloads/data.txt',
-    data: 'This is a test',
-    directory: Directory.External,
-    encoding: Encoding.UTF8
-  }).catch(error => console.log('Error when creating file: ', error));
+  await Filesystem.mkdir({ path: 'Downloads' })
+    .then(() => {
+      Filesystem.writeFile({
+        path: 'Downloads/data.txt',
+        data: 'This is a test',
+        directory: Directory.External,
+        encoding: Encoding.UTF8
+      });
+    })
+    .catch(error => console.log('Error when creating file: ', error));
 }
