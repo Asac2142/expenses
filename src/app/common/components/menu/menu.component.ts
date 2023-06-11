@@ -91,14 +91,16 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   private async erase(): Promise<void> {
     this._store.dispatch(TransactionActions.eraseAllData());
-    const toast = await this._toast.create({ message: 'All transactions have been deleted successfully', duration: 1500, icon: 'trash' });
+    const toast = await this._toast.create({
+      message: 'All transactions have been deleted successfully',
+      duration: 1500,
+      icon: 'trash'
+    });
     toast.present();
   }
 
   private handleThemeClass(toggled: boolean): void {
-    toggled
-      ? this._renderer.setAttribute(document.body, 'color-theme', 'dark')
-      : this._renderer.setAttribute(document.body, 'color-theme', 'light');
+    toggled ? this._renderer.addClass(document.body, 'dark') : this._renderer.removeClass(document.body, 'dark');
   }
 
   private setTheme(toggled: boolean): void {
