@@ -104,4 +104,16 @@ export class TransactionEffects {
       )
     )
   );
+
+  setState$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(TransactionActions.setState),
+      switchMap(({ transactionsState }) =>
+        this.transactionService.setState(transactionsState).pipe(
+          map(() => TransactionActions.setStateSuccess({ transactionsState })),
+          catchError(() => of(TransactionActions.setStateFail()))
+        )
+      )
+    )
+  );
 }

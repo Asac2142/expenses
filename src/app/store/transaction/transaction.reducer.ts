@@ -75,5 +75,16 @@ export const reducer = createReducer(
   on(TransactionActions.deleteTransactionFailed, (state): TransactionState => ({ ...state, loading: false })),
   on(TransactionActions.eraseAllData, (state): TransactionState => ({ ...state, loading: true })),
   on(TransactionActions.eraseAllDataSuccess, (state): TransactionState => ({ ...state, ...initialState })),
-  on(TransactionActions.eraseAllDataFail, (state): TransactionState => ({ ...state, loading: false }))
+  on(TransactionActions.eraseAllDataFail, (state): TransactionState => ({ ...state, loading: false })),
+  on(TransactionActions.setState, (state): TransactionState => ({ ...state, loading: true })),
+  on(
+    TransactionActions.setStateSuccess,
+    (state, { transactionsState }): TransactionState => ({
+      ...state,
+      categories: transactionsState.categories,
+      transaction: transactionsState.transaction,
+      loading: false
+    })
+  ),
+  on(TransactionActions.setStateFail, (state): TransactionState => ({ ...state, loading: false }))
 );

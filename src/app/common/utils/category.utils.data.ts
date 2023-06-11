@@ -1,9 +1,17 @@
 import { Filesystem, Directory, Encoding, ReadFileResult } from '@capacitor/filesystem';
 import { format, startOfMonth, endOfMonth, addDays, addMonths } from 'date-fns';
-import subMonths from 'date-fns/subMonths';
 import { v4 as uuidv4 } from 'uuid';
+import subMonths from 'date-fns/subMonths';
 
-import { Category } from '../models/transaction.model';
+import { Category, Transaction } from '../models/transaction.model';
+import { RootState } from '@store/index';
+import { ToastController } from '@ionic/angular';
+import { TransactionStateEntity } from '@store/transaction/transaction.entity';
+import { noop } from 'rxjs';
+
+const folder = 'Downloads';
+const filename = 'store.json';
+const filePath = `${folder}/${filename}`;
 
 export const categoryData: Category[] = [
   { id: uuidv4(), color: 'danger', iconName: 'medkit', label: 'Medicine', type: 'expense' },
@@ -63,31 +71,72 @@ export function toFixed(amount: number, precision = 2): number {
   return Number(amount.toFixed(precision));
 }
 
-export async function createFile(): Promise<void> {
-  try {
-    await Filesystem.mkdir({
-      path: 'Downloads',
-      directory: Directory.External,
-      recursive: false
-    }).catch(error => console.log('Error when creating folder: ', error));
-
-    await Filesystem.writeFile({
-      path: 'Downloads/data.txt',
-      data: 'This is a test',
-      directory: Directory.External,
-      encoding: Encoding.UTF8
-    }).catch(error => console.log('Error when creating file: ', error));
-  } catch (error) {
-    console.error('Could not create or write folder/file: ', error);
-  }
+export function getValidTransactions(transactionEntity: TransactionStateEntity): Transaction[] {
+  const transactions: Transaction[] = [];
+  Object.entries(transactionEntity.entities).forEach(v => (v[1]?.category ? transactions.push(v[1]) : noop));
+  return transactions;
 }
 
-export async function readFile(): Promise<ReadFileResult> {
-  const content = await Filesystem.readFile({
-    path: 'Downloads/data.txt',
+export async function createFile(contentFile: RootState, toast: ToastController): Promise<void> {
+  const content = JSON.stringify(contentFile);
+  deleteFile();
+
+  await Filesystem.mkdir({
+    path: folder,
+    directory: Directory.External,
+    recursive: false
+  }).catch(async () => handleError('folder', toast));
+
+  await Filesystem.writeFile({
+    path: filePath,
+    data: content,
     directory: Directory.External,
     encoding: Encoding.UTF8
-  });
+  })
+    .then(async () => handleFileCreationOutput(toast))
+    .catch(async () => handleError('file', toast));
+}
 
-  return content;
+export async function readFile(): Promise<ReadFileResult | undefined> {
+  try {
+    const content = await Filesystem.readFile({
+      path: filePath,
+      directory: Directory.External,
+      encoding: Encoding.UTF8
+    });
+
+    return content;
+  } catch(e) {}
+
+  return undefined;
+}
+
+function handleFileCreationOutput(toast: ToastController): void {
+  const message = 'File was created successfully';
+  const duration = 2000;
+  const icon = 'document';
+
+  handleToast(message, duration, toast, icon);
+}
+
+function handleError(asset: 'file' | 'folder', toast: ToastController): void {
+  const message = `Error while creating ${asset}`;
+  const duration = 2000;
+  const icon = 'alert-circle';
+
+  handleToast(message, duration, toast, icon);
+}
+
+async function handleToast(message: string, duration: number, toast: ToastController, icon: string): Promise<void> {
+  const _modal = await toast.create({ message, duration, icon });
+  _modal.present();
+}
+
+async function deleteFile(): Promise<void> {
+  try {
+    await Filesystem.deleteFile({
+      path: filePath,
+      directory: Directory.External
+    });
+  } catch (e) {}
 }

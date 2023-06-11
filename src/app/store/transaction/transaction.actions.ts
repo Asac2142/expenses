@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Category, Transaction } from '../../common/models/transaction.model';
+import { TransactionState } from './transaction.reducer';
 
 export const addTransaction = createAction('[TRANSACTION] Add Transaction', props<{ transaction: Partial<Transaction> }>());
 export const addTransactionSuccess = createAction(
@@ -39,3 +40,7 @@ export const setCurrentDate = createAction('[TRANSACTION] Set Current Date', pro
 export const eraseAllData = createAction('[TRANSACTIONS] Erase All Data');
 export const eraseAllDataSuccess = createAction('[TRANSACTIONS] Erase All Data Success');
 export const eraseAllDataFail = createAction('[TRANSACTIONS] Erase All Data Failed');
+
+export const setState = createAction('[TRANSACTIONS] Set State', props<{ transactionsState: TransactionState }>());
+export const setStateSuccess = createAction('[TRANSACTIONS] Set State Success', props<{ transactionsState: TransactionState }>())
+export const setStateFail = createAction('[TRANSACTIONS] Set State Failed');

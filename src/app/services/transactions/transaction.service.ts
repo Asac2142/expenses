@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Observable, from, of } from 'rxjs';
-
-import { Transaction, Category } from 'src/app/common/models/transaction.model';
-import { categoryData } from 'src/app/common/utils/category.utils.data';
 import { v4 as uuidv4 } from 'uuid';
+
+import { TransactionState } from '@store/transaction/transaction.reducer';
+import { Transaction, Category } from 'src/app/common/models/transaction.model';
+import { categoryData, getValidTransactions } from 'src/app/common/utils/category.utils.data';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,14 @@ export class TransactionService {
 
   constructor(private storage: Storage) {
     this.initStorage();
+  }
+
+  setState({ categories, transaction }: TransactionState): Observable<boolean> {
+    const _transactions = getValidTransactions(transaction);
+    this.setCategories(categories);
+    this.setTransaction(_transactions);
+
+    return of(true);
   }
 
   eraseAllData(): Observable<boolean> {
