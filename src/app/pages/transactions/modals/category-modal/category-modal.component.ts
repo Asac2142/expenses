@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Observable, map, of, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -13,8 +13,7 @@ import * as TransactionSelectors from '@store/transaction/transaction.selectors'
   templateUrl: './category-modal.component.html',
   styleUrls: ['./category-modal.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [CommonModule, IonicModule]
 })
 export class CategoryModalComponent implements OnInit {
   @Input() transactionType!: TransactionType;
@@ -24,9 +23,7 @@ export class CategoryModalComponent implements OnInit {
   categories$!: Observable<Category[]>;
 
   ngOnInit(): void {
-    this.categories$ = this.store
-      .select(TransactionSelectors.selectCategories(this.transactionType))
-      .pipe(tap(categories => (this._categories = categories)));
+    this.loadCategories();
   }
 
   onSelected(category: Category): void {
@@ -44,12 +41,21 @@ export class CategoryModalComponent implements OnInit {
     this._modal.dismiss();
   }
 
-  categoryIndex(index: number): number {
-    return index;
+  categoryIndex(index: number, category: Category): string {
+    return category.id;
   }
 
   async onAddCategory(): Promise<void> {
     const categoryAddModal = await this._modal.create({ component: AddCategoryModalComponent });
     categoryAddModal.present();
+    const result = await categoryAddModal.onWillDismiss();
+
+    if (result.data) this.loadCategories();
+  }
+
+  private loadCategories(): void {
+    this.categories$ = this.store
+      .select(TransactionSelectors.selectCategories(this.transactionType))
+      .pipe(tap(categories => (this._categories = categories)));
   }
 }
