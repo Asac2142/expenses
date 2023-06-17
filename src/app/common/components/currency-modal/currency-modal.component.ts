@@ -3,7 +3,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable, map, of, tap } from 'rxjs';
-import { Capacitor } from '@capacitor/core'
 
 import { RootState } from '@store/index';
 import { CurrencieByCountry } from '../../models/country.model';
@@ -44,10 +43,6 @@ export class CurrencyModalComponent implements OnInit {
     this.currencyCountries$ = of(this._currencyInfo).pipe(
       map(countryInfo => countryInfo.filter(c => c.country.toLowerCase().indexOf(value) > -1))
     );
-  }
-
-  convertImageSource(source: string): string {
-    return Capacitor.convertFileSrc(source);
   }
 
   index(index: number): number {

@@ -19,7 +19,7 @@
     <ion-list>
       <ion-item *ngFor="let country of countries; let i = index; trackBy: index" (click)="onCountrySelected(country)">
         <ion-avatar slot="start">
-          <img alt="flag" [src]="convertImageSource(country.flagUrl)" />
+          <img alt="flag" [src]="country.flagUrl | imgSanatizer" />
         </ion-avatar>
         <ion-label>{{ country.country }}</ion-label>
         <ion-label slot="end" class="currency">{{ country.currencySymbol }}</ion-label>
