@@ -14,4 +14,5 @@ import { Balance, Transaction } from 'src/app/common/models/transaction.model';
 export class BalanceDetailComponent {
   @Input() transactions!: Map<string, Transaction[]>;
   @Input() balance!: Balance;
+  @Input() currencySymbol!: string;
 }

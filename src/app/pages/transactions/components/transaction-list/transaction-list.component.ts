@@ -13,6 +13,7 @@ import { Transaction } from 'src/app/common/models/transaction.model';
 })
 export class TransactionListComponent implements OnChanges {
   @Input() transactions!: Map<string, Transaction[]>;
+  @Input() currencySymbol!: string | null;
   @Output() transactionSelected = new EventEmitter<Transaction>();
   transactionDates: string[] = [];
 

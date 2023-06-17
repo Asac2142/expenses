@@ -17,6 +17,7 @@ import { PlotCustomLegendComponent } from '../plot-custom-legend/plot-custom-leg
 export class PlotDetailComponent {
   @Input() plotConfig!: PlotlyConfig;
   @Input() colors!: string[];
+  @Input() currencySymbol!: string;
   @Input() transactionDetailMap!: Map<string, CategoryGroup>;
   @Input() message!: string;
   @Output() detailSelected = new EventEmitter<CategoryGroup>();

@@ -33,4 +33,40 @@ export class SettingEffects {
       )
     )
   );
+
+  fetchCountriesInfo$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(SettingsActions.fetchCountryInfo),
+      switchMap(() =>
+        this._settingsService.fetchCountryInformation().pipe(
+          switchMap(info => of(SettingsActions.fetchCountryInfoSuccess({ info }))),
+          catchError(() => of(SettingsActions.fetchCountryInfoFail()))
+        )
+      )
+    )
+  );
+
+  setDefaultCurrency$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(SettingsActions.setDefaultCurrency),
+      switchMap(() =>
+        this._settingsService.getCurrency().pipe(
+          switchMap(symbol => of(SettingsActions.setDefaultCurrencySuccess({ symbol }))),
+          catchError(() => of(SettingsActions.setDefaultCurrencyFail({ symbol: '$' })))
+        )
+      )
+    )
+  );
+
+  setCurrencySymbol$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(SettingsActions.setCurrency),
+      switchMap(({ symbol }) =>
+        this._settingsService.setCurrencySymbol(symbol).pipe(
+          switchMap(response => of(SettingsActions.setCurrencySuccess({ symbol: response }))),
+          catchError(() => of(SettingsActions.setCurrencyFail()))
+        )
+      )
+    )
+  );
 }

@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
       this.store.dispatch(TransactionActions.setTransactions());
       this.store.dispatch(TransactionActions.setCategories());
       this.store.dispatch(SettingsActions.setDefaultTheme());
+      this.store.dispatch(SettingsActions.fetchCountryInfo());
+      this.store.dispatch(SettingsActions.setDefaultCurrency());
     });
   }
 }

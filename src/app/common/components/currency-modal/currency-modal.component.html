@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onCancel()" class="ion-text-capitalize">
+        <ion-icon name="close-circle" slot="start"></ion-icon>
+        Cancel
+      </ion-button>
+    </ion-buttons>
+    <ion-title slot="end">Select your currency</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar color="primary">
+    <ion-searchbar placeholder="Search by name" (ionInput)="onSearch($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="currencyCountries$ | async as countries">
+    <ion-list>
+      <ion-item *ngFor="let country of countries; let i = index; trackBy: index" (click)="onCountrySelected(country)">
+        <ion-avatar slot="start">
+          <img alt="flag" [src]="country.flagUrl | imgSanatizer" />
+        </ion-avatar>
+        <ion-label>{{ country.country }}</ion-label>
+        <ion-label slot="end" class="currency">{{ country.currencySymbol }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+</ion-content>

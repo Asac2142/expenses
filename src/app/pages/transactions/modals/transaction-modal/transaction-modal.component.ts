@@ -18,6 +18,7 @@ import { Transaction, TransactionForm, Category, TransactionType } from 'src/app
 })
 export class TransactionModalComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;
+  @Input() currencySymbol!: string | undefined;
   transactionForm!: FormGroup<TransactionForm>;
   categorySelected!: Category | null;
   selectedType: TransactionType = 'income';

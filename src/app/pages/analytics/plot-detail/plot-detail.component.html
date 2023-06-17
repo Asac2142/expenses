@@ -3,8 +3,10 @@
   <ng-template #expenseDetail>
     <app-plot-custom-legend
       [colors]="colors"
+      [currencySymbol]="currencySymbol"
       [detail]="transactionDetailMap"
-      (detailSelected)="detailSelected.emit($event)"></app-plot-custom-legend>
+      (detailSelected)="detailSelected.emit($event)">
+    </app-plot-custom-legend>
   </ng-template>
 </ng-container>
 

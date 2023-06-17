@@ -1,4 +1,4 @@
-<ng-container *ngIf="currentDate$ | async as currentDate">
+<ng-container *ngIf="{ currentDate: currentDate$ | async, currency: currencySymbol$ | async } as localData">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-buttons slot="start">
@@ -10,9 +10,9 @@
 
     <app-date-navigation
       identifier="monthyear2"
-      [date]="currentDate.toISOString()"
-      (back)="back(currentDate)"
-      (forward)="forward(currentDate)">
+      [date]="localData.currentDate!.toISOString()"
+      (back)="back(localData.currentDate!)"
+      (forward)="forward(localData.currentDate!)">
     </app-date-navigation>
   </ion-header>
   <ion-content>
@@ -42,10 +42,11 @@
           <ng-container *ngIf="incomeChartConfig$ | async as incomeConfig">
             <app-plot-detail
               message="No incomes registered yet"
+              [currencySymbol]="localData.currency!"
               [plotConfig]="incomeConfig"
               [colors]="incomeColors"
               [transactionDetailMap]="(incomeDetail$ | async)!"
-              (detailSelected)="onDetailSelected($event)">
+              (detailSelected)="onDetailSelected($event, localData.currency!)">
             </app-plot-detail>
           </ng-container>
         </ion-row>
@@ -54,10 +55,11 @@
           <ng-container *ngIf="expenseChartConfig$ | async as expenseConfig">
             <app-plot-detail
               message="No expenses registered yet"
+              [currencySymbol]="localData.currency!"
               [plotConfig]="expenseConfig"
               [colors]="expenseColors"
               [transactionDetailMap]="(expenseDetail$ | async)!"
-              (detailSelected)="onDetailSelected($event)">
+              (detailSelected)="onDetailSelected($event, localData.currency!)">
             </app-plot-detail>
           </ng-container>
         </ion-row>

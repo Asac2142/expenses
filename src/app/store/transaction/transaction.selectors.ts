@@ -21,7 +21,7 @@ import {
   incomeColor,
   lightFontColor
 } from 'src/app/common/utils/chart.colors';
-import { selectThemeColorScheme } from '../settings/settings.selectors';
+import { selectThemeColorScheme, selectCurrentCurrency } from '../settings/settings.selectors';
 import * as index from '../index';
 
 export const transactionSliceState = (state: index.RootState) => state.transactions;
@@ -54,8 +54,11 @@ export const selectBalanceByDate = createSelector(transactionSliceState, selectC
 export const searchTransactions = (text: string) =>
   createSelector(selectAllTransactions, transactions => filterTransactions(text, transactions));
 
-export const selectPieChartConfig = createSelector(selectBalanceByDate, selectThemeColorScheme, (balance, scheme) =>
-  getPieChartConfig(balance, scheme)
+export const selectPieChartConfig = createSelector(
+  selectBalanceByDate,
+  selectThemeColorScheme,
+  selectCurrentCurrency,
+  (balance, scheme, currency) => getPieChartConfig(balance, scheme, currency)
 );
 
 export const selectDetailBalance = (type: TransactionType) =>
@@ -164,11 +167,11 @@ function getOverallBalanceByDate(transactions: Transaction[], currentDate: Date)
   return result;
 }
 
-function getPieChartConfig(balance: Balance, scheme: SchemeColor): PlotlyConfig {
+function getPieChartConfig(balance: Balance, scheme: SchemeColor, currencySymbol: string): PlotlyConfig {
   const { expense, income, total } = balance;
   const values = total === 0 ? undefined : [income, expense];
-  const label1 = `Incomes - $ ${values ? values[0].toLocaleString() : '0'}`;
-  const label2 = `Expenses - $ ${values ? values[1].toLocaleString() : '0'}`;
+  const label1 = `Incomes - ${currencySymbol} ${values ? values[0].toLocaleString() : '0'}`;
+  const label2 = `Expenses - ${currencySymbol} ${values ? values[1].toLocaleString() : '0'}`;
 
   const config: PlotlyConfig = {
     data: [

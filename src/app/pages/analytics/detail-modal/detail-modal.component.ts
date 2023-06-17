@@ -17,6 +17,7 @@ import * as TransactionActions from '@store/transaction/transaction.actions';
 })
 export class DetailModalComponent {
   @Input() categoryGroup!: CategoryGroup;
+  @Input() currencySymbol!: string;
   private _modalCtrl = inject(ModalController);
   private _store = inject(Store<RootState>);
 

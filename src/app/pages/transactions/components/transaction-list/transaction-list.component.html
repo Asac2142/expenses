@@ -12,7 +12,7 @@
           [color]="transaction.category.color">
         </ion-icon>
         <ion-label>{{ transaction.description }}</ion-label>
-        <ion-label slot="end" [color]="transaction.category.color">${{ transaction.amount }}</ion-label>
+        <ion-label slot="end" [color]="transaction.category.color">{{ currencySymbol }}{{ transaction.amount }}</ion-label>
 
         <ng-container *ngIf="transaction.category.iconName">
           <ion-icon slot="end" [name]="transaction.category.iconName" [color]="transaction.category.color"></ion-icon>

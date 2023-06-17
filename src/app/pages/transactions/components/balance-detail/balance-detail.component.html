@@ -2,15 +2,15 @@
   <section class="balance-info">
     <div class="balance-info__info">
       <span class="success">Income</span>
-      <span>{{ balance.income | currency }}</span>
+      <span>{{ currencySymbol }}{{ balance.income.toLocaleString() }}</span>
     </div>
     <div class="balance-info__info">
       <span class="danger">Expenses</span>
-      <span>{{ balance.expense | currency }}</span>
+      <span>{{ currencySymbol }}{{ balance.expense.toLocaleString() }}</span>
     </div>
     <div class="balance-info__info">
       <span class="total">Total</span>
-      <span>{{ balance.total | currency }}</span>
+      <span>{{ currencySymbol }}{{ balance.total.toLocaleString() }}</span>
     </div>
   </section>
 </ion-toolbar>
