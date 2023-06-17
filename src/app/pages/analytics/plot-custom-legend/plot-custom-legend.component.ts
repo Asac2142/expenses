@@ -16,6 +16,7 @@ import { CategoryGroup } from 'src/app/common/models/transaction.model';
 export class PlotCustomLegendComponent implements OnChanges{
   @Input() detail!: Map<string, CategoryGroup>;
   @Input() colors!: string[];
+  @Input() currencySymbol!: string;
   @Output() detailSelected = new EventEmitter<CategoryGroup>();
   categories: CategoryGroup[] = [];
   private _total = 0;

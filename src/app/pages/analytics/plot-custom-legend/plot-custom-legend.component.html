@@ -18,7 +18,7 @@
 
         <div class="amount">
           <ion-label [color]="category.category.color">
-            {{ category.category.type === 'expense' ? '-' : '' }} {{ category.total | currency }}
+            {{ category.category.type === 'expense' ? '-' : '' }} {{ currencySymbol }}{{ category.total.toLocaleString() }}
           </ion-label>
         </div>
       </section>

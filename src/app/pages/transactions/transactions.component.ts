@@ -13,6 +13,7 @@ import { TransactionListComponent } from './components/transaction-list/transact
 import { TransactionModalComponent } from './modals/transaction-modal/transaction-modal.component';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
 import * as TransactionActions from '@store/transaction/transaction.actions';
+import * as SettingsSelectors from '@store/settings/settings.selectors';
 
 @Component({
   selector: 'app-transactions',
@@ -28,6 +29,7 @@ export class TransactionsComponent implements OnInit {
   loading$!: Observable<boolean>;
   balance$!: Observable<Balance>;
   currentDate$!: Observable<Date>;
+  currencySymbol$!: Observable<string>;
   showSearch = false;
 
   ngOnInit(): void {
@@ -57,10 +59,10 @@ export class TransactionsComponent implements OnInit {
     this.transactions$ = this.store.select(TransactionSelectors.searchTransactions(''));
   }
 
-  async onSelectedTransaction(transactionSelected: Transaction): Promise<void> {
+  async onSelectedTransaction(transactionSelected: Transaction, currencySymbol: string): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: TransactionModalComponent,
-      componentProps: { transaction: transactionSelected }
+      componentProps: { transaction: transactionSelected, currencySymbol }
     });
     modal.present();
     const result = await modal.onDidDismiss();
@@ -69,8 +71,8 @@ export class TransactionsComponent implements OnInit {
     if (result.data && result.role === 'delete') this.delete(result.data as string);
   }
 
-  async onAddTransaction(): Promise<void> {
-    const modal = await this.modalCtrl.create({ component: TransactionModalComponent });
+  async onAddTransaction(currencySymbol: string): Promise<void> {
+    const modal = await this.modalCtrl.create({ component: TransactionModalComponent, componentProps: { currencySymbol } });
     modal.present();
     const result = await modal.onDidDismiss();
 
@@ -93,5 +95,6 @@ export class TransactionsComponent implements OnInit {
     this.loading$ = this.store.select(TransactionSelectors.selectLoading);
     this.balance$ = this.store.select(TransactionSelectors.selectBalanceByDate);
     this.currentDate$ = this.store.select(TransactionSelectors.selectCurrentDateSelected);
+    this.currencySymbol$ = this.store.select(SettingsSelectors.selectCurrentCurrency);
   }
 }

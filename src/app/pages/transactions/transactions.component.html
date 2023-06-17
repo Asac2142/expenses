@@ -1,5 +1,10 @@
 <ng-container
-  *ngIf="{ transactions: transactions$ | async, balance: balance$ | async, currentDate: currentDate$ | async } as localData">
+  *ngIf="{
+    transactions: transactions$ | async,
+    balance: balance$ | async,
+    currentDate: currentDate$ | async,
+    currency: currencySymbol$ | async
+  } as localData">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-buttons slot="start">
@@ -23,7 +28,7 @@
       (forward)="forward(localData.currentDate); showSearch = false">
     </app-date-navigation>
 
-    <app-balance-detail [balance]="localData.balance!" [transactions]="localData.transactions!"></app-balance-detail>
+    <app-balance-detail [currencySymbol]="localData.currency!" [balance]="localData.balance!" [transactions]="localData.transactions!"></app-balance-detail>
 
     <ion-toolbar color="primary" *ngIf="showSearch">
       <ion-searchbar placeholder="Search for a transaction" (ionInput)="onFilterTransactions($event)"></ion-searchbar>
@@ -34,11 +39,14 @@
   </ion-header>
 
   <ion-content>
-    <app-transaction-list [transactions]="localData.transactions!" (transactionSelected)="onSelectedTransaction($event)">
+    <app-transaction-list
+      [currencySymbol]="localData.currency"
+      [transactions]="localData.transactions!"
+      (transactionSelected)="onSelectedTransaction($event, localData.currency || '$')">
     </app-transaction-list>
 
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button color="primary" size="small" (click)="onAddTransaction()">
+      <ion-fab-button color="primary" size="small" (click)="onAddTransaction(localData.currency || '$')">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab>

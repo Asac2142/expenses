@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { TransactionStateEntity, initialTransactionState, adapter } from './transaction.entity';
 import { Category } from 'src/app/common/models/transaction.model';
-import { categoryData } from 'src/app/common/utils/category.utils.data';
 import * as TransactionActions from './transaction.actions';
 
 export interface TransactionState {
@@ -73,5 +72,19 @@ export const reducer = createReducer(
       loading: false
     })
   ),
-  on(TransactionActions.deleteTransactionFailed, (state): TransactionState => ({ ...state, loading: false }))
+  on(TransactionActions.deleteTransactionFailed, (state): TransactionState => ({ ...state, loading: false })),
+  on(TransactionActions.eraseAllData, (state): TransactionState => ({ ...state, loading: true })),
+  on(TransactionActions.eraseAllDataSuccess, (state): TransactionState => ({ ...state, ...initialState })),
+  on(TransactionActions.eraseAllDataFail, (state): TransactionState => ({ ...state, loading: false })),
+  on(TransactionActions.setState, (state): TransactionState => ({ ...state, loading: true })),
+  on(
+    TransactionActions.setStateSuccess,
+    (state, { transactionsState }): TransactionState => ({
+      ...state,
+      categories: transactionsState.categories,
+      transaction: transactionsState.transaction,
+      loading: false
+    })
+  ),
+  on(TransactionActions.setStateFail, (state): TransactionState => ({ ...state, loading: false }))
 );

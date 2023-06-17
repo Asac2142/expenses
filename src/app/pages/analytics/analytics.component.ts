@@ -15,6 +15,7 @@ import { PlotDetailComponent } from './plot-detail/plot-detail.component';
 import { DetailModalComponent } from './detail-modal/detail-modal.component';
 import * as TransactionActions from '@store/transaction/transaction.actions';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
+import * as SettingsSelectors from '@store/settings/settings.selectors';
 
 @Component({
   selector: 'app-analytics',
@@ -39,6 +40,7 @@ export class AnalyticsComponent implements OnInit {
   expenseChartConfig$!: Observable<PlotlyConfig>;
   incomeDetail$!: Observable<Map<string, CategoryGroup>>;
   expenseDetail$!: Observable<Map<string, CategoryGroup>>;
+  currencySymbol$!: Observable<string>;
   incomeColors!: string[];
   expenseColors!: string[];
   customActionSheetOptions!: { header: string; subHeader: string };
@@ -68,8 +70,8 @@ export class AnalyticsComponent implements OnInit {
     return !!plotData[0].values;
   }
 
-  async onDetailSelected(categoryGroup: CategoryGroup): Promise<void> {
-    const modal = await this._modal.create({ component: DetailModalComponent, componentProps: { categoryGroup } });
+  async onDetailSelected(categoryGroup: CategoryGroup, currencySymbol: string): Promise<void> {
+    const modal = await this._modal.create({ component: DetailModalComponent, componentProps: { categoryGroup, currencySymbol } });
     modal.present();
   }
 
@@ -78,6 +80,7 @@ export class AnalyticsComponent implements OnInit {
   }
 
   private loadData(): void {
+    this.currencySymbol$ = this._store.select(SettingsSelectors.selectCurrentCurrency);
     this.currentDate$ = this._store.select(TransactionSelectors.selectCurrentDateSelected);
     this.overallChartConfig$ = this._store.select(TransactionSelectors.selectPieChartConfig);
     this.incomeChartConfig$ = this._store

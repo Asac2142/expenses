@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Transactify</ion-title>
+    <ng-container *ngIf="loading$ | async as load">
+      <ion-progress-bar *ngIf="load" type="indeterminate" color="warning"></ion-progress-bar>
+    </ng-container>
     <ion-avatar slot="start">
       <ion-img [src]="logoSrc" alt="logo"></ion-img>
     </ion-avatar>
@@ -9,20 +12,31 @@
 
 <ion-content>
   <ion-list>
-    <ion-item>
-      <ion-toggle color="primary" labelPlacement="end" [checked]="isChecked" [enableOnOffLabels]="true" (ionChange)="onToggle($event)">
-        Dark/Light Theme
-      </ion-toggle>
-    </ion-item>
+    <ion-menu-toggle>
+      <ion-item>
+        <ion-toggle
+          color="primary"
+          labelPlacement="end"
+          [checked]="isChecked"
+          [enableOnOffLabels]="true"
+          (ionChange)="onToggle($event)">
+          Dark/Light Theme
+        </ion-toggle>
+      </ion-item>
+    </ion-menu-toggle>
 
-    <ion-item>
-      <ion-icon color="primary" name="trash" slot="start"></ion-icon>
-      <ion-label slot="end">Erase all data</ion-label>
-    </ion-item>
+    <ion-menu-toggle>
+      <ion-item (click)="onErase()">
+        <ion-icon color="primary" name="trash" slot="start"></ion-icon>
+        <ion-label slot="end">Erase all Transactions</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
 
-    <ion-item>
-      <ion-icon color="primary" name="server" slot="start"></ion-icon>
-      <ion-label slot="end">Backup my data</ion-label>
-    </ion-item>
+    <ion-menu-toggle>
+      <ion-item (click)="onCurrencyChange()">
+        <ion-icon color="primary" name="logo-usd" slot="start"></ion-icon>
+        <ion-label slot="end">Change currency</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
   </ion-list>
 </ion-content>

@@ -16,7 +16,7 @@
         <section class="title-header">
           <span>Total amount:</span>
           <ion-label [color]="categoryGroup.category.color">
-            {{ categoryGroup.category.type === 'expense' ? '-' : '' }} {{ categoryGroup.total | currency }}
+            {{ categoryGroup.category.type === 'expense' ? '-' : '' }} {{ currencySymbol }}{{ categoryGroup.total.toLocaleString() }}
           </ion-label>
         </section>
       </ion-card-title>
@@ -45,7 +45,7 @@
           </section>
 
           <ion-label slot="end" [color]="categoryGroup.category.color">
-            {{ categoryGroup.category.type === 'expense' ? '-' : '' }} {{ transaction.amount | currency }}
+            {{ categoryGroup.category.type === 'expense' ? '-' : '' }} {{ currencySymbol }}{{ transaction.amount.toLocaleString() }}
           </ion-label>
         </section>
 

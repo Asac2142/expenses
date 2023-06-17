@@ -92,4 +92,28 @@ export class TransactionEffects {
       )
     )
   );
+
+  eraseAllData$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(TransactionActions.eraseAllData),
+      switchMap(() =>
+        this.transactionService.eraseAllData().pipe(
+          map(() => TransactionActions.eraseAllDataSuccess()),
+          catchError(() => of(TransactionActions.eraseAllDataFail()))
+        )
+      )
+    )
+  );
+
+  setState$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(TransactionActions.setState),
+      switchMap(({ transactionsState }) =>
+        this.transactionService.setState(transactionsState).pipe(
+          map(() => TransactionActions.setStateSuccess({ transactionsState })),
+          catchError(() => of(TransactionActions.setStateFail()))
+        )
+      )
+    )
+  );
 }

@@ -13,10 +13,10 @@
       <ion-input
         label="Amount"
         labelPlacement="floating"
-        placeholder="$ 5.00"
         errorText="This field is mandatory or invalid"
         formControlName="amount"
         type="number"
+        [placeholder]="currencySymbol + ' 5.00'"
         numberFormat>
       </ion-input>
     </ion-item>
