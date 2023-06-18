@@ -17,21 +17,18 @@
   </ion-header>
   <ion-content>
     <ng-container *ngIf="overallChartConfig$ | async as config">
-      <ion-select
-        *ngIf="existsData(config.data)"
-        label="Chart selection"
-        labelPlacement="floating"
-        interface="action-sheet"
-        fill="outline"
-        [value]="optionSelected"
-        [interfaceOptions]="customActionSheetOptions"
-        (ionChange)="onChange($event)">
-        <ion-select-option value="overview"> Overview Chart </ion-select-option>
-        <ion-select-option value="income"> Income Chart </ion-select-option>
-        <ion-select-option value="expense"> Expense Chart </ion-select-option>
-      </ion-select>
-
       <ion-grid>
+        <ng-container *ngIf="getLabel() as labelInfo">
+          <ion-button
+            expand="block"
+            color="warning"
+            class="ion-text-capitalize ion-margin-vertical"
+            (click)="onOpenActionSheet()">
+            <ion-icon slot="start" [icon]="labelInfo.icon"></ion-icon>
+            {{ labelInfo.text }}
+          </ion-button>
+        </ng-container>
+
         <ion-row *ngIf="optionSelected === 'overview'" class="ion-justify-content-center">
           <section class="pie-chart" *ngIf="existsData(config.data); else noData">
             <app-plot [config]="config"></app-plot>

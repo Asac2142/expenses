@@ -6,7 +6,6 @@ import { Observable, map, of, tap } from 'rxjs';
 
 import { RootState } from '@store/index';
 import { CurrencieByCountry } from '../../models/country.model';
-import { ImgSanatizerPipe } from '../../pipes/img-sanatizer.pipe';
 import * as SettingsSelectors from '@store/settings/settings.selectors';
 import * as SettingsActions from '@store/settings/settings.actions'
 
@@ -15,7 +14,7 @@ import * as SettingsActions from '@store/settings/settings.actions'
   templateUrl: './currency-modal.component.html',
   styleUrls: ['./currency-modal.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ImgSanatizerPipe]
+  imports: [CommonModule, IonicModule]
 })
 export class CurrencyModalComponent implements OnInit {
   private _store = inject(Store<RootState>);

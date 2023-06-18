@@ -17,7 +17,7 @@ import * as TransactionActions from '@store/transaction/transaction.actions';
   imports: [CommonModule, IonicModule, FormsModule]
 })
 export class AddCategoryModalComponent implements OnInit {
-  private _modal = inject(ModalController);
+  private _modalCtrl = inject(ModalController);
   private store = inject(Store);
   private typeSelected: TransactionType = 'expense';
   private iconSelected!: Icon;
@@ -34,11 +34,11 @@ export class AddCategoryModalComponent implements OnInit {
   onSave(): void {
     const newCategory = this.getCategory();
     this.store.dispatch(TransactionActions.addCategory({ newCategory }));
-    this._modal.dismiss();
+    this._modalCtrl.dismiss(true);
   }
 
   onCancel(): void {
-    this._modal.dismiss();
+    this._modalCtrl.dismiss(false);
   }
 
   areFieldsValid(): boolean {

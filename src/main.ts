@@ -16,7 +16,6 @@ import { environment } from './environments/environment';
 import { reducers } from '@store/index';
 import { TransactionEffects } from '@store/transaction/transaction.effects';
 import { SettingEffects } from '@store/settings/settings.effects';
-import { ImgSanatizerPipe } from './app/common/pipes/img-sanatizer.pipe';
 
 if (environment.production) {
   enableProdMode();
@@ -26,7 +25,6 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NgxMaskPipe,
-    ImgSanatizerPipe,
     provideEnvironmentNgxMask(),
     importProvidersFrom(
       IonicModule.forRoot({}),

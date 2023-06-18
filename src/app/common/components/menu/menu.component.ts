@@ -6,10 +6,11 @@ import { Observable, Subscription, tap } from 'rxjs';
 
 import { RootState } from '@store/index';
 import { setColorScheme } from '@store/settings/settings.actions';
+import { CurrencyModalComponent } from '../currency-modal/currency-modal.component';
 import * as TransactionActions from '@store/transaction/transaction.actions';
 import * as TransactionSelectors from '@store/transaction/transaction.selectors';
 import * as SettingsSelectors from '@store/settings/settings.selectors';
-import { CurrencyModalComponent } from '../currency-modal/currency-modal.component';
+import * as SettingsActions from '@store/settings/settings.actions';
 
 @Component({
   selector: 'app-menu',
@@ -77,6 +78,7 @@ export class MenuComponent implements OnInit, OnDestroy {
       icon: 'trash'
     });
     toast.present();
+    this.setDefault();
   }
 
   private handleThemeClass(toggled: boolean): void {
@@ -89,5 +91,15 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   private loadStore(): void {
     this.loading$ = this._store.select(TransactionSelectors.selectLoading);
+  }
+
+  private setDefault(): void {
+    setTimeout(() => {
+      this._store.dispatch(TransactionActions.setTransactions());
+      this._store.dispatch(TransactionActions.setCategories());
+      this._store.dispatch(SettingsActions.setDefaultTheme());
+      this._store.dispatch(SettingsActions.fetchCountryInfo());
+      this._store.dispatch(SettingsActions.setDefaultCurrency());
+    });
   }
 }
