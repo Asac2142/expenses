@@ -8,13 +8,14 @@ import { HeaderComponent } from './header/header.component';
 import { formatIonDate } from 'src/app/common/utils/category.utils.data';
 import { NumberFormatDirective } from 'src/app/common/directives/number-format.directive';
 import { Transaction, TransactionForm, Category, TransactionType } from 'src/app/common/models/transaction.model';
+import { DatetimeColorDirective } from 'src/app/common/directives/datetime-color.directive';
 
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction-modal.component.html',
   styleUrls: ['./transaction-modal.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule, HeaderComponent, NumberFormatDirective]
+  imports: [CommonModule, IonicModule, ReactiveFormsModule, HeaderComponent, NumberFormatDirective, DatetimeColorDirective]
 })
 export class TransactionModalComponent implements OnInit {
   @Input() transaction!: Transaction | undefined;

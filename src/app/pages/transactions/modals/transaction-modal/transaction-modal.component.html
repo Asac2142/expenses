@@ -42,10 +42,10 @@
               <ion-datetime
                 id="datetime"
                 presentation="date"
-                color="primary"
                 [value]="dateValue"
                 [showDefaultButtons]="true"
-                (ionChange)="onDateChange($event)">
+                (ionChange)="onDateChange($event)"
+                appDatetimeColor>
               </ion-datetime>
             </ng-template>
           </ion-modal>
