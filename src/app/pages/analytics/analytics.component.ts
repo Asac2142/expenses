@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { ActionSheetButton, ActionSheetController, IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
 
@@ -34,6 +34,7 @@ import * as SettingsSelectors from '@store/settings/settings.selectors';
 export class AnalyticsComponent implements OnInit {
   private _store = inject(Store<RootState>);
   private _modal = inject(ModalController);
+  private _actionSheet = inject(ActionSheetController);
   currentDate$!: Observable<Date>;
   overallChartConfig$!: Observable<PlotlyConfig>;
   incomeChartConfig$!: Observable<PlotlyConfig>;
@@ -43,17 +44,31 @@ export class AnalyticsComponent implements OnInit {
   currencySymbol$!: Observable<string>;
   incomeColors!: string[];
   expenseColors!: string[];
-  customActionSheetOptions!: { header: string; subHeader: string };
   optionSelected = 'overview';
 
   ngOnInit(): void {
     this.loadData();
-    this.setCustomActions();
   }
 
-  onChange(event: Event): void {
-    const valueSelected = (event as CustomEvent).detail.value as 'overview' | 'income' | 'expense';
-    this.optionSelected = valueSelected;
+  onChange(option: 'overview' | 'income' | 'expense'): void {
+    this.optionSelected = option;
+  }
+
+  getLabel(): {text: string; icon: string } {
+    if (this.optionSelected === 'income') return { text: 'Income Chart', icon: 'trending-up-outline' };
+    if (this.optionSelected === 'expense') return { text: 'Expense Chart', icon: 'trending-down-outline' };
+
+    return { text: 'Overview Chart', icon: 'bar-chart-outline' };
+  }
+
+  async onOpenActionSheet(): Promise<void> {
+    const actionSheet = await this._actionSheet.create({
+      header: 'Chart Options',
+      subHeader: 'Select a Chart to see it in detail',
+      buttons: this.getButtons()
+    });
+
+    await actionSheet.present();
   }
 
   back(currentDate: Date): void {
@@ -71,12 +86,20 @@ export class AnalyticsComponent implements OnInit {
   }
 
   async onDetailSelected(categoryGroup: CategoryGroup, currencySymbol: string): Promise<void> {
-    const modal = await this._modal.create({ component: DetailModalComponent, componentProps: { categoryGroup, currencySymbol } });
+    const modal = await this._modal.create({
+      component: DetailModalComponent,
+      componentProps: { categoryGroup, currencySymbol }
+    });
     modal.present();
   }
 
-  private setCustomActions(): void {
-    this.customActionSheetOptions = { header: 'Chart Options', subHeader: 'Select a Chart to see it in detail' };
+  private getButtons(): ActionSheetButton[] {
+    return [
+      { text: 'Overview Chart', icon: 'bar-chart-outline', handler: () => this.onChange('overview') },
+      { text: 'Income Chart', icon: 'trending-up-outline', handler: () => this.onChange('income') },
+      { text: 'Expense Chart', icon: 'trending-down-outline', handler: () => this.onChange('expense') },
+      { text: 'Cancel', icon: 'close' }
+    ];
   }
 
   private loadData(): void {
