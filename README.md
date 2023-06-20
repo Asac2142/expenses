@@ -10,9 +10,9 @@ Transactify is a mobile application which allows you to handle your incomes and 
 
 ## Showcase
 <p align="center">
-  <img src="https://github.com/Asac2142/expenses/assets/12599968/627b065a-b074-46a5-aaa0-0bc3469608dd" width="250" height="550" alt="transactions">
-  <img src="https://github.com/Asac2142/expenses/assets/12599968/9b155afa-3b2b-4f6c-8729-a4e5329feac1" width="250" height="550" alt="analytics">
-  <img src="https://github.com/Asac2142/expenses/assets/12599968/939deb43-41e5-4ea1-987f-87e6eae8ab78" width="250" height="550" alt="dark">
+  <a href="https://imgur.com/yYF0tZP"><img src="https://i.imgur.com/yYF0tZP.png" title="source: imgur.com" width="250" height="550" alt="analytics"/></a>
+  <a href="https://imgur.com/HgiEJkc"><img src="https://i.imgur.com/HgiEJkc.png" title="source: imgur.com" width="250" height="550" alt="transactions"/></a>
+  <a href="https://imgur.com/i6N6M8s"><img src="https://i.imgur.com/i6N6M8s.png" title="source: imgur.com"  width="250" height="550" alt="dark"/></a>
 </p>
 
 ## Features
