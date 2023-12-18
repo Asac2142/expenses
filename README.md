@@ -6,7 +6,7 @@
 
 ## Description
 
-Transactify is a mobile application which allows you to handle your incomes and expenses made through your daily life in an easy, convenient way, where you can see in detail, how much you are spending/earning by month.
+TTransactify is a mobile application that allows you to handle your income and expenses made through your daily life in an easy, convenient way, where you can see in detail, how much you are spending/earning by month.
 
 ## Showcase
 <p align="center">
