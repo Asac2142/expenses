@@ -2,7 +2,7 @@
   <a href="https://imgur.com/W63EgEs"><img src="https://i.imgur.com/W63EgEs.png" width="120" height="120" alt="Transactify logo" /></a>
 </p>
 
-<p align="center"><strong>Transactify</strong></p>
+<h1 align="center"><strong>Transactify</strong></h1>
 
 ## Description
 
